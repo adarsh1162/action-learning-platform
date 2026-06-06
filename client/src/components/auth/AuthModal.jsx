@@ -14,7 +14,7 @@ const AuthModal = ({ onClose }) => {
         e.preventDefault();
         setError('');
 
-        const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
+        const endpoint = isLogin ? `${import.meta.env.VITE_API_URL || ''}/api/auth/login` : `${import.meta.env.VITE_API_URL || ''}/api/auth/signup`;
         const payload = isLogin ? { email, password } : { name, email, password };
 
         try {
