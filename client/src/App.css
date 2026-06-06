@@ -1,0 +1,112 @@
+/* ═══════════════════════════════════════════════════════════════
+   App.css — Global app shell + premium navigation bar
+   ═══════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #0E0F14;
+  color: #EDEDED;
+  overflow: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── App Root ────────────────────────────────────────────────── */
+.app-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Navigation Bar ─────────────────────────────────────────── */
+.app-nav {
+  height: 48px;
+  background: #13141C;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 0;
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+/* Logo */
+.app-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 28px;
+}
+.app-nav-logomark {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #6C5CE7, #A89CFF);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.app-nav-logotext {
+  font-size: 14px;
+  font-weight: 700;
+  color: #EDEDED;
+  letter-spacing: -0.01em;
+}
+.app-nav-logotext span { color: #6C5CE7; }
+
+/* Nav Links */
+.app-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.app-nav-link {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.app-nav-link:hover { color: #CCC; background: rgba(255,255,255,0.04); }
+.app-nav-link--active {
+  color: #EDEDED;
+  background: rgba(108, 92, 231, 0.15);
+}
+
+/* Coins Badge */
+.app-nav-right { display: flex; align-items: center; gap: 12px; }
+.app-nav-coins {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(250, 199, 117, 0.1);
+  border: 1px solid rgba(250, 199, 117, 0.2);
+  font-size: 12px;
+  font-weight: 600;
+  color: #FAC775;
+}

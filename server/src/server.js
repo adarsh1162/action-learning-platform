@@ -2,13 +2,24 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db.js');
-const authRoutes = require('./routes/authRoutes'); // Auth routes import kiye
+const authRoutes      = require('./routes/authRoutes');
+const challengeRoutes = require('./routes/challengeRoutes');
+const progressRoutes  = require('./routes/progressRoutes');
+const aiRoutes        = require('./routes/aiRoutes');
+const warmupRoutes    = require('./routes/warmupRoutes');
+const rewardRoutes    = require('./routes/rewardRoutes');
 
 // Load environment variables
 dotenv.config();
 
 // Connect to Database
 connectDB();
+
+// Start Cron Jobs
+const startRevisionScheduler = require('./cron/revisionScheduler');
+const startRetentionScheduler = require('./cron/retentionScheduler');
+startRevisionScheduler();
+startRetentionScheduler();
 
 const app = express();
 
@@ -17,7 +28,12 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes); // Auth routes mount kiye
+app.use('/api/auth',       authRoutes);
+app.use('/api/challenges', challengeRoutes);
+app.use('/api/progress',   progressRoutes);
+app.use('/api/ai',         aiRoutes);
+app.use('/api/warmup',     warmupRoutes);
+app.use('/api/rewards',    rewardRoutes);
 
 // Base Route
 app.get('/', (req, res) => {

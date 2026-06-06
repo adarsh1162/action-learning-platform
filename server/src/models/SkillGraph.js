@@ -5,7 +5,8 @@ const skillGraphSchema = new mongoose.Schema({
     tags: [{
         tagName: { type: String, required: true }, // e.g., "#AsyncAwait"
         weaknessScore: { type: Number, default: 0 },
-        lastTested: { type: Date, default: Date.now }
+        lastTested: { type: Date, default: Date.now },
+        needsRevision: { type: Boolean, default: false }
     }]
 }, { timestamps: true });
 
