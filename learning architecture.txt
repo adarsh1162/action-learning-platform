@@ -1,0 +1,33 @@
+### The Action-First Learning Architecture
+
+**Phase 1: The Daily Active Retrieval Protocol**
+
+* The system blocks new content upon login until a mandatory warm-up is completed.
+* The warm-up uses spaced repetition to serve quick challenges based strictly on the user's past failed micro-tags.
+* This forces active retrieval and ensures users do not forget old concepts before building new ones.
+
+**Phase 2: The 80/20 Micro-Learning Cycle**
+
+* Deliver only 20% theory using short, direct text.
+* Deploy a misconception trap immediately after the theory. Users must identify the flaw in a intentionally written bad code snippet before writing their own.
+* Force active studying by transitioning the user directly into an in-browser code editor.
+* Execute the user's code against hidden test cases.
+* Utilize AI to provide instant, human-readable correction when logic fails, replacing generic console errors.
+
+**Phase 3: The Deep Work Mission**
+
+* Assign a real-world, curious challenge that requires absolute focus.
+* Ensure the challenge reflects an actual industry scenario, such as fixing a broken cart total on an e-commerce site.
+* Implement the challenge reward system upon mission success, granting coins and mystery boxes to build discipline and maintain high motivation.
+
+**Phase 4: The Milestone Boss Battles**
+
+* Halt the standard learning cycle after every three to four topics for project-based learning.
+* Provide a broken, complex codebase instead of a blank screen to force critical thinking and debugging skills.
+* Require the mixing of concepts. The user must combine all recently learned micro-topics to fix the codebase and pass the boss battle.
+
+**Phase 5: The Backend Gatekeeper**
+
+* Track user weaknesses silently using a micro-tagging system attached to every challenge.
+* Measure progress using a skill graph that tracks concepts actually learned, ignoring the number of lessons simply viewed.
+* Lock all future roadmap modules until the user's skill graph proves mastery over the current foundational tags.

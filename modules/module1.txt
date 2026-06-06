@@ -1,0 +1,211 @@
+### Module 1: Getting Started & Output
+
+#### 1. The Output: `console.log()`, `console.error()`, and `console.warn()`
+
+**Theory**
+The console is how JavaScript communicates with developers. You use it to check your work. `console.log()` prints normal messages. `console.warn()` prints warning messages in yellow. `console.error()` prints error messages in red. These tools are strictly for you to debug code, not for the end user to see.
+
+**The Misconception Trap**
+*Analyze this code. What will be the final output printed to the screen?*
+
+```javascript
+let userStatus = "Offline";
+console.log("Status Check: " + console.error(userStatus));
+
+```
+
+*The Flaw:* You cannot combine a log and an error like this. `console.error()` executes and prints "Offline" in red, but the function itself returns `undefined`. The final `console.log` will actually print: `"Status Check: undefined"`.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Print a normal log saying "System Start", a warning saying "High CPU", and an error saying "System Crash".
+
+* **Test Case 1:** `spyOn(console, 'log')` intercepts exactly one call with the exact string `"System Start"`.
+* **Test Case 2:** `spyOn(console, 'warn')` intercepts exactly one call with the exact string `"High CPU"`.
+* **Test Case 3:** `spyOn(console, 'error')` intercepts exactly one call with the exact string `"System Crash"`.
+* **Test Case 4:** Check the call stack to ensure `log` was executed before `warn`, and `warn` before `error`.
+* **Test Case 5:** Check for strict case sensitivity (e.g., fail if user writes `"system start"`).
+
+---
+
+#### 2. Code Execution Order
+
+**Theory**
+JavaScript reads code exactly like a book: from top to bottom, line by line. It will not process line 2 until line 1 is completely finished. The order in which you write your instructions dictates the exact order of the program's logic.
+
+**The Misconception Trap**
+*Analyze this code. Find the critical crash.*
+
+```javascript
+let currentScore = 10;
+console.log("Your score is:", currentScore);
+currentScore = currentScore + 5;
+console.log("New score:", CurrentScore);
+
+```
+
+*The Flaw:* JavaScript is strictly case-sensitive. The program will execute lines 1, 2, and 3 perfectly. It will crash on line 4 with a `ReferenceError` because `CurrentScore` (capital C) is a completely different, undefined variable from `currentScore`.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Declare a variable `health` at 100. Log it. Drop it to 50. Log it again.
+
+* **Test Case 1:** Abstract Syntax Tree (AST) parser verifies `let health = 100` exists on line 1.
+* **Test Case 2:** Verify `console.log` is called with the value `100` directly after initialization.
+* **Test Case 3:** Verify variable reassignment logic (`health = 50` or `health = health - 50`) exists after the first log.
+* **Test Case 4:** Verify second `console.log` outputs the integer `50`.
+* **Test Case 5:** Execute a strict order check. If the second log runs before the reassignment, immediately fail the test.
+
+---
+
+#### 3. Understanding Code Comments
+
+**Theory**
+Comments are text written for humans. The JavaScript engine completely ignores them. Use `//` for a single line and `/* ... */` for multiple lines. Good comments explain *why* code exists. They do not explain *what* the code does, because the code itself should be readable enough to show that.
+
+**The Misconception Trap**
+*Analyze this code. Why does it fail to log "Welcome User"?*
+
+```javascript
+let greeting = `Hello // Welcome User`;
+/* console.log(greeting); 
+*/
+
+```
+
+*The Flaw:* Two traps here. First, the `//` inside the backticks is not a comment; it is read as a literal text string because it is wrapped in quotes. Second, the actual `console.log` command is wrapped inside a multi-line comment block `/* */`, meaning the engine completely ignores it. The code does absolutely nothing.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Write a variable `server = "Online"`. Add a single-line comment above it, and a multi-line comment below it.
+
+* **Test Case 1:** Engine parses the code and verifies no syntax errors exist.
+* **Test Case 2:** AST parser scans raw string input to confirm the presence of exactly one `LineComment` (`//`).
+* **Test Case 3:** AST parser scans raw string input to confirm the presence of exactly one `BlockComment` (`/* */`).
+* **Test Case 4:** Execute code and verify `server` holds the exact string `"Online"`.
+* **Test Case 5:** Verify the code executes silently without throwing any output to the console.
+
+---
+
+#### 4. Statements vs. Expressions
+
+**Theory**
+An expression produces a value (like `5 + 5`, or `"Hello"`). A statement performs an action or instruction (like `let x = 10;`, or `if/else`). Think of expressions as individual words that hold meaning, and statements as complete sentences that tell the program to do something.
+
+**The Misconception Trap**
+*Analyze this code. Why does the program throw a fatal Syntax Error?*
+
+```javascript
+let userAge = 20;
+let accessGranted = if (userAge > 18) { true } else { false };
+console.log(accessGranted);
+
+```
+
+*The Flaw:* You cannot assign a statement to a variable. The `if/else` block is a statement (an action). The `=` operator expects an expression (a value) on its right side. This code completely breaks the language rules.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Write an expression that multiplies 10 and 5. Store that expression inside a statement using a variable named `result`.
+
+* **Test Case 1:** AST parser verifies the existence of a `VariableDeclaration` (the statement).
+* **Test Case 2:** AST parser verifies the right side of the assignment is a `BinaryExpression` using the `*` operator.
+* **Test Case 3:** Validate that the memory value of `result` strictly equals the integer `50`.
+* **Test Case 4:** Memory leak check: Ensure the user did not declare the variable globally without using `let` or `const`.
+
+
+### Phase 3: The Deep Work Mission (Module 1)
+
+**Mission Title:** The FinTech Server Boot Sequence
+
+**The Scenario**
+You are the junior software engineer on duty at a major payment processing company. The main transaction server just crashed. The automated reboot script was written by an intern and it is completely broken.
+
+The security firewall requires a very specific sequence of system logs to authorize the reboot. If the execution order is wrong, or if a warning is logged as a standard message, the firewall will permanently lock the system. You have 10 minutes to fix the script before millions of transactions fail.
+
+**The Broken Codebase (What the user sees)**
+
+```javascript
+console.log("Server reboot initiated.");
+/* Check power supply */
+console.error("Connecting to main database...");
+console.log(System diagnostic complete);
+
+// The next line is a broken statement
+console.log("Database connection failed. Retrying...");
+
+console.warn("Power supply unstable.");
+
+```
+
+**The Mission Objectives (Strict Requirements)**
+You must edit the code to satisfy the following security rules exactly in this order:
+
+1. **Execution Order:** The system must check the power supply before it connects to the database.
+2. **Console Types:** * Standard steps must be normal logs.
+* The unstable power supply must be a warning.
+* The database connection failure must be a critical error.
+
+
+3. **Statements vs Expressions:** The line logging the diagnostic status is currently broken because it lacks quotes (treating text as undefined variables instead of a string expression). Fix this expression.
+4. **Comments:** You must write one single-line comment directly above the warning message explaining *why* the warning is happening. You must also write one multi-line comment at the very bottom of the file stating the server status is pending.
+
+**The Hidden Test Cases (System Validation)**
+
+* **Test Case 1:** Intercept the console output. Verify that the exact first string printed is `"Server reboot initiated."` via `console.log`.
+* **Test Case 2:** Verify that the second output is exactly `"Power supply unstable."` and it is strictly called using `console.warn`.
+* **Test Case 3:** Verify that the third output is exactly `"Connecting to main database..."` via `console.log`.
+* **Test Case 4:** Verify that the fourth output is exactly `"Database connection failed. Retrying..."` and it is strictly called using `console.error`.
+* **Test Case 5:** Verify the broken expression is fixed and prints `"System diagnostic complete"` via `console.log` as the final output.
+* **Test Case 6:** Parse the AST (Abstract Syntax Tree) to confirm the existence of at least one single-line comment (`//`) and one multi-line comment (`/* */`) in the correct locations.
+
+**The Reward System (Gamification Trigger)**
+
+* **On Mission Success:** A 3D animation of a neon digital mystery box drops onto the screen.
+* **Reward Output:** "Mission Accomplished! Server rebooted successfully. You have earned a Tier 1 Mystery Box."
+* **Loot Reveal:** The box opens to award the user **15 Platform Coins**. The dashboard progress bar lights up, indicating they are one step closer to redeeming physical merchandise.### Phase 3: The Deep Work Mission (Module 1)
+
+**Mission Title:** The FinTech Server Boot Sequence
+
+**The Scenario**
+You are the junior software engineer on duty at a major payment processing company. The main transaction server just crashed. The automated reboot script was written by an intern and it is completely broken.
+
+The security firewall requires a very specific sequence of system logs to authorize the reboot. If the execution order is wrong, or if a warning is logged as a standard message, the firewall will permanently lock the system. You have 10 minutes to fix the script before millions of transactions fail.
+
+**The Broken Codebase (What the user sees)**
+
+```javascript
+console.log("Server reboot initiated.");
+/* Check power supply */
+console.error("Connecting to main database...");
+console.log(System diagnostic complete);
+
+// The next line is a broken statement
+console.log("Database connection failed. Retrying...");
+
+console.warn("Power supply unstable.");
+
+```
+
+**The Mission Objectives (Strict Requirements)**
+You must edit the code to satisfy the following security rules exactly in this order:
+
+1. **Execution Order:** The system must check the power supply before it connects to the database.
+2. **Console Types:** * Standard steps must be normal logs.
+* The unstable power supply must be a warning.
+* The database connection failure must be a critical error.
+
+
+3. **Statements vs Expressions:** The line logging the diagnostic status is currently broken because it lacks quotes (treating text as undefined variables instead of a string expression). Fix this expression.
+4. **Comments:** You must write one single-line comment directly above the warning message explaining *why* the warning is happening. You must also write one multi-line comment at the very bottom of the file stating the server status is pending.
+
+**The Hidden Test Cases (System Validation)**
+
+* **Test Case 1:** Intercept the console output. Verify that the exact first string printed is `"Server reboot initiated."` via `console.log`.
+* **Test Case 2:** Verify that the second output is exactly `"Power supply unstable."` and it is strictly called using `console.warn`.
+* **Test Case 3:** Verify that the third output is exactly `"Connecting to main database..."` via `console.log`.
+* **Test Case 4:** Verify that the fourth output is exactly `"Database connection failed. Retrying..."` and it is strictly called using `console.error`.
+* **Test Case 5:** Verify the broken expression is fixed and prints `"System diagnostic complete"` via `console.log` as the final output.
+* **Test Case 6:** Parse the AST (Abstract Syntax Tree) to confirm the existence of at least one single-line comment (`//`) and one multi-line comment (`/* */`) in the correct locations.
+
+**The Reward System (Gamification Trigger)**
+
+* **On Mission Success:** A 3D animation of a neon digital mystery box drops onto the screen.
+* **Reward Output:** "Mission Accomplished! Server rebooted successfully. You have earned a Tier 1 Mystery Box."
+* **Loot Reveal:** The box opens to award the user **15 Platform Coins**. The dashboard progress bar lights up, indicating they are one step closer to redeeming physical merchandise.

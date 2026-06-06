@@ -1,0 +1,125 @@
+### Phase 3: The Deep Work Mission (Module 4)
+
+**Mission Title:** The AI Flashcard Token & Leaderboard Engine
+
+**The Scenario**
+You are the lead backend developer for a highly competitive AI-driven study application. The platform uses an API to generate study flashcards and ranks students on a global leaderboard.
+
+Right now, the nightly server script that calculates student scores and deducts API tokens is critically broken. Top-tier students are getting incorrect scores due to math precedence failures, token billing is rounding decimals incorrectly, and the server routing algorithm is using division instead of remainders. You have 10 minutes to fix the algorithmic logic before the competitive leaderboard updates and ruins the database rankings.
+
+**The Broken Codebase (What the user sees)**
+
+```javascript
+/* --- SYSTEM ALERT: ALGORITHM FAILURE --- */
+
+let baseScore = 500;
+let streakBonus = 20;
+let multiplier = 1.5;
+
+// 1. Leaderboard Math
+let finalScore = baseScore + streakBonus * multiplier;
+
+// 2. API Token Deduction
+let userTokens = 1000;
+let apiCost = 45.9;
+userTokens = userTokens - Math.round(apiCost); 
+
+// 3. Login Tracking
+let loginDays = 14;
+let newLoginCount = loginDays + 1; 
+
+// 4. Server Shard Routing (3 Servers Total)
+let serverShard = finalScore / 3; 
+
+// 5. Daily Challenge ID Generation
+let challengeId = Math.random() * 10;
+
+```
+
+**The Mission Objectives (Strict Requirements)**
+You must refactor the mathematical logic to satisfy the system's strict parameters. Fix the following issues:
+
+1. **Operator Precedence (PEMDAS):** The `finalScore` is currently multiplying `20 * 1.5` first, resulting in `530`. You must use parentheses to ensure the `baseScore` and `streakBonus` are added together *before* being multiplied by the multiplier.
+2. **The `Math` Object & Assignment Operators:** The `apiCost` is currently rounding up to `46` using `Math.round`. Change this to force the decimal *down* to the lower integer regardless of the decimal size. Additionally, rewrite the token deduction line using the shorthand assignment operator (`-=`).
+3. **Increment Operators:** Remove the clunky `loginDays + 1` logic. Directly update the `loginDays` variable using the JavaScript increment operator (`++`).
+4. **The Modulo Operator:** The `serverShard` is performing standard division, resulting in decimals. The server routing requires the *remainder* of the `finalScore` divided by `3`. Replace the division operator with the correct modulo operator.
+5. **Random Integer Generation:** `challengeId` is currently generating a long, useless decimal (like `4.8273`). Wrap the existing mathematical equation inside a `Math` method that chops off the decimal, generating a clean, whole integer between `0` and `9`.
+
+**The Hidden Test Cases (System Validation)**
+
+* **Test Case 1 (Precedence Check):** AST (Abstract Syntax Tree) Parser enforces the use of grouping parentheses `()`. Execution confirms `finalScore` strictly evaluates to `780`.
+* **Test Case 2 (Shorthand & Floor):** AST verifies the strict use of the `-=` assignment operator and the `Math.floor()` method. Execution confirms `userTokens` strictly evaluates to `955` (1000 - 45).
+* **Test Case 3 (Increment Check):** AST confirms the use of an `UpdateExpression` (`++`) on `loginDays`. Memory confirms the value is updated to `15` without using the `+` or `+=` operators.
+* **Test Case 4 (Modulo Verification):** AST confirms the use of the `%` operator. Execution verifies `serverShard` strictly evaluates to `0` (since 780 divides perfectly by 3 with a remainder of 0).
+* **Test Case 5 (Integer Validation):** Execution validation runs `challengeId % 1 === 0` to ensure the generated number is a pure integer, and verifies the AST contains `Math.floor(Math.random() * 10)`.
+
+**The Reward System (Gamification Trigger)**
+
+* **On Mission Success:** A holographic leaderboard chart projects onto the screen, glowing neon green, followed by the Mystery Box drop.
+* **Reward Output:** "Cron Job Successful! Leaderboard stabilized and API tokens synced. You have earned a Tier 4 Mystery Box."
+* **Loot Reveal:** The box opens to award **40 Platform Coins** and the exclusive **"Algorithmic Sniper" Badge**.
+
+
+### Phase 3: The Deep Work Mission (Module 5)
+
+**Mission Title:** The Corrupted Checkout Payload
+
+**The Scenario**
+You are a full-stack developer managing the backend of a major e-commerce platform. During a massive holiday sale, the frontend application has a critical bug: it is sending all incoming data to your server as text strings.
+
+Because of JavaScript's implicit coercion and truthy/falsy rules, the checkout math is completely broken. Customers are getting charged thousands of dollars because addition is turning into text concatenation. Furthermore, expired vouchers are being accepted because the text `"false"` is reading as `true`. You have 10 minutes to fix the data conversion logic before the company has to issue massive refunds.
+
+**The Broken Codebase (What the user sees)**
+
+```javascript
+/* --- SYSTEM ALERT: API PAYLOAD CORRUPTION --- */
+
+// Incoming Data (Everything arrived as a string)
+let productPrice = "120";
+let shippingTax = "15";
+let userPoints = "0";
+let hasVoucher = "false";
+let couponInput = " "; // The user accidentally hit the spacebar
+
+// 1. Calculating Total Cost
+let cartTotal = productPrice + shippingTax;
+
+// 2. Voucher Verification
+if (hasVoucher) {
+    console.log("Voucher Accepted. Deducting $20.");
+    cartTotal = cartTotal - 20; 
+}
+
+// 3. Coupon Validation
+if (couponInput) {
+    console.log("Applying Special Coupon Code.");
+}
+
+// 4. Point Usage Checkout
+if (userPoints) {
+    console.log("Processing User Points.");
+}
+
+```
+
+**The Mission Objectives (Strict Requirements)**
+You must refactor the type conversions so the system evaluates the checkout accurately. Fix the following issues:
+
+1. **Explicit Number Conversion:** `cartTotal` is currently concatenating into `"12015"` because of the `+` operator. You must explicitly convert both `productPrice` and `shippingTax` into actual numbers using the `Number()` function before adding them together.
+2. **The Falsy Points Trap:** The system is trying to process points because `"0"` is a string, which evaluates as Truthy. Explicitly reassign `userPoints` using `Number(userPoints)`. Once it becomes the actual number `0` (a Falsy value), the `if` block will correctly ignore it.
+3. **The Boolean String Trap:** The string `"false"` is Truthy, so the voucher block is executing and ruining the math via implicit subtraction (`"12015" - 20`). Reassign `hasVoucher` to the primitive boolean value `false` (without quotes).
+4. **The Empty Space Trap:** The `couponInput` is a string with a space (`" "`), which is Truthy. Reassign it to a strictly empty string `""`. This converts it to a Falsy value, naturally bypassing the `if` block without breaking the compiler.
+
+**The Hidden Test Cases (System Validation)**
+
+* **Test Case 1 (Explicit Math Validation):** AST (Abstract Syntax Tree) Parser strictly verifies the use of `Number(productPrice)` and `Number(shippingTax)`. Execution confirms that before any `if` statements, `cartTotal` strictly evaluates to the integer `135`.
+* **Test Case 2 (Falsy Conversion Check):** Execution intercepts the console. Verification fails if `"Processing User Points."` is logged. AST verifies `userPoints` was converted using `Number()`.
+* **Test Case 3 (Primitive Boolean Check):** AST verifies `hasVoucher` is reassigned to the literal `false`. Execution confirms the mathematical subtraction (`- 20`) never occurs.
+* **Test Case 4 (Empty String Truthiness):** Execution confirms `"Applying Special Coupon Code."` is never logged. Memory validation ensures `couponInput === ""`.
+* **Test Case 5 (Final Memory State):** The code executes top-to-bottom. Memory validation confirms `cartTotal` ends the script at exactly `135` (`typeof === 'number'`).
+
+**The Reward System (Gamification Trigger)**
+
+* **On Mission Success:** A digital lock screen shatters, revealing a high-tech glowing Mystery Box on the dashboard.
+* **Reward Output:** "Payload Sanitized! Checkout calculations are 100% accurate. You have earned a Tier 5 Mystery Box."
+* **Loot Reveal:** The box opens to award **18 Platform Coins** and the exclusive **"Type Coercion Hacker" Badge**.

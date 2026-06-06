@@ -1,0 +1,350 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .phones-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+  }
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .phone-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .phone {
+    width: 220px;
+    background: #0E0F14;
+    border-radius: 28px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    position: relative;
+  }
+  .phone-notch {
+    height: 20px;
+    background: #0E0F14;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .notch-pill {
+    width: 50px; height: 8px;
+    background: #1A1B25;
+    border-radius: 10px;
+  }
+  .status-bar {
+    padding: 0 14px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8px;
+    color: #888;
+  }
+  .m-topbar {
+    background: #13141C;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+  .m-logo { font-size: 13px; font-weight: 700; color: #EDEDED; }
+  .m-logo span { color: #6C5CE7; }
+  .m-coins {
+    background: rgba(250,199,117,0.1);
+    border: 0.5px solid rgba(250,199,117,0.2);
+    border-radius: 12px;
+    padding: 2px 7px;
+    font-size: 9px;
+    font-weight: 600;
+    color: #FAC775;
+  }
+  .m-body { padding: 10px 12px; }
+  .m-warmup {
+    background: rgba(108,92,231,0.12);
+    border: 0.5px solid rgba(108,92,231,0.25);
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .m-warmup-icon {
+    width: 28px; height: 28px;
+    background: rgba(108,92,231,0.2);
+    border-radius: 7px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: #A89CFF;
+  }
+  .m-warmup-title { font-size: 10px; font-weight: 600; color: #EDEDED; }
+  .m-warmup-sub { font-size: 8px; color: #888; margin-top: 2px; }
+  .m-warmup-arrow { margin-left: auto; color: #6C5CE7; font-size: 14px; }
+  .m-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .m-stat {
+    background: #1A1B25;
+    border: 0.5px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .m-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.07em; color: #555; margin-bottom: 3px; }
+  .m-stat-value { font-size: 16px; font-weight: 600; color: #EDEDED; }
+  .m-stat-sub { font-size: 7px; color: #6C5CE7; margin-top: 1px; }
+  .m-section-title { font-size: 10px; font-weight: 600; color: #EDEDED; margin-bottom: 7px; }
+  .m-skill-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .m-skill-name { font-size: 8px; color: #888; width: 52px; flex-shrink: 0; }
+  .m-skill-bg { flex: 1; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+  .m-skill-fill { height: 3px; border-radius: 2px; }
+  .m-pct { font-size: 7px; color: #555; width: 20px; text-align: right; }
+  .m-retention {
+    background: rgba(239,159,39,0.08);
+    border: 0.5px solid rgba(239,159,39,0.18);
+    border-radius: 7px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0 0;
+  }
+  .m-ret-label { font-size: 8px; color: #888; }
+  .m-ret-val { font-size: 16px; font-weight: 700; color: #EF9F27; }
+  .m-bottom-nav {
+    background: #13141C;
+    border-top: 0.5px solid rgba(255,255,255,0.07);
+    padding: 8px 0 10px;
+    display: flex;
+    justify-content: space-around;
+  }
+  .m-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .m-nav-icon { font-size: 16px; color: #555; }
+  .m-nav-icon.active { color: #6C5CE7; }
+  .m-nav-label { font-size: 7px; color: #555; }
+  .m-nav-label.active { color: #6C5CE7; }
+
+  /* Editor phone */
+  .m-task-card {
+    background: #1A1B25;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+  .m-chip {
+    display: inline-block;
+    background: rgba(108,92,231,0.12);
+    border: 0.5px solid rgba(108,92,231,0.2);
+    border-radius: 10px;
+    padding: 2px 7px;
+    font-size: 7px;
+    font-weight: 600;
+    color: #A89CFF;
+    margin-bottom: 5px;
+  }
+  .m-task-title { font-size: 11px; font-weight: 600; color: #EDEDED; margin-bottom: 4px; line-height: 1.4; }
+  .m-task-desc { font-size: 8px; color: #777; line-height: 1.5; }
+  .m-code-box {
+    background: #0E0F14;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    font-family: monospace;
+    font-size: 8.5px;
+    color: #ccc;
+    line-height: 1.8;
+  }
+  .kw { color: #A89CFF; }
+  .fn { color: #5DCAA5; }
+  .str { color: #FAC775; }
+  .cursor { display: inline-block; width: 1.5px; height: 8px; background: #6C5CE7; animation: blink 1s step-end infinite; vertical-align: middle; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .m-ai-bubble {
+    background: rgba(108,92,231,0.08);
+    border: 0.5px solid rgba(108,92,231,0.2);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 8px;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .m-ai-header { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+  .m-ai-dot { width: 5px; height: 5px; border-radius: 50%; background: #5DCAA5; }
+  .m-ai-name { font-size: 8px; font-weight: 600; color: #EDEDED; }
+  .m-run-row { display: flex; gap: 6px; margin-top: 2px; }
+  .m-run-btn {
+    flex: 1;
+    background: #6C5CE7;
+    border: none;
+    border-radius: 7px;
+    padding: 7px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+  }
+  .m-hint-btn {
+    border: 0.5px solid rgba(108,92,231,0.3);
+    background: transparent;
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 10px;
+    color: #A89CFF;
+  }
+  .m-streak { font-size: 8px; font-weight: 600; color: #EF9F27; margin-bottom: 6px; }
+</style>
+
+<div class="phones-row">
+  <div class="phone-wrap">
+    <div class="phone-label">Dashboard Screen</div>
+    <div class="phone">
+      <div class="phone-notch"><div class="notch-pill"></div></div>
+      <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="m-topbar">
+        <div class="m-logo">Code<span>Quest</span></div>
+        <div class="m-coins">🪙 740</div>
+      </div>
+      <div class="m-body">
+        <div class="m-streak">🔥 12 day streak — keep it up!</div>
+        <div class="m-warmup">
+          <div class="m-warmup-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+          <div>
+            <div class="m-warmup-title">Daily Warm-Up</div>
+            <div class="m-warmup-sub">Unlock today's module first</div>
+          </div>
+          <div class="m-warmup-arrow"><i class="ti ti-chevron-right" aria-hidden="true"></i></div>
+        </div>
+        <div class="m-stats">
+          <div class="m-stat">
+            <div class="m-stat-label">Challenges</div>
+            <div class="m-stat-value">142</div>
+            <div class="m-stat-sub">+8 today</div>
+          </div>
+          <div class="m-stat">
+            <div class="m-stat-label">Modules done</div>
+            <div class="m-stat-value">2/8</div>
+            <div class="m-stat-sub">On track</div>
+          </div>
+        </div>
+        <div class="m-section-title">Skill Radar</div>
+        <div class="m-skill-row">
+          <div class="m-skill-name">Arrays</div>
+          <div class="m-skill-bg"><div class="m-skill-fill" style="width:85%;background:#5DCAA5;"></div></div>
+          <div class="m-pct">85%</div>
+        </div>
+        <div class="m-skill-row">
+          <div class="m-skill-name">Async/Await</div>
+          <div class="m-skill-bg"><div class="m-skill-fill" style="width:38%;background:#EF9F27;"></div></div>
+          <div class="m-pct">38%</div>
+        </div>
+        <div class="m-skill-row">
+          <div class="m-skill-name">Closures</div>
+          <div class="m-skill-bg"><div class="m-skill-fill" style="width:20%;background:#E24B4A;"></div></div>
+          <div class="m-pct">20%</div>
+        </div>
+        <div class="m-retention">
+          <div>
+            <div class="m-ret-label">Retention Score</div>
+            <div style="font-size:7px;color:#888;margin-top:2px;">Revise Closure</div>
+          </div>
+          <div class="m-ret-val">72</div>
+        </div>
+      </div>
+      <div class="m-bottom-nav">
+        <div class="m-nav-item">
+          <i class="ti ti-home m-nav-icon active" aria-hidden="true"></i>
+          <div class="m-nav-label active">Home</div>
+        </div>
+        <div class="m-nav-item">
+          <i class="ti ti-code m-nav-icon" aria-hidden="true"></i>
+          <div class="m-nav-label">Learn</div>
+        </div>
+        <div class="m-nav-item">
+          <i class="ti ti-target m-nav-icon" aria-hidden="true"></i>
+          <div class="m-nav-label">Missions</div>
+        </div>
+        <div class="m-nav-item">
+          <i class="ti ti-trophy m-nav-icon" aria-hidden="true"></i>
+          <div class="m-nav-label">Ranks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone-label">Code Editor Screen</div>
+    <div class="phone">
+      <div class="phone-notch"><div class="notch-pill"></div></div>
+      <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="m-topbar">
+        <i class="ti ti-arrow-left" style="font-size:14px;color:#888;" aria-hidden="true"></i>
+        <div style="font-size:11px;font-weight:600;color:#EDEDED;">Zomato Mission</div>
+        <div style="font-size:10px;font-weight:600;color:#EF9F27;background:rgba(239,159,39,0.1);border:0.5px solid rgba(239,159,39,0.2);border-radius:10px;padding:2px 8px;">14:22</div>
+      </div>
+      <div class="m-body">
+        <div class="m-task-card">
+          <div class="m-chip">Curious Mission · #AsyncAwait</div>
+          <div class="m-task-title">Fix the discount logic — order crash ho rahi hai</div>
+          <div class="m-task-desc">API se data fetch ke baad code crash kar raha hai. Bug dhundo.</div>
+        </div>
+        <div class="m-code-box">
+          <span class="kw">async function</span> <span class="fn">getDiscount</span>() {<br>
+          &nbsp;&nbsp;<span class="kw">const</span> data = <span class="kw">await</span> <span class="fn">fetchOffer</span>();<br>
+          &nbsp;&nbsp;<span class="kw">const</span> d = data.discount<span class="cursor"></span><br>
+          }
+        </div>
+        <div class="m-ai-bubble">
+          <div class="m-ai-header">
+            <div class="m-ai-dot"></div>
+            <div class="m-ai-name">AI Mentor</div>
+          </div>
+          await sahi jagah hai! Par `data.discount` ke baad logic complete karo — undefined pe kuch call mat karo pehle check karo.
+        </div>
+        <div class="m-run-row">
+          <div class="m-hint-btn">💡 Hint</div>
+          <div class="m-run-btn">▶ Run Code</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone-label">Reward Screen</div>
+    <div class="phone">
+      <div class="phone-notch"><div class="notch-pill"></div></div>
+      <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="m-topbar">
+        <div class="m-logo">Code<span>Quest</span></div>
+        <div class="m-coins">🪙 755</div>
+      </div>
+      <div class="m-body" style="text-align:center;padding-top:20px;">
+        <div style="width:60px;height:60px;background:rgba(29,158,117,0.12);border:1.5px solid rgba(29,158,117,0.3);border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;">🎁</div>
+        <div style="font-size:15px;font-weight:700;color:#EDEDED;margin-bottom:4px;">Mission Complete!</div>
+        <div style="font-size:10px;color:#888;margin-bottom:16px;">Zomato Discount Logic fix kar diya</div>
+        <div style="background:rgba(250,199,117,0.08);border:0.5px solid rgba(250,199,117,0.2);border-radius:10px;padding:12px;margin-bottom:12px;">
+          <div style="font-size:10px;color:#888;margin-bottom:4px;">Mystery Box Unlocked</div>
+          <div style="font-size:26px;font-weight:700;color:#FAC775;">+15 coins</div>
+          <div style="font-size:8px;color:#777;margin-top:4px;">Total: 755 / 1000 for reward</div>
+          <div style="width:100%;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;margin-top:8px;">
+            <div style="width:75.5%;height:4px;border-radius:2px;background:#FAC775;"></div>
+          </div>
+        </div>
+        <div style="background:#1A1B25;border:0.5px solid rgba(255,255,255,0.06);border-radius:9px;padding:8px 12px;margin-bottom:10px;text-align:left;">
+          <div style="font-size:8px;font-weight:600;color:#A89CFF;margin-bottom:3px;">Skill Improved</div>
+          <div class="m-skill-row" style="margin:0;">
+            <div class="m-skill-name" style="font-size:8px;">#AsyncAwait</div>
+            <div class="m-skill-bg"><div class="m-skill-fill" style="width:52%;background:#6C5CE7;"></div></div>
+            <div class="m-pct">52%</div>
+          </div>
+        </div>
+        <div style="background:#6C5CE7;border-radius:9px;padding:9px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;">Next Mission →</div>
+        <div style="font-size:8px;color:#555;margin-top:8px;">Ya Dashboard par wapas jao</div>
+      </div>
+    </div>
+  </div>
+</div>

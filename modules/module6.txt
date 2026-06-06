@@ -1,0 +1,317 @@
+Module 6: Logic & Conditionals (Decision Making)
+Here is the exact, action-driven curriculum for Module 6. The theory is written in strict, simple English. The misconception traps enforce critical thinking, and the exhaustive test cases ensure complete mastery before progression.
+
+1. Comparison Operators (>, <, >=, <=)
+Theory
+Comparison operators compare two values and return a strict Boolean (true or false). They evaluate if the left value is greater than (>), less than (<), greater than or equal to (>=), or less than or equal to (<=) the right value. If you compare two strings, JavaScript evaluates them alphabetically, character by character.
+
+The Misconception Trap
+Analyze this code. Why does the system identify 2 as the highest number?
+
+JavaScript
+let currentLevel = "10";
+let nextLevel = "2";
+
+if (currentLevel > nextLevel) {
+    console.log("Proceeding to level 10.");
+} else {
+    console.log("Error: Level scaling failed.");
+}
+The Flaw: The output logs "Error: Level scaling failed." because the code is comparing strings, not numbers. When evaluating "10" > "2", the engine checks the very first character of both strings. Because "1" is alphabetically smaller than "2", the expression immediately evaluates to false.
+
+Hidden Test Cases for Code Editor
+Mission: Create a variable passingScore set to 50 and studentScore set to 50. Write a boolean expression checking if the student score is greater than or equal to the passing score, and store the boolean in hasPassed.
+
+Test Case 1: AST (Abstract Syntax Tree) Parser verifies the explicit use of the >= operator.
+
+Test Case 2: Execution validation confirms hasPassed evaluates strictly to the primitive boolean true.
+
+Test Case 3: Intercept memory to ensure no implicit coercion happens (both variables must remain pure numbers).
+
+Test Case 4: Reassign studentScore to 49 in the background test runner; the boolean must evaluate to false.
+
+Test Case 5: Fail condition if the user incorrectly chains operators like => (which initiates an arrow function) instead of >=.
+
+2. Loose Equality (== and !=)
+Theory
+Loose equality (==) checks if two values are equal, but it completely ignores their data type. If the types do not match, the JavaScript engine performs background coercion, changing the types automatically to force a comparison. != checks if values are loosely not equal. Using these operators is dangerous and strongly discouraged because they cause unpredictable bugs.
+
+The Misconception Trap
+Analyze this code. Why does the system clear the cache even when the data array is completely empty?
+
+JavaScript
+let cachedData = [];
+let targetState = 0;
+
+if (cachedData == targetState) {
+    console.log("Memory match. Clearing cache.");
+}
+The Flaw: The loose equality operator attempts to force an empty array [] into a number to compare it with 0. During background coercion, an empty array converts to an empty string "", and an empty string converts to the number 0. Therefore, 0 == 0 evaluates to true, and the system accidentally wipes the cache.
+
+Hidden Test Cases for Code Editor
+Mission: Use the loose equality operator to compare the number 0 and the boolean false. Store the result in a variable named isLooselyEqual.
+
+Test Case 1: AST Parser strictly verifies the use of the == operator.
+
+Test Case 2: AST validation restricts the use of the strict equality operator (===) for this specific challenge.
+
+Test Case 3: Execution state confirms isLooselyEqual strictly evaluates to true.
+
+Test Case 4: Change the boolean to true in the background runner; ensure isLooselyEqual flips to false.
+
+Test Case 5: Scan the code to ensure 0 and false are used directly in the comparison without manual type conversions.
+
+3. Strict Equality (=== and !==)
+Theory
+Strict equality (===) compares both the value AND the data type. No background coercion is allowed. If the data types are different, the engine instantly stops and returns false. Strict inequality (!==) returns true only if the value or the type are completely different. This is the absolute standard for professional JavaScript.
+
+The Misconception Trap
+Analyze this code. Why does the system fail to recognize the missing data error?
+
+JavaScript
+let systemError = NaN;
+
+if (systemError === NaN) {
+    console.log("Critical Failure Detected.");
+} else {
+    console.log("System Stable.");
+}
+The Flaw: It logs "System Stable." even though a critical failure occurred. In JavaScript, NaN (Not-A-Number) is a unique mathematical defect. It is the only value in the entire language that is strictly not equal to itself. NaN === NaN will always return false. (You must use Number.isNaN() to catch it).
+
+Hidden Test Cases for Code Editor
+Mission: Create variables pinCode (integer 1234) and userInput (string "1234"). Write a strict equality check to compare them and store the boolean in isMatch.
+
+Test Case 1: AST Parser strictly mandates the presence of the === operator.
+
+Test Case 2: AST validation triggers an immediate failure if the == operator is found anywhere.
+
+Test Case 3: Execution validation confirms isMatch evaluates precisely to false because the data types differ.
+
+Test Case 4: Reassign userInput to the integer 1234 in the hidden runner; verify isMatch becomes true.
+
+Test Case 5: Write a secondary check using !== ensuring it returns true for the original mixed-type variables.
+
+4. The if statement block
+Theory
+The if statement acts as a gatekeeper. It evaluates the exact condition placed inside its parenthesis (). If the condition evaluates to any Truthy value, the engine opens the gate and executes the code block contained inside the curly braces {}. If the condition is Falsy, the engine skips the block entirely.
+
+The Misconception Trap
+Analyze this code. Why does the restricted action execute even when the isAdmin token evaluates to false?
+
+JavaScript
+let isAdmin = false;
+
+if (isAdmin === true); {
+    console.log("Deleting Database...");
+}
+The Flaw: The developer accidentally placed a semicolon ; directly after the if parenthesis. A semicolon represents the end of an instruction. The engine reads the if statement, evaluates it as false, and finishes the instruction at the semicolon doing nothing. The block {} beneath it is now treated as completely standalone, standard code, and executes immediately, deleting the database.
+
+Hidden Test Cases for Code Editor
+Mission: Create a variable temperature = 100. Write an if block that checks if the temperature is strictly equal to 100. If true, declare a variable status = "Boiling" inside the block.
+
+Test Case 1: AST Parser confirms the exact syntax of the if statement without any trailing semicolons.
+
+Test Case 2: AST validates the condition uses the strict equality operator (===).
+
+Test Case 3: Execution interceptor checks local block scope memory to confirm status equals "Boiling".
+
+Test Case 4: Change temperature to 90 in the background runner; ensure status remains strictly undefined/uninitialized.
+
+Test Case 5: Fail condition if status is declared globally outside the curly braces {}.
+
+5. The else block
+Theory
+The else block acts as an automatic fallback. It is directly chained to the end of an if block. It does not accept a condition in parenthesis (). It only executes if the preceding if condition evaluates to false. It guarantees that the system has a safe default action to take when primary checks fail.
+
+The Misconception Trap
+Analyze this code. Why does it throw a fatal Syntax Error before it even runs?
+
+JavaScript
+let batteryLevel = 10;
+
+if (batteryLevel > 20) {
+    console.log("Device running normally.");
+} 
+console.log("Checking diagnostics...");
+else {
+    console.log("Please plug in the charger.");
+}
+The Flaw: An else block must be chained immediately following the closing curly brace } of an if block. In this code, the developer placed a standalone console.log() between the if and the else. This instantly breaks the chain, causing the compiler to crash because it encounters an orphaned else without a preceding if.
+
+Hidden Test Cases for Code Editor
+Mission: Create a boolean variable isSubscribed. Write an if/else block. If true, log "Access Granted". If false, log "Please Upgrade".
+
+Test Case 1: AST Parser confirms the presence of one if statement and exactly one else statement directly attached to it.
+
+Test Case 2: Validate the else statement is not carrying a parenthesis () condition.
+
+Test Case 3: Initialize isSubscribed as true in the runner; intercept console.log to strictly capture "Access Granted".
+
+Test Case 4: Initialize isSubscribed as false in the runner; intercept console.log to strictly capture "Please Upgrade".
+
+Test Case 5: AST validation fails the test if any code is injected between the if and else blocks.
+
+6. The else if block for multiple conditions
+Theory
+The else if block allows you to check multiple specific conditions sequentially. You place it between the initial if and the final else. The JavaScript engine evaluates these conditions strictly from top to bottom. It stops executing at the very first condition that is true, runs that block, and completely ignores the rest of the chain.
+
+The Misconception Trap
+Analyze this code. Why does a student with a score of 95 receive a basic "B" grade instead of an "A"?
+
+JavaScript
+let examScore = 95;
+
+if (examScore > 50) {
+    console.log("Grade: C");
+} else if (examScore > 75) {
+    console.log("Grade: B");
+} else if (examScore > 90) {
+    console.log("Grade: A");
+}
+The Flaw: The system evaluates top-to-bottom. The first check asks: "Is 95 > 50?". This evaluates to true. The system logs "Grade: C" and immediately terminates the entire chain. To fix this logic flaw, you must evaluate the most restrictive conditions (highest numbers) at the top of the chain.
+
+Hidden Test Cases for Code Editor
+Mission: You have a speed variable. Write a chain that logs "Speeding" if speed > 80, "Normal" if speed > 40, and "Slow" for anything else.
+
+Test Case 1: AST Parser verifies the exact structural presence of if, followed by else if, followed by else.
+
+Test Case 2: Run execution with speed = 90; verify output is exactly "Speeding".
+
+Test Case 3: Run execution with speed = 60; verify output is exactly "Normal".
+
+Test Case 4: Run execution with speed = 20; verify output is exactly "Slow".
+
+Test Case 5: Analyze AST logic to ensure the conditions evaluate descending strictness (e.g., >80 must precede >40) to prevent early-exit bugs.
+
+7. Logical Operators (&& AND, || OR, ! NOT)
+Theory
+Logical operators combine multiple conditions into a single check.
+
+&& (AND): Every single condition must be true. If just one is false, the entire expression evaluates to false.
+
+|| (OR): Only one condition needs to be true. If the first condition is true, it stops checking and passes.
+
+! (NOT): Flips a boolean. True becomes false, and false becomes true.
+
+The Misconception Trap
+Analyze this code. A user inputs an empty password "". Why does the validation system authorize them?
+
+JavaScript
+let inputPassword = "";
+let overrideCode = "ADMIN_77";
+
+if (!inputPassword || overrideCode) {
+    console.log("Authorization Successful.");
+}
+The Flaw: This is a short-circuit precedence trap. The engine checks !inputPassword first. "" is falsy, so ! flips it to true. Because the engine found a true statement on the left side of an OR (||) operator, it short-circuits. It stops reading the rest of the line and immediately runs the block, authorizing a user with a blank password.
+
+Hidden Test Cases for Code Editor
+Mission: Create isAdult (boolean) and hasTicket (boolean). Write an if statement requiring BOTH to be true to log "Entry Allowed".
+
+Test Case 1: AST Parser strictly validates the presence of the && operator inside the if condition.
+
+Test Case 2: Set isAdult = true and hasTicket = false; execution intercepts the console to verify "Entry Allowed" does NOT log.
+
+Test Case 3: Set both to true; execution intercepts to verify "Entry Allowed" logs successfully.
+
+Test Case 4: AST Parser fails the test if nested if statements are used instead of the && operator.
+
+Test Case 5: Implement a secondary check using ! to ensure !isAdult evaluates to the opposite boolean correctly.
+
+8. The Ternary Operator (condition ? true : false)
+Theory
+The ternary operator is a fast, one-line shortcut for simple if/else assignments. It consists of three parts: the condition to check, followed by a question mark ?, the value to return if true, followed by a colon :, and the value to return if false. It must return a value; it should not be used to execute large blocks of actions.
+
+The Misconception Trap
+Analyze this code. Why does the compiler crash with an assignment error?
+
+JavaScript
+let playerPoints = 150;
+let rank;
+
+playerPoints > 100 ? let rank = "Pro" : let rank = "Amateur";
+The Flaw: You cannot declare variables or write complete statements inside the return blocks of a ternary operator. The ternary operator evaluates to a single value. The entire operator must be assigned to the variable. The correct syntax is: let rank = playerPoints > 100 ? "Pro" : "Amateur";.
+
+Hidden Test Cases for Code Editor
+Mission: Create a variable age = 20. Use a ternary operator to evaluate if age is >= 18. If true, assign the string "Adult" to a new variable status. If false, assign "Minor".
+
+Test Case 1: AST Parser enforces the presence of the ConditionalExpression syntax (? and :).
+
+Test Case 2: AST validation immediately fails the code if the if keyword is detected anywhere in the script.
+
+Test Case 3: Memory execution confirms status is declared correctly and evaluates strictly to "Adult".
+
+Test Case 4: Run background test with age = 16; verify status evaluates strictly to "Minor".
+
+Test Case 5: AST parser ensures the assignment operator = is placed before the condition, not inside the execution branches.
+
+
+Phase 3: The Deep Work Mission (Module 6)
+Mission Title: The Anti-Cheat Leaderboard Engine
+
+The Scenario
+You are the lead security engineer for a high-stakes competitive programming tournament. The grand finale is live, but the automated anti-cheat engine is critically malfunctioning.
+
+Legitimate top-tier grandmasters are having their accounts permanently locked, while actual cheaters are bypassing the security gates and climbing the leaderboard. The system's logic gates are shattered due to dangerous loose equality checks, backward hierarchical sorting, and failed logical operators. You have 10 minutes to rewrite the decision-making logic before the tournament ends and the corrupted leaderboard becomes permanent.
+
+The Broken Codebase (What the user sees)
+
+JavaScript
+/* --- SYSTEM ALERT: ANTI-CHEAT LOGIC FAILURE --- */
+
+let userScore = 98;
+let cheatFlags = "0"; 
+let isProctorActive = false;
+let completionTime = 25; 
+
+// 1. The Security Gate 
+if (cheatFlags == false) {
+    console.log("Security Pass: Account cleared.");
+}
+
+// 2. The Manual Review Flag
+if (userScore > 90 || !isProctorActive) {
+    console.log("Account Locked: Suspicious high score without proctor.");
+}
+
+// 3. Leaderboard Tier Sorting 
+if (userScore >= 50) {
+    console.log("Tier: Bronze");
+} else if (userScore >= 75) {
+    console.log("Tier: Silver");
+} else if (userScore >= 95) {
+    console.log("Tier: Grandmaster");
+}
+
+// 4. Tournament Fast-Track 
+completionTime < 30 ? let fastTrack = "Approved" : let fastTrack = "Denied";
+The Mission Objectives (Strict Requirements)
+You must refactor the decision logic to satisfy the tournament's anti-cheat parameters. Fix the following issues:
+
+Strict Equality: The Security Gate is using a dangerous loose equality (==) check. Because "0" == false evaluates to true, accounts with string-based cheat flags are slipping through. Update the condition to use strict equality (===) and ensure it checks if cheatFlags is strictly equal to the integer 0. You will also need to explicitly convert cheatFlags into a number.
+
+Logical Operators (AND/OR): The Manual Review block is locking any account that scores over 90, or any account without a proctor. It must only lock an account if the user scores over 90 AND the proctor is offline. Fix the logical operator.
+
+The else if Hierarchy: The leaderboard is assigning a score of 98 to the "Bronze" tier because the engine evaluates top-to-bottom and stops at the first true statement (98 >= 50). Restructure the if / else if chain so the most restrictive tier (Grandmaster) is evaluated first.
+
+Ternary Syntax: The fastTrack assignment is completely crashing the compiler because you cannot declare variables inside a ternary operator's execution branch. Rewrite the ternary operator to correctly assign the evaluated string to the fastTrack variable.
+
+The Hidden Test Cases (System Validation)
+
+Test Case 1 (Strict Equality Validation): AST (Abstract Syntax Tree) Parser enforces the use of the === operator inside the Security Gate. Execution checks memory to ensure cheatFlags was converted to an integer before comparison.
+
+Test Case 2 (Logical AND Check): AST Parser strictly verifies the use of the && operator inside the Manual Review block. Execution confirms that "Account Locked..." successfully logs for the default variables.
+
+Test Case 3 (Boolean Flipping Check): In the background runner, change isProctorActive to true. Execution must intercept the console to verify the "Account Locked..." message is completely bypassed.
+
+Test Case 4 (Hierarchy Validation): Execution intercepts the console. For the default score of 98, the engine must strictly log "Tier: Grandmaster". Run a secondary hidden test with userScore = 80 to ensure it logs "Tier: Silver".
+
+Test Case 5 (Ternary Execution): AST Parser verifies the syntax let fastTrack = condition ? true : false;. Memory validation confirms the fastTrack variable exists in the block scope and exactly equals "Approved".
+
+The Reward System (Gamification Trigger)
+
+On Mission Success: A holographic leaderboard updates in real-time, flashing the correct Grandmaster rankings, followed by the Mystery Box drop.
+
+Reward Output: "Tournament Secured! Anti-cheat logic gates are holding strong. You have earned a Tier 6 Mystery Box."
+
+Loot Reveal: The box opens to award 25 Platform Coins and the exclusive "Logic Gatekeeper" Badge.

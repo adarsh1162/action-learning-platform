@@ -1,0 +1,264 @@
+### Module 3: Primitive Data Types
+
+Here is the precise, action-first curriculum for Module 3. The theory is written in strict, simple English to ensure maximum clarity for academic notes. Every single point requested is covered.
+
+---
+
+#### 1. Numbers (Integers, Floats, and the concept of NaN)
+
+**Theory**
+JavaScript has only one data type for numbers. It does not differentiate between integers (whole numbers like `10`) and floats (decimals like `10.5`). You write them directly without quotes. `NaN` stands for "Not-a-Number." It is a special value that appears when a mathematical operation fails, such as trying to divide a word by a number. Technically, the data type of `NaN` is still classified as a number.
+
+**The Misconception Trap**
+*Analyze this code. Why does the error handler fail to trigger?*
+
+```javascript
+let cartTotal = "Apple" * 5;
+
+if (cartTotal === NaN) {
+    console.log("Error: Calculation failed.");
+}
+
+```
+
+*The Flaw:* The variable `cartTotal` correctly evaluates to `NaN`. However, in JavaScript, `NaN` is never equal to anything, not even itself. `NaN === NaN` always returns `false`. To check for this error, the code must use the built-in function `Number.isNaN(cartTotal)`. The `if` block is entirely bypassed.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create an integer `price`, a float `taxRate`, and intentionally create a variable `errorData` that evaluates to `NaN`.
+
+* **Test Case 1:** AST validation confirms `price` is declared and assigned an integer (e.g., `50`).
+* **Test Case 2:** AST validation confirms `taxRate` is declared and assigned a decimal value (e.g., `0.08`).
+* **Test Case 3:** Execution validation checks `Number.isNaN(errorData)` returns `true`.
+* **Test Case 4:** Memory validation confirms `typeof price === "number"` and `typeof taxRate === "number"`.
+* **Test Case 5:** Fail condition if the user attempts to write `NaN` as a string (`"NaN"`).
+
+---
+
+#### 2. Strings (Single quotes and double quotes)
+
+**Theory**
+Strings are sequences of text. You can create them by wrapping text in single quotes (`'text'`) or double quotes (`"text"`). JavaScript treats both exactly the same. However, if your actual text contains an apostrophe (like the word "Don't"), you must wrap the entire string in double quotes so the apostrophe does not accidentally end the string early.
+
+**The Misconception Trap**
+*Analyze this code. Why does this cause a fatal syntax error?*
+
+```javascript
+let welcomeMessage = 'The CEO said, 'Project is live!' to the team.';
+
+```
+
+*The Flaw:* The string starts with a single quote. When the compiler reaches the single quote before the word `Project`, it assumes the string has ended. The engine tries to read the word `Project` as a JavaScript command, completely breaking the compiler. You must alternate quotes: `"The CEO said, 'Project is live!' to the team."`.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create a string `greeting` using single quotes, and a string `dialogue` using double quotes that contains an apostrophe inside it.
+
+* **Test Case 1:** AST Parser validates `greeting` uses single quotes in the raw code.
+* **Test Case 2:** AST Parser validates `dialogue` uses double quotes in the raw code.
+* **Test Case 3:** Execution interceptor ensures `dialogue` evaluates to a valid string containing an apostrophe (e.g., `"It's ready"`).
+* **Test Case 4:** System parses the code to ensure zero `SyntaxError` throws.
+* **Test Case 5:** Fail condition if the user attempts to use backticks (```) for these specific variables.
+
+---
+
+#### 3. String Concatenation (Joining strings using +)
+
+**Theory**
+Concatenation is the process of joining two or more strings together using the `+` operator. If you forget to add a blank space inside your quotes, the words will merge together entirely. If you use the `+` operator with a string and a number, JavaScript converts the number into a string automatically and joins them as text.
+
+**The Misconception Trap**
+*Analyze this code. What is the exact string logged to the console?*
+
+```javascript
+let totalItems = "Total: " + 5 + 5;
+console.log(totalItems);
+
+```
+
+*The Flaw:* The output is `"Total: 55"`, not `"Total: 10"`. The `+` operator evaluates strictly from left to right. First, `"Total: " + 5` becomes the text `"Total: 5"`. Next, the engine calculates the text `"Total: 5"` + `5`, which results in the text `"Total: 55"`. It does not perform mathematical addition.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create a variable `firstName`, a variable `lastName`, and combine them into `fullName` with a space between them.
+
+* **Test Case 1:** AST validation checks for the existence of the `+` operator in the assignment of `fullName`.
+* **Test Case 2:** Execution validation checks that `fullName` contains a white space character.
+* **Test Case 3:** Fail condition if `fullName` evaluates to exactly `"JohnDoe"` instead of `"John Doe"`.
+* **Test Case 4:** Memory verification ensures all three variables are strings.
+* **Test Case 5:** Verify string concatenation works dynamically (do not allow hardcoding the final string `let fullName = "John Doe";`).
+
+---
+
+#### 4. Template Literals (Using backticks and `${}`)
+
+**Theory**
+Template literals are modern strings created using backticks (```). They have two major advantages. First, they allow you to press "Enter" and write multi-line text without breaking the code. Second, they allow you to inject variables directly into the text using the `${variableName}` syntax, completely removing the need for messy `+` operators and manual spacing.
+
+**The Misconception Trap**
+*Analyze this code. Why does it print the literal variable name instead of the number?*
+
+```javascript
+let itemsInCart = 12;
+let displayMessage = 'You have ${itemsInCart} items in your cart.';
+console.log(displayMessage);
+
+```
+
+*The Flaw:* The developer used single quotes instead of backticks. The `${}` syntax only works inside backticks. Because of the single quotes, the system reads it as standard text, logging exactly `"You have ${itemsInCart} items in your cart."` instead of replacing it with `12`.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create a variable `userName`. Then, use a template literal to create a `welcomeMsg` that injects the variable.
+
+* **Test Case 1:** AST Parser validates the use of a `TemplateLiteral` (backticks) for the `welcomeMsg` assignment.
+* **Test Case 2:** AST validation confirms the use of a `TemplateElement` block (`${}`).
+* **Test Case 3:** Execution validation confirms `welcomeMsg` dynamically contains the exact value of `userName`.
+* **Test Case 4:** Reassign `userName` to a new string and verify `welcomeMsg` correctly adopts the new value upon regeneration.
+* **Test Case 5:** Fail condition if the `+` operator is used for concatenation anywhere in the code.
+
+---
+
+#### 5. Booleans (true and false)
+
+**Theory**
+A boolean is a data type that only has two possible states: `true` or `false`. Think of it as a light switch. Booleans do not use quotes around them. They are primarily used to manage the flow of logic, such as checking if a user is logged in, if a cart is empty, or if an action was successful.
+
+**The Misconception Trap**
+*Analyze this code. Why does the system incorrectly grant access?*
+
+```javascript
+let isAdmin = "false";
+
+if (isAdmin) {
+    console.log("Access Granted to Server.");
+}
+
+```
+
+*The Flaw:* The developer wrapped `"false"` in quotes. This makes it a String, not a Boolean. In JavaScript logic, any string that is not completely empty evaluates as "truthy." The `if` statement sees a string with text in it, reads it as `true`, and grants administrator access, causing a severe security failure.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Declare two variables: `hasPassedExam` set to true, and `isPenaltyActive` set to false. Do not use quotes.
+
+* **Test Case 1:** AST validation verifies `hasPassedExam` is assigned the literal `true` without quotes.
+* **Test Case 2:** AST validation verifies `isPenaltyActive` is assigned the literal `false` without quotes.
+* **Test Case 3:** Memory validation strictly verifies `typeof hasPassedExam === "boolean"`.
+* **Test Case 4:** Memory validation strictly verifies `typeof isPenaltyActive === "boolean"`.
+* **Test Case 5:** Fail condition if `Boolean()` constructor function is used unnecessarily.
+
+---
+
+#### 6. null vs. undefined (Intentional empty vs. unassigned)
+
+**Theory**
+Both represent an empty value, but their intent is completely different. `undefined` is the default state given by the JavaScript system. If you create a variable but do not assign it a value, the system makes it `undefined`. `null` is a deliberate action taken by the developer. You manually assign `null` to a variable when you want to explicitly state "this variable exists, but it contains absolutely nothing right now."
+
+**The Misconception Trap**
+*Analyze this code. Will the strict equality check return true or false, and why?*
+
+```javascript
+let searchResult = null;
+let databaseQuery;
+
+console.log(searchResult === databaseQuery);
+
+```
+
+*The Flaw:* It returns `false`. `searchResult` explicitly holds `null`. `databaseQuery` was declared but unassigned, making it `undefined`. While they both represent "emptiness," they are entirely different data types. A strict equality operator (`===`) checks both value and type, so they do not match.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create a variable `emptySystemSlot` and intentionally assign it `null`. Create another variable `futureData` but do not assign it anything.
+
+* **Test Case 1:** AST validation confirms `emptySystemSlot` uses the assignment operator to equal `null`.
+* **Test Case 2:** AST validation confirms `futureData` is declared using `let` but lacks an assignment (`=`).
+* **Test Case 3:** Memory state checks `emptySystemSlot === null`.
+* **Test Case 4:** Memory state checks `futureData === undefined`.
+* **Test Case 5:** Execution test ensures `emptySystemSlot !== futureData` strictly evaluates to true.
+
+---
+
+#### 7. Using the typeof operator to check data types
+
+**Theory**
+The `typeof` operator is a tool used to discover the data type of an existing variable. You write the word `typeof` followed by a space and the variable name. The engine will evaluate it and return a lowercase string describing the type, such as `"number"`, `"string"`, or `"boolean"`. It is heavily used in debugging and form validation.
+
+**The Misconception Trap**
+*Analyze this code. Why does the conditional block fail to execute when the data is null?*
+
+```javascript
+let receivedData = null;
+
+if (typeof receivedData === "null") {
+    console.log("Data is confirmed empty.");
+}
+
+```
+
+*The Flaw:* This is one of the oldest bugs built into the JavaScript language. `typeof null` does not return `"null"`. Instead, it incorrectly returns the string `"object"`. The conditional statement compares `"object" === "null"`, which fails. The system bypasses the block entirely.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Check the types of the numbers `10` and the string `"10"`. Store their types in variables `typeOne` and `typeTwo`.
+
+* **Test Case 1:** AST validation confirms the use of the `typeof` keyword exactly twice.
+* **Test Case 2:** Execution validation checks `typeOne` evaluates precisely to the string `"number"`.
+* **Test Case 3:** Execution validation checks `typeTwo` evaluates precisely to the string `"string"`.
+* **Test Case 4:** Ensure the user did not simply hardcode the strings `"number"` and `"string"` into the variables.
+* **Test Case 5:** Intercept output to ensure the `typeof` evaluation actually operated on the given integer and string values.
+
+
+### Phase 3: The Deep Work Mission (Module 3)
+
+**Mission Title:** The FinTech KYC Pipeline Collapse
+
+**The Scenario**
+You are a security engineer at a global banking application. The KYC (Know Your Customer) data pipeline is critically failing. New users are trying to open bank accounts, but the automated background check system is corrupting their data.
+
+The validation script is filled with primitive data type errors. Strings are breaking the compiler, math equations are resulting in `NaN`, booleans are completely faked as text, and the final security log is a messy combination of broken string concatenation. You have 10 minutes to fix the data pipeline before the regulatory compliance system flags the bank and shuts down the servers.
+
+**The Broken Codebase (What the user sees)**
+
+```javascript
+/* --- SYSTEM ALERT: KYC DATA CORRUPTION --- */
+
+// 1. Applicant Data
+let applicantName = 'Sarah O"Connor"; 
+let annualIncome = 85000;
+let taxMultiplier = "Five";
+
+// The system attempts to calculate taxes
+let calculatedTax = annualIncome / taxMultiplier; 
+
+// 2. Verification Status
+let isIdentityVerified = "true"; 
+let uploadedDocuments = undefined; 
+
+// 3. Type Validation Check
+let taxTypeCheck = typeof calculatedTax;
+
+// 4. Final Security Log
+let finalLog = 'Applicant: ${applicantName} | Tax: ' + calculatedTax + ' | Verified: ' + isIdentityVerified;
+console.log(finalLog);
+
+```
+
+**The Mission Objectives (Strict Requirements)**
+You must refactor the codebase to satisfy the bank's strict data type requirements. Fix the following issues:
+
+1. **String Quotes:** The `applicantName` variable is crashing the system because it mixes a starting single quote with an ending double quote. Fix the quotes so the string successfully stores the name, including the apostrophe inside it.
+2. **The `NaN` Trap:** The `calculatedTax` is evaluating to `NaN` (Not-a-Number) because you cannot divide a number by the word `"Five"`. Change `taxMultiplier` to the actual integer `5` so the math works.
+3. **Boolean Logic:** The `isIdentityVerified` variable is currently a string. Change it to a strict boolean value of `true` without quotes.
+4. **Intentional Emptiness:** The `uploadedDocuments` variable is currently set to `undefined`, which means the system forgot about it. Change it to `null` to explicitly tell the database that the user intentionally uploaded nothing.
+5. **Template Literals:** The `finalLog` is using a terrible mix of single quotes, broken `${}` syntax, and the `+` operator. Rewrite the entire `finalLog` assignment using modern template literals (backticks) to inject all three variables dynamically without a single `+` sign.
+6. **Type Checking:** Ensure the `taxTypeCheck` accurately captures the data type of the newly fixed `calculatedTax`.
+
+**The Hidden Test Cases (System Validation)**
+
+* **Test Case 1 (String Syntax):** AST (Abstract Syntax Tree) Parser validates that `applicantName` evaluates to a valid string without throwing a `SyntaxError`.
+* **Test Case 2 (NaN Prevention):** Execution validator checks the memory state. `Number.isNaN(calculatedTax)` must strictly return `false`. The value must evaluate to the integer `17000`.
+* **Test Case 3 (Strict Boolean):** Memory validation confirms `typeof isIdentityVerified` strictly equals `"boolean"`.
+* **Test Case 4 (Null Assignment):** AST verification confirms `uploadedDocuments` uses the exact assignment operator to equal `null`.
+* **Test Case 5 (Typeof Operator):** Execution test ensures `taxTypeCheck` precisely evaluates to the string `"number"`.
+* **Test Case 6 (Template Literal AST Check):** AST Parser scans the `finalLog` assignment line. It must find exactly one `TemplateLiteral` (backticks) and zero `BinaryExpression` (`+`) operators for string concatenation.
+
+**The Reward System (Gamification Trigger)**
+
+* **On Mission Success:** A vault door animation unlocks on the screen, revealing a glowing digital Mystery Box.
+* **Reward Output:** "KYC Pipeline Secured! Data integrity is at 100%. You have earned a Tier 3 Mystery Box."
+* **Loot Reveal:** The box opens to award **30 Platform Coins** and the exclusive **"Data Type Detective" Badge**.

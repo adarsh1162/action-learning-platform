@@ -1,0 +1,28 @@
+action-learning-platform/
+│
+├── server/                     # Backend (Node.js + Express)
+│   ├── .env                    # Environment variables (Database URI, Gemini API Key)
+│   ├── package.json
+│   └── src/
+│       ├── server.js           # Main entry point for the backend
+│       ├── config/             # Database connections and configurations
+│       │   └── db.js
+│       ├── controllers/        # Core business logic (e.g., executing code, updating tags)
+│       ├── middlewares/        # Authentication and error handling
+│       ├── models/             # MongoDB Schemas (User, Challenge, SkillGraph)
+│       ├── routes/             # API endpoints (e.g., /api/users, /api/challenges)
+│       ├── services/           # External API integrations (Gemini AI, node-cron jobs)
+│       └── utils/              # Helper functions (e.g., code execution validators)
+│
+└── client/                     # Frontend (React.js + Vite)
+    ├── .env                    # Frontend environment variables
+    ├── package.json
+    └── src/
+        ├── main.jsx            # React application entry point
+        ├── App.jsx             # Main routing component
+        ├── components/         # Reusable UI parts (CodeEditor, SkillRadar, MysteryBox)
+        ├── pages/              # Main views (Dashboard, CodingArea, Login)
+        ├── store/              # Zustand/Redux state management (Coins, Retention Score)
+        ├── services/           # Axios/Fetch logic to communicate with backend APIs
+        ├── hooks/              # Custom React hooks
+        └── utils/              # Frontend helper functions

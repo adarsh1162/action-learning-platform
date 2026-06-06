@@ -1,0 +1,231 @@
+### Module 4: Basic Math & Operators
+
+Here is the exact, action-driven curriculum for Module 4. The theory is crisp and strictly adheres to the 20% rule, while the misconception traps are deeply analytical, and the test cases cover every possible edge case to ensure foolproof code evaluation.
+
+---
+
+#### 1. Basic Arithmetic Operators (`+`, `-`, `*`, `/`)
+
+**Theory**
+JavaScript uses standard mathematical symbols to perform calculations. Addition (`+`), subtraction (`-`), multiplication (`*`), and division (`/`) work exactly as they do in a calculator. However, if you use the `+` operator with a string, it prioritizes text concatenation over mathematical addition.
+
+**The Misconception Trap**
+*Analyze this code. What is the exact mathematical output stored in `finalValue`?*
+
+```javascript
+let finalValue = "10" + 5 - 2;
+
+```
+
+*The Flaw:* The output is the integer `103`, not `13`. JavaScript evaluates from left to right. First, `"10" + 5` uses the `+` operator, which triggers string concatenation, resulting in the text `"105"`. Then, the engine encounters `- 2`. Since you cannot subtract text, JavaScript's engine steps in, implicitly forces the text `"105"` back into a number `105`, and subtracts `2`.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create variables to calculate the sum of 15 and 5, the difference of 20 and 8, the product of 4 and 6, and the quotient of 50 divided by 10.
+
+* **Test Case 1:** Execution confirms the sum variable strictly equals `20`.
+* **Test Case 2:** Execution confirms the difference variable strictly equals `12`.
+* **Test Case 3:** Execution confirms the product variable strictly equals `24`.
+* **Test Case 4:** Execution confirms the quotient variable strictly equals `5`.
+* **Test Case 5:** AST (Abstract Syntax Tree) Parser verifies the explicit use of `+`, `-`, `*`, and `/` operators in the code block.
+
+---
+
+#### 2. The Modulo Operator (`%`)
+
+**Theory**
+The modulo operator (`%`) does not divide numbers. Instead, it divides two numbers and returns *only the remainder*. If a number divides perfectly, the modulo is `0`. It is heavily used in programming to determine if a number is even (`number % 2 === 0`) or odd (`number % 2 === 1`).
+
+**The Misconception Trap**
+*Analyze this code. Why does the system incorrectly log the alert?*
+
+```javascript
+let totalItems = 3;
+let containerCapacity = 10;
+let remainder = totalItems % containerCapacity;
+
+if (remainder === 0) {
+    console.log("All items packed perfectly.");
+}
+
+```
+
+*The Flaw:* The logic assumes `3 % 10` will evaluate to `0` or crash because you cannot divide a smaller number by a larger number. In reality, if the first number is smaller than the second, the modulo operator simply returns the first number entirely. `3 % 10` equals `3`. The `if` statement evaluates `3 === 0`, which is false, skipping the block.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Use the modulo operator to find the remainder of `15` divided by `4`, and store it in a variable. Then, calculate the modulo of `2` divided by `7`.
+
+* **Test Case 1:** AST Parser confirms the `%` operator is used exactly twice.
+* **Test Case 2:** Memory validation checks that the first remainder variable strictly equals `3` (since 15 = 4*3 + 3).
+* **Test Case 3:** Memory validation checks that the second remainder variable strictly equals `2`.
+* **Test Case 4:** Fail condition if the division operator `/` is used instead of `%`.
+* **Test Case 5:** Verify the output type is strictly a `"number"`.
+
+---
+
+#### 3. Assignment Operators (`=`, `+=`, `-=`, `*=`, `/=`)
+
+**Theory**
+Assignment operators are shortcuts for modifying a variable's existing memory. Instead of writing the long-form `score = score + 5`, you can use the shorthand `score += 5`. This updates the variable in place. This works for all basic math operations (`-=`, `*=`, `/=`).
+
+**The Misconception Trap**
+*Analyze this code. Why does the player's health instantly drop to 20 instead of decreasing by 20?*
+
+```javascript
+let playerHealth = 100;
+playerHealth =- 20; 
+
+```
+
+*The Flaw:* The developer accidentally flipped the assignment operator. They wrote `=-` instead of `-=`. The engine does not read this as "subtract 20". It reads it as `playerHealth = (-20)`. The variable is simply reassigned to a negative twenty.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create a variable `bankBalance` at `1000`. Using only shorthand assignment operators, add `500`, then subtract `200`, then multiply by `2`.
+
+* **Test Case 1:** AST Parser verifies `bankBalance` initializes at `1000`.
+* **Test Case 2:** AST validation confirms the exact presence of the `+=` operator.
+* **Test Case 3:** AST validation confirms the exact presence of the `-=` operator.
+* **Test Case 4:** AST validation confirms the exact presence of the `*=` operator.
+* **Test Case 5:** Execution state tracks the memory to ensure `bankBalance` evaluates exactly to `2600` at the end of the script.
+* **Test Case 6:** Immediate failure if the standard variable reassignment formula (e.g., `bankBalance = bankBalance + 500`) is used instead of shorthands.
+
+---
+
+#### 4. Increment and Decrement Operators (`++`, `--`)
+
+**Theory**
+These are micro-shortcuts used to add exactly `1` or subtract exactly `1` from a variable. Writing `x++` is the same as `x += 1`. They are primarily used in loops to keep track of counts.
+
+**The Misconception Trap**
+*Analyze this code. What are the final values of `a` and `b`?*
+
+```javascript
+let a = 5;
+let b = a++;
+
+```
+
+*The Flaw:* A beginner assumes both `a` and `b` become `6`. This is the trap of "Postfix" vs "Prefix" incrementing. Because the `++` is written *after* `a` (`a++`), JavaScript assigns the original value of `a` (which is `5`) to `b` first, and *then* increments `a` in the background. The result: `b` is `5`, and `a` is `6`. (To make both 6, it must be written as prefix: `let b = ++a;`).
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Declare a `counter` at `0`. Use the postfix increment operator to increase it. Then use the prefix decrement operator to decrease it.
+
+* **Test Case 1:** AST confirms `counter` is initialized with `let` at `0`.
+* **Test Case 2:** AST Parser verifies the use of an `UpdateExpression` with the `++` operator in postfix position (`counter++`).
+* **Test Case 3:** AST Parser verifies the use of an `UpdateExpression` with the `--` operator in prefix position (`--counter`).
+* **Test Case 4:** Memory state confirms `counter` successfully returns to `0`.
+* **Test Case 5:** System restricts the use of `+= 1` or `-= 1` to force the use of `++` and `--`.
+
+---
+
+#### 5. Operator Precedence (BODMAS/PEMDAS in JavaScript)
+
+**Theory**
+JavaScript executes math following standard algebraic rules (PEMDAS: Parentheses, Exponents, Multiplication/Division, Addition/Subtraction). Multiplication and division are calculated *before* addition and subtraction, regardless of how they are spaced visually. To override this default order, wrap the priority calculation in parentheses `()`.
+
+**The Misconception Trap**
+*Analyze this code. Calculate the exact numeric output.*
+
+```javascript
+let complexEquation = 10 - 2 * 3 + 4 / 2;
+
+```
+
+*The Flaw:* Reading strictly left-to-right yields `14` (10-2=8, 8*3=24, 24+4=28, 28/2=14). This is completely wrong. Following strict operator precedence: First, `2 * 3 = 6`. Next, `4 / 2 = 2`. The equation is rewritten internally as `10 - 6 + 2`. Addition and subtraction hold equal weight, so they evaluate left-to-right. `10 - 6 = 4`. Finally, `4 + 2 = 6`. The output is `6`.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Calculate the average of three test scores: `80`, `90`, and `100`. Store the result in an `average` variable. You must use parentheses.
+
+* **Test Case 1:** AST validation enforces the presence of parentheses `()` surrounding the addition operations.
+* **Test Case 2:** Memory validation confirms `average` equals exactly `90`.
+* **Test Case 3:** Fail condition: If the AST does not detect parentheses, and the code looks like `80 + 90 + 100 / 3` (which evaluates to 203.33), reject the code.
+* **Test Case 4:** Verify that division `/` happens *after* the grouping operation.
+
+---
+
+#### 6. The `Math` Object basics (`round`, `floor`, `ceil`, `random`)
+
+**Theory**
+JavaScript provides a built-in `Math` toolbelt for advanced calculations. `Math.round()` rounds to the nearest integer. `Math.floor()` forces the decimal down to the lower integer. `Math.ceil()` forces the decimal up to the higher integer. `Math.random()` generates a random decimal between `0` (inclusive) and `0.9999...` (exclusive).
+
+**The Misconception Trap**
+*Analyze this code. What does it evaluate to?*
+
+```javascript
+let mappedValue = Math.floor(-2.5);
+
+```
+
+*The Flaw:* A developer usually thinks `Math.floor()` just chops off the decimal, assuming the answer is `-2`. However, `floor` forces the value to the *lowest possible mathematical integer*. On a number line, `-3` is lower than `-2.5`. Therefore, `Math.floor(-2.5)` actually rounds down to `-3`.
+
+**Hidden Test Cases for Code Editor**
+*Mission:* Create three variables. `var1` should round `4.7` naturally. `var2` should force `4.1` to the ceiling. `var3` should chop `4.9` to the floor.
+
+* **Test Case 1:** AST Parser strictly verifies the method call `Math.round(4.7)`.
+* **Test Case 2:** AST Parser strictly verifies the method call `Math.ceil(4.1)`.
+* **Test Case 3:** AST Parser strictly verifies the method call `Math.floor(4.9)`.
+* **Test Case 4:** Memory state confirms `var1` equals `5`.
+* **Test Case 5:** Memory state confirms `var2` equals `5`.
+* **Test Case 6:** Memory state confirms `var3` equals `4`.
+* **Test Case 7:** (For `random` checks): System mocks the `Math.random` function in the background to return exactly `0.5`, then validates if the user's implementation scales it properly if a challenge requires a specific range.
+
+
+### Phase 3: The Deep Work Mission (Module 4)
+
+**Mission Title:** The AI Flashcard Token & Leaderboard Engine
+
+**The Scenario**
+You are the lead backend developer for a highly competitive AI-driven study application. The platform uses an API to generate study flashcards and ranks students on a global leaderboard.
+
+Right now, the nightly server script that calculates student scores and deducts API tokens is critically broken. Top-tier students are getting incorrect scores due to math precedence failures, token billing is rounding decimals incorrectly, and the server routing algorithm is using division instead of remainders. You have 10 minutes to fix the algorithmic logic before the competitive leaderboard updates and ruins the database rankings.
+
+**The Broken Codebase (What the user sees)**
+
+```javascript
+/* --- SYSTEM ALERT: ALGORITHM FAILURE --- */
+
+let baseScore = 500;
+let streakBonus = 20;
+let multiplier = 1.5;
+
+// 1. Leaderboard Math
+let finalScore = baseScore + streakBonus * multiplier;
+
+// 2. API Token Deduction
+let userTokens = 1000;
+let apiCost = 45.9;
+userTokens = userTokens - Math.round(apiCost); 
+
+// 3. Login Tracking
+let loginDays = 14;
+let newLoginCount = loginDays + 1; 
+
+// 4. Server Shard Routing (3 Servers Total)
+let serverShard = finalScore / 3; 
+
+// 5. Daily Challenge ID Generation
+let challengeId = Math.random() * 10;
+
+```
+
+**The Mission Objectives (Strict Requirements)**
+You must refactor the mathematical logic to satisfy the system's strict parameters. Fix the following issues:
+
+1. **Operator Precedence (PEMDAS):** The `finalScore` is currently multiplying `20 * 1.5` first, resulting in `530`. You must use parentheses to ensure the `baseScore` and `streakBonus` are added together *before* being multiplied by the multiplier.
+2. **The `Math` Object & Assignment Operators:** The `apiCost` is currently rounding up to `46` using `Math.round`. Change this to force the decimal *down* to the lower integer regardless of the decimal size. Additionally, rewrite the token deduction line using the shorthand assignment operator (`-=`).
+3. **Increment Operators:** Remove the clunky `loginDays + 1` logic. Directly update the `loginDays` variable using the JavaScript increment operator (`++`).
+4. **The Modulo Operator:** The `serverShard` is performing standard division, resulting in decimals. The server routing requires the *remainder* of the `finalScore` divided by `3`. Replace the division operator with the correct modulo operator.
+5. **Random Integer Generation:** `challengeId` is currently generating a long, useless decimal (like `4.8273`). Wrap the existing mathematical equation inside a `Math` method that chops off the decimal, generating a clean, whole integer between `0` and `9`.
+
+**The Hidden Test Cases (System Validation)**
+
+* **Test Case 1 (Precedence Check):** AST (Abstract Syntax Tree) Parser enforces the use of grouping parentheses `()`. Execution confirms `finalScore` strictly evaluates to `780`.
+* **Test Case 2 (Shorthand & Floor):** AST verifies the strict use of the `-=` assignment operator and the `Math.floor()` method. Execution confirms `userTokens` strictly evaluates to `955` (1000 - 45).
+* **Test Case 3 (Increment Check):** AST confirms the use of an `UpdateExpression` (`++`) on `loginDays`. Memory confirms the value is updated to `15` without using the `+` or `+=` operators.
+* **Test Case 4 (Modulo Verification):** AST confirms the use of the `%` operator. Execution verifies `serverShard` strictly evaluates to `0` (since 780 divides perfectly by 3 with a remainder of 0).
+* **Test Case 5 (Integer Validation):** Execution validation runs `challengeId % 1 === 0` to ensure the generated number is a pure integer, and verifies the AST contains `Math.floor(Math.random() * 10)`.
+
+**The Reward System (Gamification Trigger)**
+
+* **On Mission Success:** A holographic leaderboard chart projects onto the screen, glowing neon green, followed by the Mystery Box drop.
+* **Reward Output:** "Cron Job Successful! Leaderboard stabilized and API tokens synced. You have earned a Tier 4 Mystery Box."
+* **Loot Reveal:** The box opens to award **40 Platform Coins** and the exclusive **"Algorithmic Sniper" Badge**.

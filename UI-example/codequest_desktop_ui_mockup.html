@@ -1,0 +1,384 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans, 'Inter', sans-serif); }
+  .screen-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+  }
+  .device-frame {
+    background: #0E0F14;
+    border-radius: 14px;
+    border: 0.5px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    width: 100%;
+  }
+  .topbar {
+    background: #13141C;
+    border-bottom: 0.5px solid rgba(255,255,255,0.07);
+    padding: 0 20px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; }
+  .logo-mark {
+    width: 26px; height: 26px; border-radius: 7px;
+    background: #6C5CE7;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+  }
+  .logo-text { font-size: 14px; font-weight: 600; color: #EDEDED; letter-spacing: -0.01em; }
+  .logo-text span { color: #6C5CE7; }
+  .topbar-nav { display: flex; gap: 4px; }
+  .nav-item {
+    font-size: 12px; color: #888; padding: 5px 10px; border-radius: 6px; cursor: pointer;
+  }
+  .nav-item.active { color: #EDEDED; background: rgba(108,92,231,0.15); }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .coins-badge {
+    background: rgba(250,199,117,0.12);
+    border: 0.5px solid rgba(250,199,117,0.25);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #FAC775;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #6C5CE7;
+    font-size: 10px; font-weight: 600; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .main-layout {
+    display: flex;
+    height: 420px;
+  }
+  .sidebar {
+    width: 180px;
+    background: #13141C;
+    border-right: 0.5px solid rgba(255,255,255,0.06);
+    padding: 16px 10px;
+    flex-shrink: 0;
+  }
+  .sidebar-section-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    padding: 0 8px;
+    margin-bottom: 6px;
+    margin-top: 12px;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 8px;
+    border-radius: 7px;
+    font-size: 12px;
+    color: #888;
+    cursor: pointer;
+    margin-bottom: 2px;
+  }
+  .sidebar-item.active { background: rgba(108,92,231,0.15); color: #A89CFF; }
+  .sidebar-item .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .content-area {
+    flex: 1;
+    padding: 18px;
+    overflow: hidden;
+  }
+  .content-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .greeting { font-size: 15px; font-weight: 600; color: #EDEDED; }
+  .greeting span { color: #6C5CE7; }
+  .streak-badge {
+    background: rgba(239,159,39,0.1);
+    border: 0.5px solid rgba(239,159,39,0.2);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #EF9F27;
+  }
+  .warmup-card {
+    background: linear-gradient(135deg, rgba(108,92,231,0.18) 0%, rgba(108,92,231,0.06) 100%);
+    border: 0.5px solid rgba(108,92,231,0.3);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .warmup-left { display: flex; align-items: center; gap: 10px; }
+  .warmup-icon {
+    width: 32px; height: 32px;
+    background: rgba(108,92,231,0.25);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #A89CFF;
+  }
+  .warmup-title { font-size: 12px; font-weight: 600; color: #EDEDED; }
+  .warmup-sub { font-size: 10px; color: #888; margin-top: 2px; }
+  .warmup-btn {
+    background: #6C5CE7;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+  }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .stat-card {
+    background: #1A1B25;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .stat-label { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .stat-value { font-size: 18px; font-weight: 600; color: #EDEDED; }
+  .stat-sub { font-size: 9px; color: #6C5CE7; margin-top: 2px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .skill-radar-card {
+    background: #1A1B25;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .card-title { font-size: 11px; font-weight: 600; color: #EDEDED; margin-bottom: 10px; }
+  .skill-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .skill-name { font-size: 10px; color: #888; width: 60px; flex-shrink: 0; }
+  .skill-bar-bg { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+  .skill-bar-fill { height: 4px; border-radius: 2px; }
+  .skill-pct { font-size: 9px; color: #555; width: 24px; text-align: right; }
+  .missions-card {
+    background: #1A1B25;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .mission-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.05);
+  }
+  .mission-icon {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .mission-title { font-size: 10px; font-weight: 500; color: #EDEDED; }
+  .mission-tag { font-size: 8px; color: #666; margin-top: 1px; }
+  .mission-status {
+    margin-left: auto;
+    font-size: 8px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+  .status-done { background: rgba(29,158,117,0.15); color: #5DCAA5; }
+  .status-active { background: rgba(108,92,231,0.15); color: #A89CFF; }
+  .status-locked { background: rgba(255,255,255,0.05); color: #555; }
+  .retention-card {
+    background: #1A1B25;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .retention-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .retention-score { font-size: 20px; font-weight: 700; color: #EF9F27; }
+  .retention-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; }
+  .retention-bar-fill { height: 6px; border-radius: 3px; background: linear-gradient(90deg, #EF9F27, #FAC775); width: 72%; }
+</style>
+
+<div style="padding: 1rem 0;">
+  <p class="screen-label">Desktop — Dashboard View</p>
+  <div class="device-frame">
+    <div class="topbar">
+      <div class="logo">
+        <div class="logo-mark">C</div>
+        <div class="logo-text">Code<span>Quest</span></div>
+      </div>
+      <div class="topbar-nav">
+        <div class="nav-item active">Dashboard</div>
+        <div class="nav-item">Learn</div>
+        <div class="nav-item">Missions</div>
+        <div class="nav-item">Leaderboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="coins-badge">
+          <i class="ti ti-coin" style="font-size:12px;" aria-hidden="true"></i>
+          740 coins
+        </div>
+        <div class="avatar">AR</div>
+      </div>
+    </div>
+    <div class="main-layout">
+      <div class="sidebar">
+        <div class="sidebar-section-label">Progress</div>
+        <div class="sidebar-item active">
+          <div class="dot" style="background:#6C5CE7;"></div> Overview
+        </div>
+        <div class="sidebar-item">
+          <div class="dot" style="background:#888;"></div> Skill Graph
+        </div>
+        <div class="sidebar-item">
+          <div class="dot" style="background:#888;"></div> Weak Tags
+        </div>
+        <div class="sidebar-section-label">Modules</div>
+        <div class="sidebar-item">
+          <div class="dot" style="background:#5DCAA5;"></div> JS Basics ✓
+        </div>
+        <div class="sidebar-item">
+          <div class="dot" style="background:#5DCAA5;"></div> Arrays ✓
+        </div>
+        <div class="sidebar-item active">
+          <div class="dot" style="background:#6C5CE7;"></div> Async/Await
+        </div>
+        <div class="sidebar-item">
+          <div class="dot" style="background:#333;"></div> Closures
+        </div>
+        <div class="sidebar-item">
+          <div class="dot" style="background:#333;"></div> DOM APIs
+        </div>
+        <div class="sidebar-section-label">Exam</div>
+        <div class="sidebar-item" style="opacity:0.4;">
+          <div class="dot" style="background:#EF9F27;"></div> Job-Ready Test
+        </div>
+      </div>
+      <div class="content-area">
+        <div class="content-header">
+          <div class="greeting">Good morning, <span>Aryan</span> 👋</div>
+          <div class="streak-badge">🔥 12 day streak</div>
+        </div>
+        <div class="warmup-card">
+          <div class="warmup-left">
+            <div class="warmup-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+            <div>
+              <div class="warmup-title">Daily Warm-Up is ready!</div>
+              <div class="warmup-sub">3 challenges on your weak tags: #AsyncAwait, #ArrayFilter</div>
+            </div>
+          </div>
+          <button class="warmup-btn">Start Now →</button>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Challenges done</div>
+            <div class="stat-value">142</div>
+            <div class="stat-sub">+8 today</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Coins earned</div>
+            <div class="stat-value">740</div>
+            <div class="stat-sub">260 to reward</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Modules done</div>
+            <div class="stat-value">2/8</div>
+            <div class="stat-sub">On track</div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="skill-radar-card">
+            <div class="card-title">Skill Radar</div>
+            <div class="skill-row">
+              <div class="skill-name">Arrays</div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%;background:#5DCAA5;"></div></div>
+              <div class="skill-pct">85%</div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-name">Functions</div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:72%;background:#6C5CE7;"></div></div>
+              <div class="skill-pct">72%</div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-name">Async/Await</div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:38%;background:#EF9F27;"></div></div>
+              <div class="skill-pct">38%</div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-name">Closures</div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:20%;background:#E24B4A;"></div></div>
+              <div class="skill-pct">20%</div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-name">DOM</div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:0%;background:#555;"></div></div>
+              <div class="skill-pct">—</div>
+            </div>
+            <div class="retention-header" style="margin-top:10px;">
+              <div class="card-title" style="margin:0;">Retention Score</div>
+              <div class="retention-score">72</div>
+            </div>
+            <div class="retention-bar-bg"><div class="retention-bar-fill"></div></div>
+            <div style="font-size:9px;color:#888;margin-top:5px;">Revise #Closure to prevent score drop</div>
+          </div>
+          <div class="missions-card">
+            <div class="card-title">Active Missions</div>
+            <div class="mission-item">
+              <div class="mission-icon" style="background:rgba(29,158,117,0.1);color:#5DCAA5;">
+                <i class="ti ti-check" aria-hidden="true"></i>
+              </div>
+              <div>
+                <div class="mission-title">Fix Swiggy cart bug</div>
+                <div class="mission-tag">#ArrayFilter · Boss Level</div>
+              </div>
+              <div class="mission-status status-done">Done</div>
+            </div>
+            <div class="mission-item">
+              <div class="mission-icon" style="background:rgba(108,92,231,0.12);color:#A89CFF;">
+                <i class="ti ti-code" aria-hidden="true"></i>
+              </div>
+              <div>
+                <div class="mission-title">Zomato discount logic</div>
+                <div class="mission-tag">#AsyncAwait · Curious</div>
+              </div>
+              <div class="mission-status status-active">Active</div>
+            </div>
+            <div class="mission-item">
+              <div class="mission-icon" style="background:rgba(255,255,255,0.05);color:#555;">
+                <i class="ti ti-lock" aria-hidden="true"></i>
+              </div>
+              <div>
+                <div class="mission-title">Paytm OTP handler</div>
+                <div class="mission-tag">#Closure · Locked</div>
+              </div>
+              <div class="mission-status status-locked">Locked</div>
+            </div>
+            <div class="mission-item" style="border:none;">
+              <div class="mission-icon" style="background:rgba(255,255,255,0.05);color:#555;">
+                <i class="ti ti-lock" aria-hidden="true"></i>
+              </div>
+              <div>
+                <div class="mission-title">DOM Event simulator</div>
+                <div class="mission-tag">#DOM · Locked</div>
+              </div>
+              <div class="mission-status status-locked">Locked</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

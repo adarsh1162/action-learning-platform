@@ -1,0 +1,46 @@
+1. Frontend (User Interface & Interactive Dashboard)
+Frontend ko fast aur seamless hona padega taaki users bina lag ke code likh sakein.
+
+React.js: Single Page Application (SPA) banane ke liye taaki page reload na ho aur learning flow break na ho.
+
+Tailwind CSS: Modern, responsive, aur attractive UI components (jaise Skill Radar, buttons, cards) jaldi design karne ke liye.
+
+Monaco Editor (React Monaco Editor): Yeh wahi core engine hai jo VS Code use karta hai. Ise integrate karne se browser ke andar hi users ko syntax highlighting, auto-complete aur ek real developer environment wali feel milegi.
+
+Zustand ya Redux Toolkit: State management ke liye. User ke coins, current retention score, aur unlock hue mystery boxes ka data poore app mein sync rakhne ke liye.
+
+Chart.js ya Recharts: Dashboard par "Skill Radar" aur progress visualize karne ke liye.
+
+2. Backend (Core Engine & Business Logic)
+Backend ko users ka data, micro-tags, aur AI requests handle karni hongi.
+
+Node.js & Express.js: API endpoints banane ke liye aur frontend se aane wali requests (jaise code submit karna, daily login check karna) ko handle karne ke liye.
+
+Google Gemini API: AI integration ke liye. Jab user code mein generic galti karega, toh backend code aur error ko Gemini API ko bhejega aur wahan se human-readable hint generate karke frontend par wapas dega.
+
+JWT (JSON Web Tokens) & Bcrypt: Secure user authentication (Login/Signup) aur passwords ko encrypt karne ke liye.
+
+Cron Jobs (node-cron): Ek automated scheduler jo har raat background mein run hoga aur users ke weak tags analyze karke unka agle din ka "Daily Warm-Up" queue taiyar karega.
+
+3. Code Execution & Testing Environment (The Most Crucial Part)
+User jo code likhega, use test kaise karenge bina server ko crash kiye?
+
+Web Workers (Frontend JS execution): User ka JavaScript code main thread ko block na kare aur secure environment mein run ho, iske liye Web Workers ka use hoga.
+
+Jest ya Mocha (Logic Verification): Backend ya worker level par hidden test cases likhne ke liye. Jab user challenge submit karega, toh yeh libraries automatically check karengi ki function sahi output de raha hai ya nahi.
+
+4. Database (Progress & Data Storage)
+Platform ko kaafi dynamic data store karna hai, isliye flexible structure zaroori hai.
+
+MongoDB: User profiles, dynamic skill_graph (micro-tags aur unke scores), aur challenges ka data store karne ke liye NoSQL database best rahega.
+
+Mongoose: Node.js backend aur MongoDB ke beech structured communication (Schemas) banane ke liye.
+
+5. Deployment & Hosting (Live Server)
+Platform ko duniya ke saamne laane ke liye:
+
+Vercel ya Netlify: React frontend ko host karne ke liye (fast aur seamless CI/CD ke liye).
+
+Render ya DigitalOcean: Node.js backend server aur APIs ko live rakhne ke liye.
+
+MongoDB Atlas: Cloud par database host karne ke liye taaki data secure rahe.

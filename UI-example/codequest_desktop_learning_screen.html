@@ -1,0 +1,296 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .device-frame {
+    background: #0E0F14;
+    border-radius: 14px;
+    border: 0.5px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    width: 100%;
+  }
+  .topbar {
+    background: #13141C;
+    border-bottom: 0.5px solid rgba(255,255,255,0.07);
+    padding: 0 16px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .back-btn { font-size: 11px; color: #666; display: flex; align-items: center; gap: 4px; }
+  .mission-title-bar { font-size: 12px; font-weight: 600; color: #EDEDED; }
+  .mission-tag-bar {
+    font-size: 9px; color: #A89CFF;
+    background: rgba(108,92,231,0.12);
+    border: 0.5px solid rgba(108,92,231,0.2);
+    border-radius: 10px;
+    padding: 2px 8px;
+  }
+  .top-right { display: flex; gap: 10px; align-items: center; }
+  .timer {
+    font-size: 12px; font-weight: 600; color: #EF9F27;
+    background: rgba(239,159,39,0.1);
+    border: 0.5px solid rgba(239,159,39,0.2);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .prog-bar-outer {
+    height: 2px;
+    background: rgba(255,255,255,0.06);
+    width: 100%;
+  }
+  .prog-bar-fill {
+    height: 2px;
+    width: 40%;
+    background: #6C5CE7;
+  }
+  .learn-layout {
+    display: flex;
+    height: 440px;
+  }
+  .task-panel {
+    width: 240px;
+    background: #13141C;
+    border-right: 0.5px solid rgba(255,255,255,0.06);
+    padding: 14px 12px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .concept-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(108,92,231,0.12);
+    border: 0.5px solid rgba(108,92,231,0.25);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 9px; font-weight: 600; color: #A89CFF;
+    margin-bottom: 10px;
+  }
+  .task-heading { font-size: 13px; font-weight: 600; color: #EDEDED; margin-bottom: 8px; line-height: 1.4; }
+  .task-desc { font-size: 10px; color: #777; line-height: 1.6; margin-bottom: 12px; }
+  .broken-code-box {
+    background: #0E0F14;
+    border: 0.5px solid rgba(226,75,74,0.25);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+  .broken-label { font-size: 8px; font-weight: 600; letter-spacing: 0.08em; color: #E24B4A; text-transform: uppercase; margin-bottom: 6px; }
+  .code-snippet { font-family: var(--font-mono, 'Courier New', monospace); font-size: 9px; color: #ccc; line-height: 1.7; }
+  .code-snippet .kw { color: #A89CFF; }
+  .code-snippet .fn { color: #5DCAA5; }
+  .code-snippet .err { color: #E24B4A; text-decoration: underline wavy #E24B4A; }
+  .code-snippet .str { color: #FAC775; }
+  .hints-section { margin-top: 6px; }
+  .hint-item {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 9px; color: #888; margin-bottom: 5px; line-height: 1.5;
+  }
+  .hint-dot { width: 4px; height: 4px; border-radius: 50%; background: #6C5CE7; margin-top: 4px; flex-shrink: 0; }
+  .editor-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #0E0F14;
+  }
+  .editor-tabs {
+    display: flex;
+    align-items: center;
+    background: #13141C;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    padding: 0 14px;
+  }
+  .editor-tab {
+    font-size: 10px;
+    color: #666;
+    padding: 8px 12px;
+    border-bottom: 1.5px solid transparent;
+  }
+  .editor-tab.active { color: #EDEDED; border-bottom-color: #6C5CE7; }
+  .editor-body {
+    flex: 1;
+    padding: 12px 16px;
+    font-family: var(--font-mono, 'Courier New', monospace);
+    font-size: 10px;
+    color: #ccc;
+    line-height: 1.9;
+    overflow: hidden;
+  }
+  .line-num { color: #333; margin-right: 16px; user-select: none; }
+  .kw { color: #A89CFF; }
+  .fn { color: #5DCAA5; }
+  .str { color: #FAC775; }
+  .cm { color: #555; font-style: italic; }
+  .err { color: #E24B4A; }
+  .cursor { display: inline-block; width: 1.5px; height: 10px; background: #6C5CE7; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 1px; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .editor-bottom {
+    padding: 8px 14px;
+    background: #13141C;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .run-btn {
+    background: #6C5CE7;
+    border: none;
+    border-radius: 7px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .hint-btn {
+    background: transparent;
+    border: 0.5px solid rgba(108,92,231,0.3);
+    border-radius: 7px;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: #A89CFF;
+    cursor: pointer;
+  }
+  .ai-panel {
+    width: 200px;
+    background: #13141C;
+    border-left: 0.5px solid rgba(255,255,255,0.06);
+    padding: 12px 10px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .ai-header { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  .ai-badge {
+    width: 18px; height: 18px; border-radius: 5px;
+    background: rgba(108,92,231,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; color: #A89CFF; font-weight: 700;
+  }
+  .ai-name { font-size: 11px; font-weight: 600; color: #EDEDED; }
+  .ai-status { font-size: 8px; color: #5DCAA5; }
+  .ai-bubble {
+    background: #1A1B25;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 9px;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .ai-bubble .highlight { color: #A89CFF; font-weight: 600; }
+  .ai-bubble .code-ref { background: rgba(108,92,231,0.15); border-radius: 3px; padding: 0 3px; font-family: monospace; font-size: 8px; color: #A89CFF; }
+  .ai-tip { font-size: 8px; color: #555; border-top: 0.5px solid rgba(255,255,255,0.05); padding-top: 6px; margin-top: 6px; }
+  .output-mini {
+    background: #0E0F14;
+    border: 0.5px solid rgba(255,255,255,0.06);
+    border-radius: 7px;
+    padding: 6px 8px;
+    font-family: monospace;
+    font-size: 8px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .output-mini .err-line { color: #E24B4A; }
+  .reward-preview {
+    background: rgba(29,158,117,0.08);
+    border: 0.5px solid rgba(29,158,117,0.2);
+    border-radius: 7px;
+    padding: 7px 8px;
+    text-align: center;
+    margin-top: 6px;
+  }
+  .reward-title { font-size: 9px; font-weight: 600; color: #5DCAA5; margin-bottom: 3px; }
+  .reward-coins { font-size: 14px; font-weight: 700; color: #FAC775; }
+  .reward-sub { font-size: 8px; color: #777; margin-top: 2px; }
+</style>
+
+<div style="padding: 0.5rem 0 1rem;">
+  <p style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:10px;">Desktop — Learning / Code Editor View</p>
+  <div class="device-frame">
+    <div class="topbar">
+      <div class="back-btn"><i class="ti ti-arrow-left" style="font-size:12px;" aria-hidden="true"></i> Dashboard</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="mission-title-bar">Zomato Discount Logic</div>
+        <div class="mission-tag-bar">#AsyncAwait</div>
+      </div>
+      <div class="top-right">
+        <div class="timer">⏱ 14:22</div>
+      </div>
+    </div>
+    <div class="prog-bar-outer"><div class="prog-bar-fill"></div></div>
+    <div class="learn-layout">
+      <div class="task-panel">
+        <div class="concept-chip"><i class="ti ti-bolt" style="font-size:9px;" aria-hidden="true"></i> Curious Mission</div>
+        <div class="task-heading">Fix the Zomato discount logic</div>
+        <div class="task-desc">Ek restaurant API se discount data fetch ho raha hai, lekin code crash kar raha hai. User ka order complete nahi ho raha. Bug dhundo aur fix karo.</div>
+        <div class="broken-code-box">
+          <div class="broken-label">Broken Code</div>
+          <div class="code-snippet">
+            <span class="kw">async function</span> <span class="fn">getDiscount</span>() {<br>
+            &nbsp;&nbsp;<span class="kw">const</span> data = fetchOffer();<br>
+            &nbsp;&nbsp;<span class="err">data.discount</span>.apply();<br>
+            }
+          </div>
+        </div>
+        <div class="hints-section">
+          <div style="font-size:9px;font-weight:600;color:#EDEDED;margin-bottom:5px;">What to check:</div>
+          <div class="hint-item"><div class="hint-dot"></div>fetchOffer() ek Promise return karta hai</div>
+          <div class="hint-item"><div class="hint-dot"></div>await keyword kahin missing hai</div>
+          <div class="hint-item"><div class="hint-dot"></div>Undefined pe method call se crash</div>
+        </div>
+      </div>
+      <div class="editor-panel">
+        <div class="editor-tabs">
+          <div class="editor-tab active">solution.js</div>
+          <div class="editor-tab">output</div>
+        </div>
+        <div class="editor-body">
+          <div><span class="line-num">1</span><span class="cm">// Fix the async bug below</span></div>
+          <div><span class="line-num">2</span></div>
+          <div><span class="line-num">3</span><span class="kw">async function</span> <span class="fn">getDiscount</span>() {</div>
+          <div><span class="line-num">4</span>&nbsp;&nbsp;<span class="kw">const</span> data = <span class="kw">await</span> <span class="fn">fetchOffer</span>();</div>
+          <div><span class="line-num">5</span>&nbsp;&nbsp;<span class="kw">if</span> (!data) <span class="kw">return</span>;</div>
+          <div><span class="line-num">6</span>&nbsp;&nbsp;<span class="kw">const</span> disc = data<span class="err">.</span>discount<span class="cursor"></span></div>
+          <div><span class="line-num">7</span>}</div>
+          <div><span class="line-num">8</span></div>
+          <div><span class="line-num">9</span><span class="kw">async function</span> <span class="fn">fetchOffer</span>() {</div>
+          <div><span class="line-num">10</span>&nbsp;&nbsp;<span class="kw">return</span> { discount: <span class="str">20</span>, code: <span class="str">"SAVE20"</span> };</div>
+          <div><span class="line-num">11</span>}</div>
+        </div>
+        <div class="editor-bottom">
+          <div style="display:flex;gap:6px;">
+            <button class="hint-btn">💡 Hint (-5 coins)</button>
+          </div>
+          <button class="run-btn"><i class="ti ti-player-play" style="font-size:11px;" aria-hidden="true"></i> Run Code</button>
+        </div>
+      </div>
+      <div class="ai-panel">
+        <div class="ai-header">
+          <div class="ai-badge">AI</div>
+          <div>
+            <div class="ai-name">Mentor</div>
+            <div class="ai-status">● Analyzing...</div>
+          </div>
+        </div>
+        <div class="ai-bubble">
+          <div class="highlight">TypeError detected!</div><br>
+          Tumne <span class="code-ref">fetchOffer()</span> ko <span class="code-ref">await</span> kiya — sahi hai!<br><br>
+          Par <span class="code-ref">data.discount</span> ke baad aage kuch nahi likha. Isko complete karo aur check karo ki value actually exist karti hai ya nahi.
+          <div class="ai-tip">Yeh #AsyncAwait ka #3 common mistake hai. Revise karo kal.</div>
+        </div>
+        <div class="output-mini">
+          <div class="err-line">TypeError: Cannot read</div>
+          <div class="err-line">properties of undefined</div>
+          <div style="color:#555;">at getDiscount (line 6)</div>
+        </div>
+        <div class="reward-preview">
+          <div class="reward-title">Complete this mission</div>
+          <div class="reward-coins">🎁 +15 coins</div>
+          <div class="reward-sub">Mystery Box unlock hoga</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

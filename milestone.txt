@@ -1,0 +1,166 @@
+Building this platform requires absolute discipline and a mindset geared towards deep work. This is not a standard CRUD application; it is a complex, AI-driven educational engine.
+
+Here is the complete, detailed roadmap divided into chronological milestones. This structure ensures you build the absolute solutions for testing weaknesses, personalized revision, and the command-center dashboard step-by-step.
+
+---
+
+### Milestone 1: Core Architecture & Environment Setup
+
+Your first goal is to establish the foundation of the MERN stack and ensure the frontend and backend can communicate.
+
+* 
+**Frontend Initialization:** Initialize a React.js Single Page Application (SPA) using Vite to prevent page reloads and maintain the learning flow.
+
+
+* 
+**Styling:** Install and configure Tailwind CSS to rapidly build modern, responsive UI components like cards and buttons.
+
+
+* 
+**Backend Initialization:** Set up the Node.js and Express.js server to handle API endpoints and business logic.
+
+
+* 
+**Database Connection:** Connect the backend to a MongoDB database using Mongoose to handle flexible, dynamic data storage.
+
+
+
+### Milestone 2: Authentication & Database Schemas
+
+Before users can track their progress, they need secure accounts and a place to store their data.
+
+* 
+**Security:** Implement secure user authentication (Login/Signup) using JSON Web Tokens (JWT) and Bcrypt for password encryption.
+
+
+* 
+**Data Models:** Create the Mongoose Schemas for the `User`, the coding `Challenge`, and the `SkillGraph`.
+
+
+* 
+**State Management:** Set up Zustand or Redux Toolkit on the frontend to manage the user's global state, including their current coin balance, retention score, and unlocked mystery boxes.
+
+
+
+### Milestone 3: The Code Execution Engine (The Most Critical Part)
+
+This is where you build the environment that forces active learning and action-first testing.
+
+* 
+**Code Editor:** Integrate the React Monaco Editor into the frontend to give users a real developer environment with syntax highlighting and auto-complete inside the browser.
+
+
+* 
+**Secure Execution:** Implement Web Workers so the user's JavaScript code runs in a secure environment without blocking the main browser thread or crashing the server.
+
+
+* 
+**Hidden Test Cases:** Integrate Jest or Mocha testing libraries. When a user submits code, these libraries must automatically verify the logic against hidden test cases (e.g., verifying an Abstract Syntax Tree or checking if a function returns the correct output) .
+
+
+
+### Milestone 4: The Micro-Tagging Engine (Testing Users' Weaknesses)
+
+This milestone builds the absolute solution to track exactly what a user fails to understand.
+
+* 
+**Tagging System:** Assign specific "Micro-Tags" (e.g., `#ArrayFilter`, `#Scope`) to every single question, challenge, and bug-fixing task in the database.
+
+
+* 
+**Weakness Tracking Logic:** Write the backend controller logic so that if a user's code fails the Jest/Mocha test cases, the system increases the "Weakness Score" for those specific micro-tags within the user's `skill_graph` object.
+
+
+* 
+**Skill Verification:** Lock all future learning modules until the user's `skill_graph` proves they have mastered the foundational tags.
+
+
+
+### Milestone 5: The AI Mentor Integration (Gemini API)
+
+Replace generic console errors with human-readable, context-aware guidance.
+
+* 
+**API Connection:** Securely integrate the Google Gemini API into your Node.js backend services.
+
+
+* 
+**Real-Time Correction:** When a user writes failing code, catch the generic error (like `TypeError`) and send both the code and the error to the Gemini API.
+
+
+* 
+**Dynamic Prompting:** Instruct the AI to return a specific, actionable hint (e.g., explaining that the user returned a String instead of an Array) and display this in the UI.
+
+
+* 
+**Curious Challenges:** Utilize the Gemini API to generate dynamic, real-world bug-fixing scenarios (like fixing a Zomato discount logic) to keep the user engaged.
+
+
+
+### Milestone 6: Data-Driven Spaced Repetition (Automated Revision)
+
+This milestone builds the absolute solution to ensure users never forget old concepts.
+
+* 
+**Automated Schedulers:** Set up background cron jobs (`node-cron`) on the backend.
+
+
+* 
+**Nightly Data Analysis:** Write an automated script that runs every night, analyzing the user's `skill_graph` to find weak micro-tags, and places them into a "Revision Queue".
+
+
+* 
+**The Daily Warm-Up:** Build a mandatory frontend pop-up that appears upon the user's first login of the day. The system must block new content until the user completes a 3-minute warmup consisting only of challenges from their weak tags.
+
+
+
+### Milestone 7: The Command Center Dashboard & Gamification
+
+Visualize the data to show users their absolute reality and reward their discipline.
+
+* 
+**Data Visualization:** Use Chart.js or Recharts to build a "Skill Radar Chart" and progress bars on the dashboard, explicitly showing strong areas and areas that need work.
+
+
+* **Targeted Improvement:** Implement the absolute solution for revision: a large "Fix My Weaknesses" button. When clicked, the backend must generate a custom assignment based purely on the user's weak tags.
+
+
+* 
+**Retention Engine:** Build the logic for the "Retention Score" health bar, which slowly drops if the user avoids active retrieval of old concepts.
+
+
+* 
+**Reward System:** Build the UI and backend logic to drop "Mystery Boxes" containing platform coins upon mission success, pushing users to maintain consistency.
+
+
+
+### Milestone 8: Deep Work Missions & Boss Battles
+
+Construct the curriculum's toughest challenges to callus the user's mind and test their critical thinking.
+
+* 
+**The 80/20 Flow:** Build the frontend components to deliver short, direct text theory (20%) followed immediately by a misconception trap and an interactive code editor.
+
+
+* 
+**Broken Codebases:** Create the UI for "Boss Level" projects that halt standard learning after 3-4 topics. Instead of a blank screen, load complex, broken codebases (like the FinTech KYC Pipeline or the Proxy-Prevention Payroll Engine) that force the user to debug and combine all recently learned micro-topics.
+
+
+
+### Milestone 9: Live Deployment & CI/CD
+
+Bring the platform to the live server environment.
+
+* 
+**Frontend Hosting:** Deploy the React SPA to Vercel or Netlify for fast, seamless continuous integration.
+
+
+* 
+**Backend Hosting:** Deploy the Node.js server and API endpoints to Render or DigitalOcean.
+
+
+* 
+**Database Hosting:** Ensure the MongoDB database is securely hosted on MongoDB Atlas.
+
+
+* **Final Review:** Execute full end-to-end testing, ensuring the Web Workers, AI API calls, and nightly cron jobs function flawlessly in the production environment.

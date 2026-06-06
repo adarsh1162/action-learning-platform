@@ -1,0 +1,59 @@
+### The First 15% JavaScript Curriculum
+
+**Module 1: Getting Started & Output**
+
+* Executing JavaScript in the environment.
+* `console.log()`, `console.error()`, and `console.warn()`.
+* Code execution order (top to bottom).
+* Understanding code comments (Single-line `//` and Multi-line `/* */`).
+* Statements vs. Expressions.
+
+**Module 2: Variables & Memory Storage**
+
+* Declaring variables using `let`.
+* Declaring constants using `const`.
+* The concept of variable reassignment and mutability.
+* Variable naming conventions (camelCase).
+* Illegal variable names and reserved keywords.
+* The concept of `undefined` when a variable is declared but not assigned.
+
+**Module 3: Primitive Data Types**
+
+* Numbers (Integers, Floats, and the concept of `NaN`).
+* Strings (Single quotes and double quotes).
+* String Concatenation (Joining strings using `+`).
+* Template Literals (Using backticks ``` and `${}` for dynamic strings).
+* Booleans (`true` and `false`).
+* `null` vs. `undefined` (Intentional empty values vs. unassigned values).
+* Using the `typeof` operator to check data types.
+
+**Module 4: Basic Math & Operators**
+
+* Basic Arithmetic Operators (`+`, `-`, `*`, `/`).
+* The Modulo Operator (`%`) for finding remainders.
+* Assignment Operators (`=`, `+=`, `-=`, `*=`, `/=`).
+* Increment and Decrement Operators (`++`, `--`).
+* Operator Precedence (BODMAS/PEMDAS in JavaScript).
+* The `Math` Object basics (`Math.round()`, `Math.floor()`, `Math.ceil()`, `Math.random()`).
+
+**Module 5: Type Conversion & Coercion**
+
+* Explicit Type Conversion (Using `Number()`, `String()`, `Boolean()`).
+* Implicit Type Coercion (How JavaScript automatically changes types behind the scenes).
+* Truthy and Falsy values (Memorizing `0`, `""`, `null`, `undefined`, `NaN`, and `false`).
+
+**Module 6: Logic & Conditionals (Decision Making)**
+
+* Comparison Operators (`>`, `<`, `>=`, `<=`).
+* Loose Equality (`==` and `!=`).
+* Strict Equality (`===` and `!==`).
+* The `if` statement block.
+* The `else` block.
+* The `else if` block for multiple conditions.
+* Logical Operators (`&&` AND, `||` OR, `!` NOT).
+* The Ternary Operator (`condition ? true : false`) for writing inline conditionals.
+
+**Module 7: Phase 1 Boss Level (The Checkpoint)**
+
+* A cumulative project mixing all concepts from Modules 1 to 6.
+* Requires combining Variables, Type Coercion, Math, Strict Equality, and Logical Operators to solve a real-world scenario without hints.

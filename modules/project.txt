@@ -1,0 +1,88 @@
+Phase 1 Boss Level: The Proxy-Prevention Payroll Engine
+The Philosophy
+This is where the mental callusing begins. You have learned the syntax; now you must adopt a predatory, competitive mindset to survive deep work. There are no tutorials here. No hints. No spoon-feeding. You are given a broken system and raw logic. You must combine every concept from Modules 1 through 6 to fix it.
+
+The Scenario
+You are building the backend core for a contractor's worker portal. Workers must clock their attendance from the construction site within a strict geofenced GPS radius. Currently, the system is under attack by proxy attendance (workers logging in from their homes). Furthermore, the frontend is sending corrupted string data, causing the payroll math to crash.
+
+You must sanitize the data, build the proxy-prevention logic gates, calculate the overtime math, and generate a secure final log.
+
+The Broken Codebase (What the user sees)
+
+JavaScript
+/* --- SYSTEM ALERT: PAYLOAD CORRUPTED --- */
+
+// 1. Incoming Frontend Payload
+const workerId = "WK-8842";
+let rawHoursLogged = "10"; 
+let isGeofenceValid = "false"; 
+let activeProxyFlags; 
+const baseHourlyRate = 100;
+
+let finalWage = 0;
+let workerStatus;
+
+// --- WRITE YOUR SECURE LOGIC BELOW THIS LINE ---
+
+// 2. Data Sanitization
+
+
+// 3. The Proxy Gate
+
+
+// 4. Overtime & Payroll Math
+
+
+// 5. Final Output
+
+The Mission Objectives (Strict Requirements)
+
+Data Sanitization (Type Coercion & Mutability):
+
+The rawHoursLogged is a string. Explicitly convert it into a number so it can be used for math.
+
+The activeProxyFlags variable was declared but never assigned. Explicitly assign it the value null to indicate intentional emptiness in the database.
+
+The Proxy Gate (Conditionals, Loose vs Strict Equality, Booleans):
+
+The isGeofenceValid variable came from the frontend as the string "false". Do not use the Boolean() constructor (because Boolean("false") evaluates to true).
+
+Write an if block: If the geofence string is strictly equal to "false", OR if activeProxyFlags is strictly NOT equal to null, you must log a console.error() stating "Proxy Attack Detected: Access Denied".
+
+Inside that error block, explicitly force the rawHoursLogged to 0.
+
+Overtime & Payroll Math (Operator Precedence & Math):
+
+Write an else block for legitimate workers. Inside it, calculate the finalWage.
+
+The Rules: A standard shift is 8 hours. If the worker logs more than 8 hours, they get paid the baseHourlyRate for the first 8 hours, PLUS exactly 1.5 times the rate for the overtime hours only. Use parentheses to enforce strict mathematical precedence.
+
+If they worked 8 hours or less, simply multiply the hours by the base rate.
+
+Final Output (Ternary Operator & Template Literals):
+
+Below the if/else block, use a single ternary operator. Check if finalWage is greater than 0. If true, assign the string "Cleared" to workerStatus. If false, assign "Flagged".
+
+Finally, use a template literal and console.log() to print exactly: Worker WK-8842 Status: Flagged | Total Payout: $0. (The variables must be injected dynamically).
+
+The Hidden Test Cases (System Validation)
+
+Test Case 1 (Sanitization Check): AST (Abstract Syntax Tree) Parser verifies Number() is used on rawHoursLogged and activeProxyFlags is strictly assigned to null using the = operator.
+
+Test Case 2 (The String Trap Check): Run execution. Because isGeofenceValid is "false", the system must intercept console.error and verify the exact string "Proxy Attack Detected: Access Denied". finalWage must evaluate strictly to 0.
+
+Test Case 3 (Legitimate Worker Overtime Math): Background test runner forcefully changes isGeofenceValid to "true" and rawHoursLogged to "10". Execution verifies finalWage evaluates strictly to 1100 ((8 * 100) + (2 * 150)).
+
+Test Case 4 (Standard Math): Background test runner forcefully changes isGeofenceValid to "true" and rawHoursLogged to "6". Execution verifies finalWage evaluates strictly to 600.
+
+Test Case 5 (Precedence & Ternary Integrity): AST Parser verifies the presence of mathematical grouping () in the overtime logic. Memory execution verifies workerStatus strictly evaluates to "Cleared" in Test Case 3, and "Flagged" in the default proxy scenario.
+
+Test Case 6 (Template Literal Lock): AST validates the final log utilizes backticks (`) and the ${} syntax. No + operators are permitted for string concatenation.
+
+The Reward System (Gamification Trigger)
+
+On Mission Success: The entire coding environment flashes neon green. A massive, gold-plated digital vault drops onto the screen, simulating heavy impact.
+
+Reward Output: "Phase 1 Conquered. The foundation is locked. Welcome to the top 20%."
+
+Loot Reveal: The vault cracks open to award a Phase 1 Boss Crate, containing 150 Platform Coins and unlocking the exclusive "MERN Initiate" Profile Banner.
