@@ -15,7 +15,9 @@ function NavBar({ onOpenAuth }) {
   return (
     <nav className="app-nav">
       <div className="app-nav-logo">
-        <div className="app-nav-logomark">⚡</div>
+        <div className="app-nav-logomark">
+          <span>&lt;</span><span className="slash">/</span><span>&gt;</span>
+        </div>
         <span className="app-nav-logotext">Code<span>Camp</span></span>
       </div>
 
