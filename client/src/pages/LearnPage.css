@@ -970,6 +970,8 @@
 
 /* Monaco Editor Container (Command Center) */
 .editor-container.command-center {
+    display: flex;
+    flex-direction: column;
     flex: none; /* Let it grow naturally with console */
     min-height: 400px;
     max-height: none;
@@ -1046,8 +1048,8 @@
 .editor-run-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .monaco-wrapper {
-    flex: 1;
-    min-height: 250px;
+    height: 350px;
+    flex-shrink: 0;
     position: relative;
     overflow: hidden;
 }
