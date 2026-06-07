@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Loader2, Play, RotateCcw, Cpu, ChevronLeft, Sparkles } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import { curriculum } from '../data/curriculum';
@@ -26,6 +27,26 @@ const LearnPage = () => {
     const [activeTopicId, setActiveTopicId] = useState('1-1');
     const [viewPhase, setViewPhase] = useState('theory'); // 'theory' | 'trap' | 'editor' | 'mission'
     const [activeMissionId, setActiveMissionId] = useState(null);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [warmupSequence, setWarmupSequence] = useState(null);
+    const [currentWarmupIndex, setCurrentWarmupIndex] = useState(0);
+
+    useEffect(() => {
+        if (location.state?.warmupSequence) {
+            const seq = location.state.warmupSequence;
+            setWarmupSequence(seq);
+            setCurrentWarmupIndex(0);
+            if (seq.length > 0) {
+                setActiveModuleId(seq[0].moduleId);
+                setActiveTopicId(seq[0].topicId);
+                setViewPhase('theory');
+            }
+            // Clear location state so refresh doesn't replay it identically if we progress
+            navigate('/learn', { replace: true, state: {} });
+        }
+    }, [location.state, navigate]);
 
     // Completion tracking
     const [completedTopics, setCompletedTopics] = useState(new Set());
@@ -116,6 +137,11 @@ const LearnPage = () => {
         setAiHint(null);
     };
 
+    const handleManualSelectTopic = (moduleId, topicId) => {
+        setWarmupSequence(null);
+        selectTopic(moduleId, topicId);
+    };
+
     const selectMission = (moduleId) => {
         setActiveModuleId(moduleId);
         setActiveMissionId(moduleId);
@@ -125,7 +151,24 @@ const LearnPage = () => {
         setAiHint(null);
     };
 
+    const handleManualSelectMission = (moduleId) => {
+        setWarmupSequence(null);
+        selectMission(moduleId);
+    };
+
     const advanceToNextTopic = () => {
+        if (warmupSequence) {
+            if (currentWarmupIndex < warmupSequence.length - 1) {
+                const nextIndex = currentWarmupIndex + 1;
+                setCurrentWarmupIndex(nextIndex);
+                selectTopic(warmupSequence[nextIndex].moduleId, warmupSequence[nextIndex].topicId);
+            } else {
+                setWarmupSequence(null);
+                navigate('/');
+            }
+            return;
+        }
+
         const topicIndex = activeModule.topics.findIndex(t => t.id === activeTopicId);
         if (topicIndex < activeModule.topics.length - 1) {
             selectTopic(activeModuleId, activeModule.topics[topicIndex + 1].id);
@@ -283,8 +326,8 @@ const LearnPage = () => {
                     activeModuleId={activeModuleId}
                     activeTopicId={activeTopicId}
                     completedTopics={completedTopics}
-                    onSelectTopic={selectTopic}
-                    onSelectMission={selectMission}
+                    onSelectTopic={handleManualSelectTopic}
+                    onSelectMission={handleManualSelectMission}
                     activeMissionId={activeMissionId}
                 />
 

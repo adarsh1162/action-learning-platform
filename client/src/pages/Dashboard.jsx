@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Target, Zap, ShieldAlert, Award, ChevronRight, Activity, Code2, Flame, Crosshair, Package, Play, Sparkles } from 'lucide-react';
 import useStore from '../store/useStore';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { curriculum } from '../data/curriculum';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import MysteryBoxModal from '../components/rewards/MysteryBoxModal';
@@ -10,6 +10,40 @@ const Dashboard = () => {
     const { user, coins, retentionScore, challengesDone, streak, mysteryBoxes, skillGraph, setSkillGraph, setCoins, setStats } = useStore();
     const [isLoading, setIsLoading] = useState(true);
     const [showMysteryBox, setShowMysteryBox] = useState(false);
+    const navigate = useNavigate();
+
+    const handleStartWarmup = () => {
+        if (!skillGraph || !skillGraph.tags) {
+            navigate('/learn');
+            return;
+        }
+
+        const sortedTags = [...skillGraph.tags].sort((a, b) => b.weaknessScore - a.weaknessScore);
+        const weakTags = sortedTags.filter(t => t.weaknessScore > 30);
+
+        if (weakTags.length > 0) {
+            const sequence = [];
+            for (const weakTag of weakTags) {
+                let found = false;
+                for (const mod of curriculum.modules) {
+                    for (const topic of mod.topics) {
+                        if (topic.microTags.includes(weakTag.tagName)) {
+                            sequence.push({ moduleId: mod.id, topicId: topic.id });
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+            }
+
+            if (sequence.length > 0) {
+                navigate('/learn', { state: { warmupSequence: sequence, currentWarmupIndex: 0 } });
+                return;
+            }
+        }
+        navigate('/learn');
+    };
 
     useEffect(() => {
         const fetchGraph = async () => {
@@ -101,6 +135,10 @@ const Dashboard = () => {
     const activeMissionIndex = allMissions.findIndex((m, i) => challengesDone < i * 5 + 5);
     const heroMission = activeMissionIndex !== -1 ? allMissions[activeMissionIndex] : null;
 
+    // Dynamic Greeting based on local time
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+
     return (
         <div className="h-full overflow-y-auto bg-[#0E0F14] text-white p-4 md:p-8 font-sans">
             <div className="max-w-6xl mx-auto space-y-6">
@@ -110,7 +148,7 @@ const Dashboard = () => {
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#6C5CE7]/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
                     <div className="z-10">
                         <h1 className="text-2xl md:text-3xl font-semibold text-[#EDEDED] flex items-center gap-2">
-                            Good morning, <span className="text-[#6C5CE7]">{user.name}</span> 👋
+                            {greeting}, <span className="text-[#6C5CE7]">{user.name}</span> 👋
                         </h1>
                         <p className="text-gray-400 text-sm mt-1">we will make you fall in ❤️ with coding.</p>
                     </div>
@@ -176,32 +214,33 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <button
-                                onClick={() => useStore.getState().setPendingWarmup(true)}
+                                onClick={handleStartWarmup}
                                 className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 text-sm font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                             >
                                 Start Warm-Up <ChevronRight size={16} />
                             </button>
                         </div>
 
-                        {/* LEVEL 3 (13% Visual Weight): Coins & Retention */}
+                        {/* LEVEL 3 (13% Visual Weight): Coins & Challenges */}
                         <div className="grid grid-cols-2 gap-4 h-[100px]">
                             <div className="bg-[#1A1B25] border border-white/5 p-4 rounded-xl flex flex-col justify-center relative overflow-hidden group hover:border-[#FAC775]/30 transition-colors">
                                 <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
                                     <Award size={64} className="text-[#FAC775]" />
                                 </div>
                                 <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-1 flex items-center gap-1.5">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#FAC775]"></span> Coins
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#FAC775]"></span> 🪙 Coins
                                 </div>
                                 <div className="text-2xl font-black text-white">{coins}</div>
                             </div>
-                            <div className="bg-[#1A1B25] border border-white/5 p-4 rounded-xl flex flex-col justify-center relative overflow-hidden group hover:border-[#EF9F27]/30 transition-colors">
+                            <div className="bg-[#1A1B25] border border-white/5 p-4 rounded-xl flex flex-col justify-center relative overflow-hidden group hover:border-[#3B82F6]/30 transition-colors">
                                 <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                    <Activity size={64} className="text-[#EF9F27]" />
+                                    <Code2 size={64} className="text-[#3B82F6]" />
                                 </div>
                                 <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-1 flex items-center gap-1.5">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#EF9F27]"></span> Retention
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]"></span> Challenges
+                                    Completed
                                 </div>
-                                <div className="text-2xl font-black text-white">{retentionScore}%</div>
+                                <div className="text-2xl font-black text-white">{challengesDone}</div>
                             </div>
                         </div>
 
@@ -257,7 +296,7 @@ const Dashboard = () => {
 
                         {/* Right side container - lg:col-span-5 */}
                         <div className="lg:col-span-5 flex flex-col gap-6">
-                            
+
                             {/* Needs Work - Second Largest */}
                             <div className="flex-1 bg-gradient-to-br from-[#1A1B25] to-[#13141C] border border-white/5 p-6 rounded-3xl group hover:border-[#E24B4A]/40 transition-all duration-500 hover:shadow-[0_10px_30px_-10px_rgba(226,75,74,0.15)] flex flex-col justify-center relative overflow-hidden">
                                 <div className="absolute right-0 top-0 w-32 h-32 bg-[#E24B4A]/5 rounded-full blur-[40px] group-hover:bg-[#E24B4A]/10 transition-colors duration-700"></div>
@@ -283,11 +322,11 @@ const Dashboard = () => {
                                 )}
                             </div>
 
-                            {/* Row for Strong Areas & Challenges (Third & Fourth sizes) */}
-                            <div className="grid grid-cols-2 gap-6 h-[140px]">
-                                
-                                {/* Strong Areas - Third Largest */}
-                                <div className="col-span-1 bg-[#1A1B25] border border-white/5 p-5 rounded-3xl group hover:border-[#5DCAA5]/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(93,202,165,0.1)] flex flex-col justify-center">
+                            {/* Row for Strong Areas */}
+                            <div className="h-[140px] flex">
+
+                                {/* Strong Areas - Now Full Width */}
+                                <div className="flex-1 bg-[#1A1B25] border border-white/5 p-5 rounded-3xl group hover:border-[#5DCAA5]/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(93,202,165,0.1)] flex flex-col justify-center">
                                     <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
                                         <div className="w-1.5 h-1.5 rounded-full bg-[#5DCAA5]"></div> Strong Areas
                                     </h4>
@@ -305,15 +344,6 @@ const Dashboard = () => {
                                     )}
                                 </div>
 
-                                {/* Total Challenges - Smallest */}
-                                <div className="col-span-1 bg-[#1A1B25] border border-white/5 p-4 rounded-3xl flex flex-col justify-center items-center text-center group hover:border-blue-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(59,130,246,0.1)] relative overflow-hidden">
-                                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
-                                        <Code2 size={70} className="text-blue-500 group-hover:rotate-12 transition-transform duration-700" />
-                                    </div>
-                                    <div className="text-3xl font-black text-white mb-1 relative z-10 group-hover:scale-110 transition-transform duration-300">{challengesDone}</div>
-                                    <div className="text-[9px] uppercase tracking-widest text-gray-500 font-bold relative z-10 leading-tight">Total<br/>Completed</div>
-                                </div>
-                                
                             </div>
                         </div>
 
