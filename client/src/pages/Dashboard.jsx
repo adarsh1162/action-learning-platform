@@ -141,7 +141,7 @@ const Dashboard = () => {
                                     </h2>
                                     <p className="text-gray-400 max-w-lg mb-8 text-sm md:text-base leading-relaxed">
                                         Start learning JavaScript in the most unique way that no one has taught you.
-                                        Continue learning, continue growing.
+                                        Continue learning, continue growing. ❤️
                                     </p>
                                 </div>
                                 <div className="z-10">
