@@ -1,5 +1,5 @@
-import React from 'react';
-import { Tag, ArrowRight, Lightbulb } from 'lucide-react';
+import React, { useState } from 'react';
+import { Tag, ArrowRight, BookOpen, Terminal, CheckCircle, Copy } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -17,8 +17,8 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
             {/* ── Header ── */}
             <div className="view-header">
                 <div className="phase-chip">
-                    <Lightbulb size={12} />
-                    Phase 2 · Theory
+                    <BookOpen size={12} />
+                    Intel Briefing
                 </div>
                 <div className="tag-group">
                     {topic.microTags && topic.microTags.map(tag => (
@@ -39,17 +39,40 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
                     rehypePlugins={[rehypeRaw]}
                     components={{
                         code({node, inline, className, children, ...props}) {
-                            const match = /language-(\w+)/.exec(className || '')
+                            const match = /language-(\w+)/.exec(className || '');
+                            const codeString = String(children).replace(/\n$/, '');
+                            const [copied, setCopied] = useState(false);
+
+                            const handleCopy = () => {
+                                navigator.clipboard.writeText(codeString);
+                                setCopied(true);
+                                setTimeout(() => setCopied(false), 2000);
+                            };
+
                             return !inline && match ? (
-                                <SyntaxHighlighter
-                                    style={vscDarkPlus}
-                                    language={match[1]}
-                                    PreTag="div"
-                                    className="md-code-block"
-                                    {...props}
-                                >
-                                    {String(children).replace(/\n$/, '')}
-                                </SyntaxHighlighter>
+                                <div className="premium-code-block">
+                                    <div className="premium-code-header">
+                                        <div className="premium-code-badge">
+                                            <span className="js-badge">JS</span>
+                                            JavaScript
+                                        </div>
+                                        <div className="premium-code-actions">
+                                            <button className="premium-code-btn" onClick={handleCopy}>
+                                                {copied ? <CheckCircle size={14} className="text-green-400" /> : <Copy size={14} />}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <SyntaxHighlighter
+                                        style={vscDarkPlus}
+                                        language={match[1]}
+                                        PreTag="div"
+                                        className="md-code-block"
+                                        customStyle={{ margin: 0, padding: '16px', background: 'transparent' }}
+                                        {...props}
+                                    >
+                                        {codeString}
+                                    </SyntaxHighlighter>
+                                </div>
                             ) : (
                                 <code className="md-inline-code" {...props}>
                                     {children}
@@ -66,14 +89,14 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
             <div className="cta-row" style={{ marginTop: '30px' }}>
                 <div className="cta-hint">
                     <span className="cta-hint-dot" />
-                    Got it? Now spot the trap →
+                    Briefing complete. Prepare for threat analysis →
                 </div>
                 <button
                     onClick={onNext}
                     className="cta-btn"
                     style={{ '--btn-color': moduleColor }}
                 >
-                    I Got It · See the Trap
+                    Acknowledge · Scan for Threats
                     <ArrowRight size={16} />
                 </button>
             </div>

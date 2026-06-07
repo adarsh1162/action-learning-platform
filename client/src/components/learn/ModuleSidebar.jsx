@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, Lock, ChevronRight, Zap, AlertTriangle } from 'lucide-react';
+import { CheckCircle, Lock, ChevronRight, Zap, AlertTriangle, Menu, ChevronLeft } from 'lucide-react';
 import useStore from '../../store/useStore';
 import { curriculum } from '../../data/curriculum';
 
@@ -8,7 +8,7 @@ import { curriculum } from '../../data/curriculum';
  * Left navigation panel showing all modules and their topics.
  * Each topic has a status dot: completed (green) / active (purple) / locked (grey).
  */
-const ModuleSidebar = ({ modules, activeModuleId, activeTopicId, completedTopics, onSelectTopic, onSelectMission, activeMissionId }) => {
+const ModuleSidebar = ({ modules, activeModuleId, activeTopicId, completedTopics, onSelectTopic, onSelectMission, activeMissionId, isCollapsed, setIsCollapsed }) => {
 
     const getTopicStatus = (moduleId, topicId) => {
         if (completedTopics.has(topicId)) return 'done';
@@ -34,10 +34,23 @@ const ModuleSidebar = ({ modules, activeModuleId, activeTopicId, completedTopics
         }
     }
 
+    if (isCollapsed) {
+        return (
+            <aside className="sidebar-container sidebar-container--collapsed">
+                <button className="sidebar-expand-btn" onClick={() => setIsCollapsed(false)} title="Expand Curriculum">
+                    <Menu size={18} />
+                </button>
+            </aside>
+        );
+    }
+
     return (
         <aside className="sidebar-container">
             <div className="sidebar-header">
                 <span className="sidebar-label">CURRICULUM</span>
+                <button className="sidebar-collapse-btn" onClick={() => setIsCollapsed(true)} title="Focus Mode">
+                    <ChevronLeft size={16} />
+                </button>
             </div>
 
             {hasCriticalWeakness && (
@@ -46,7 +59,7 @@ const ModuleSidebar = ({ modules, activeModuleId, activeTopicId, completedTopics
                     <div className="weakness-content">
                         <div className="weakness-header">
                             <AlertTriangle size={14} className="weakness-icon pulse-anim" /> 
-                            <span>CRITICAL WEAKNESS</span>
+                            <span>THREAT DETECTED</span>
                         </div>
                         <p className="weakness-text">
                             System lock engaged. Mastery required in:
@@ -117,7 +130,7 @@ const ModuleSidebar = ({ modules, activeModuleId, activeTopicId, completedTopics
                                         }
                                     </span>
                                     <span className="topic-name">
-                                        {allDone && !isModuleLocked ? `⚔ Boss Mission` : `🔒 Boss Mission`}
+                                        {allDone && !isModuleLocked ? `⚔ Deployment` : `🔒 Deployment`}
                                     </span>
                                 </button>
                             </div>

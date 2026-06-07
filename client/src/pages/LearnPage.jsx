@@ -27,6 +27,7 @@ const LearnPage = () => {
     const [activeTopicId, setActiveTopicId] = useState('1-1');
     const [viewPhase, setViewPhase] = useState('theory'); // 'theory' | 'trap' | 'editor' | 'mission'
     const [activeMissionId, setActiveMissionId] = useState(null);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -79,6 +80,15 @@ const LearnPage = () => {
         setTestResults(null);
         setShowSuccess(false);
     }, [activeTopicId]);
+
+    // ── Auto-collapse sidebar in focus modes ─────────────────────────────────
+    useEffect(() => {
+        if (viewPhase === 'theory' || viewPhase === 'editor' || viewPhase === 'mission') {
+            setIsSidebarCollapsed(true);
+        } else {
+            setIsSidebarCollapsed(false);
+        }
+    }, [viewPhase]);
 
     // ── Fetch Skill Graph on Mount ───────────────────────────────────────────
     useEffect(() => {
@@ -329,12 +339,29 @@ const LearnPage = () => {
                     onSelectTopic={handleManualSelectTopic}
                     onSelectMission={handleManualSelectMission}
                     activeMissionId={activeMissionId}
+                    isCollapsed={isSidebarCollapsed}
+                    setIsCollapsed={setIsSidebarCollapsed}
                 />
 
                 {/* Main Content */}
                 <main className="learn-content">
+                    {/* Top Sticky Progress Header */}
+                    <div className="learn-sticky-header">
+                        <div className="learn-module-info">
+                            <span className="learn-module-badge" style={{ background: `${activeModule?.color || '#6C5CE7'}20`, color: activeModule?.color || '#6C5CE7' }}>
+                                {activeModule?.icon} Module {activeModuleId}
+                            </span>
+                            <span className="learn-module-title">{activeModule?.title}</span>
+                        </div>
+                        <div className="learn-progress-stats">
+                            <div className="learn-progress-track">
+                                <div className="learn-progress-indicator" style={{ width: `${progressPct}%`, background: activeModule?.color || '#6C5CE7' }} />
+                            </div>
+                            <span className="learn-progress-text">{Math.round(progressPct)}%</span>
+                        </div>
+                    </div>
 
-                    {/* ── THEORY ── */}
+                    {/* ── THEORY (INTEL BRIEFING) ── */}
                     {viewPhase === 'theory' && activeTopic && (
                         <TheoryView
                             topic={activeTopic}
@@ -359,7 +386,7 @@ const LearnPage = () => {
                             <div className="challenge-header">
                                 <div className="challenge-meta">
                                     <span className="phase-chip phase-chip--purple">
-                                        <Cpu size={12} /> Code Challenge
+                                        <Cpu size={12} /> Field Exercise
                                     </span>
                                     <div className="tag-group">
                                         {activeTopic.microTags.map(tag => (
@@ -409,9 +436,33 @@ const LearnPage = () => {
                                     <Editor
                                         height="100%"
                                         defaultLanguage="javascript"
-                                        theme="vs-dark"
+                                        theme="antigravity"
                                         value={code}
                                         onChange={val => setCode(val || '')}
+                                        onMount={(editor, monaco) => {
+                                            monaco.editor.defineTheme('antigravity', {
+                                                base: 'vs-dark',
+                                                inherit: true,
+                                                rules: [
+                                                    { token: 'keyword', foreground: 'C678DD' },
+                                                    { token: 'identifier', foreground: 'E06C75' },
+                                                    { token: 'string', foreground: '98C379' },
+                                                    { token: 'comment', foreground: '5C6370', fontStyle: 'italic' },
+                                                    { token: 'number', foreground: 'D19A66' },
+                                                    { token: 'type', foreground: '56B6C2' },
+                                                    { token: 'delimiter', foreground: 'ABB2BF' }
+                                                ],
+                                                colors: {
+                                                    'editor.background': '#050506',
+                                                    'editor.foreground': '#ABB2BF',
+                                                    'editorCursor.foreground': '#528BFF',
+                                                    'editor.lineHighlightBackground': '#1A1B23',
+                                                    'editorLineNumber.foreground': '#495162',
+                                                    'editorIndentGuide.background': '#2C313A',
+                                                }
+                                            });
+                                            monaco.editor.setTheme('antigravity');
+                                        }}
                                         options={{
                                             minimap: { enabled: false },
                                             fontSize: 13,

@@ -12,17 +12,17 @@ const TrapView = ({ topic, moduleColor, onNext }) => {
     const [revealed, setRevealed] = useState(false);
 
     return (
-        <div className="view-container trap-view">
+        <div className="view-container trap-view theory-view">
 
             {/* ── Header ── */}
             <div className="view-header">
-                <div className="phase-chip phase-chip--red">
-                    <Bug size={12} />
-                    Misconception Trap
+                <div className="phase-chip phase-chip--red pulse-anim">
+                    <AlertTriangle size={12} />
+                    Threat Detected
                 </div>
             </div>
 
-            <h1 className="view-title">Find the Flaw</h1>
+            <h1 className="view-title">Analyze the Threat</h1>
             <p className="trap-prompt">
                 This code has a hidden bug that trips up most developers.
                 <br />
@@ -32,8 +32,8 @@ const TrapView = ({ topic, moduleColor, onNext }) => {
             {/* ── Broken Code Box ── */}
             <div className="broken-code-box">
                 <div className="broken-label">
-                    <AlertTriangle size={12} />
-                    Broken Code — Analyze It
+                    <AlertTriangle size={12} className="text-red-400" />
+                    Vulnerable Code Segment
                 </div>
                 <pre className="broken-code">{topic.trap.code}</pre>
             </div>
@@ -45,7 +45,7 @@ const TrapView = ({ topic, moduleColor, onNext }) => {
                     className="reveal-btn"
                 >
                     <Eye size={16} />
-                    Reveal the Flaw
+                    Execute Threat Analysis
                 </button>
             ) : (
                 <div className="flaw-reveal">
@@ -65,14 +65,14 @@ const TrapView = ({ topic, moduleColor, onNext }) => {
                 <div className="cta-row" style={{ marginTop: '1.5rem' }}>
                     <div className="cta-hint">
                         <span className="cta-hint-dot" style={{ background: '#E24B4A' }} />
-                        Now write the correct solution →
+                        Threat neutralized. Proceed to Field Exercise →
                     </div>
                     <button
                         onClick={onNext}
                         className="cta-btn"
                         style={{ '--btn-color': moduleColor }}
                     >
-                        Write the Fix
+                        Deploy Fix in Field
                         <ArrowRight size={16} />
                     </button>
                 </div>

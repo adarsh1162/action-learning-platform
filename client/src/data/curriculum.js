@@ -72,39 +72,49 @@ You're basically telling JavaScript:
 
 ---
 
-Now predict:
-
+<div class="predict-block">
+  <div class="predict-header">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+    PREDICT FIRST
+  </div>
+  <p>Without running it, which message appears first?</p>
+  
 \`\`\`javascript
 console.log("Starting");
 console.error("Failed");
 console.warn("Retrying");
 \`\`\`
 
-Without running it:
-
-Which message appears first?
+  <div class="predict-options">
+    <div class="predict-option correct">A. Starting, then Failed, then Retrying (Top to Bottom)</div>
+    <div class="predict-option">B. Failed appears first because errors have priority</div>
+    <div class="predict-option">C. They all appear at the exact same time</div>
+  </div>
+</div>
 
 ---
 
-If your answer was:
-
-\`\`\`text
-Starting
-Failed
-Retrying
-\`\`\`
+If your answer was **A**:
 
 Good.
 
 Notice something important.
 
-JavaScript does not prioritize errors.
+JavaScript executes code exactly in the order you write it.
 
-It does not prioritize warnings.
-
-It follows the order of your code.
+Top to bottom.
 
 Always.
+
+<div class="memory-anchor">
+  <div class="memory-anchor-title">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+    Remember This
+  </div>
+  <div class="memory-anchor-text">
+    The console is your primary debugging tool. JavaScript executes your code from <strong>top to bottom</strong>, one line at a time.
+  </div>
+</div>
 
 ---
 

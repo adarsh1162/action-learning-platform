@@ -37,26 +37,115 @@
     overflow: hidden;
 }
 
+/* ── Sticky Progress Header ────────────────────────────────────────────────── */
+.learn-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(14, 15, 20, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.learn-module-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.learn-module-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.learn-module-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #E2E8F0;
+}
+.learn-progress-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.learn-progress-track {
+    width: 120px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.learn-progress-indicator {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.learn-progress-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #94A3B8;
+    width: 3ch;
+    text-align: right;
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
    SIDEBAR
    ══════════════════════════════════════════════════════════════════════════════ */
 .sidebar-container {
-    width: 224px;
-    background: #13141C;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    width: 260px;
+    background: #0A0B0E;
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-container--collapsed {
+    width: 50px;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 16px;
+}
+
+.sidebar-collapse-btn,
+.sidebar-expand-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+.sidebar-collapse-btn:hover,
+.sidebar-expand-btn:hover {
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-header {
     padding: 14px 16px 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .sidebar-label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
     color: #444;
     text-transform: uppercase;
 }
@@ -394,14 +483,163 @@
 .mission-title { font-size: 22px; }
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   THEORY VIEW
+   THEORY VIEW (INTEL BRIEFING)
    ══════════════════════════════════════════════════════════════════════════════ */
+.theory-view {
+    max-width: 720px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+}
 .theory-card {
-    background: #1A1B25;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #CBD5E1;
+}
+
+/* ── Interactive Predict Block ── */
+.predict-block {
+    background: rgba(108, 92, 231, 0.05);
+    border: 1px solid rgba(108, 92, 231, 0.2);
     border-radius: 12px;
-    padding: 20px 24px;
-    margin-bottom: 20px;
+    padding: 24px;
+    margin: 32px 0;
+}
+.predict-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #A89CFF;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+.predict-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+}
+.predict-option {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: #E2E8F0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+.predict-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+.predict-option.correct {
+    background: rgba(93, 202, 165, 0.1);
+    border-color: rgba(93, 202, 165, 0.4);
+    color: #5DCAA5;
+}
+.predict-option.incorrect {
+    background: rgba(226, 75, 74, 0.1);
+    border-color: rgba(226, 75, 74, 0.4);
+    color: #FF8A89;
+}
+
+/* ── Premium Code Blocks ── */
+.premium-code-block {
+    background: #050506;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 28px 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.premium-code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.premium-code-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #E2E8F0;
+}
+.js-badge {
+    color: #F7DF1E;
+}
+.premium-code-actions {
+    display: flex;
+    gap: 12px;
+}
+.premium-code-btn {
+    background: none;
+    border: none;
+    color: #94A3B8;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.premium-code-btn:hover {
+    color: #E2E8F0;
+}
+
+/* ── Memory Anchor ── */
+.memory-anchor {
+    background: linear-gradient(135deg, rgba(239, 159, 39, 0.1), rgba(239, 159, 39, 0.02));
+    border-left: 3px solid #EF9F27;
+    border-radius: 0 12px 12px 0;
+    padding: 24px;
+    margin: 40px 0;
+}
+.memory-anchor-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #EF9F27;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.memory-anchor-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #E2E8F0;
+    line-height: 1.6;
+}
+
+/* ── Markdown Overrides ── */
+.markdown-body {
+    font-size: 16px;
+    line-height: 1.7;
+}
+.markdown-body h1,
+.markdown-body h2 {
+    color: #FFF;
+    font-weight: 700;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+.markdown-body h2 {
+    font-size: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 12px;
+}
+.markdown-body p {
+    margin-bottom: 24px;
+    color: #94A3B8;
 }
 
 .theory-text {
