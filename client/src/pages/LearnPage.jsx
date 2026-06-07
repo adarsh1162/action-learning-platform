@@ -449,7 +449,7 @@ const LearnPage = () => {
                                         <div>
                                             <div className="success-title">Mission Accomplished!</div>
                                             <div className="success-sub">
-                                                All test cases passed · +{activeTopic.challenge.rewardCoins} coins added
+                                                All test cases passed {submitData && submitData.isFirstTime ? `· +${activeTopic.challenge.rewardCoins} coins added` : '· (Already completed)'}
                                             </div>
                                         </div>
                                     </div>
