@@ -1046,7 +1046,10 @@
 .editor-run-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .monaco-wrapper {
+    flex: 1;
     min-height: 250px;
+    position: relative;
+    overflow: hidden;
 }
 
 .editor-statusbar {
@@ -1070,7 +1073,9 @@
     border-right: none !important;
     border-bottom: none !important;
     background: #050506 !important;
-}.spin {
+}
+
+.spin {
     animation: spin 0.8s linear infinite;
 }
 @keyframes spin {
