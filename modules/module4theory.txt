@@ -1,0 +1,972 @@
+---
+
+# Module 4: Basic Math & Operators
+
+---
+
+# 1. Basic Arithmetic Operators (`+`, `-`, `*`, `/`)
+
+Let's start with something dangerous.
+
+Not difficult.
+
+Dangerous.
+
+---
+
+Predict this:
+
+```javascript
+let result = 10 + 5;
+```
+
+Easy.
+
+Result:
+
+```text
+15
+```
+
+---
+
+Now predict:
+
+```javascript
+let result = 10 - 5;
+```
+
+Result:
+
+```text
+5
+```
+
+---
+
+Nothing surprising yet.
+
+---
+
+Now try this:
+
+```javascript
+let result = "10" + 5;
+```
+
+What should happen?
+
+Take a guess before continuing.
+
+---
+
+Many beginners answer:
+
+```text
+15
+```
+
+Reasonable.
+
+Wrong.
+
+---
+
+The result is:
+
+```text
+105
+```
+
+---
+
+Why?
+
+Because the moment JavaScript sees a string involved in a `+` operation, it becomes suspicious.
+
+Instead of doing math, it starts joining text.
+
+---
+
+Now predict this:
+
+```javascript
+let finalValue = "10" + 5 - 2;
+```
+
+Don't run it.
+
+Think.
+
+---
+
+Many learners answer:
+
+```text
+13
+```
+
+---
+
+Actual result:
+
+```text
+103
+```
+
+---
+
+Let's watch what JavaScript does.
+
+Step 1:
+
+```javascript
+"10" + 5
+```
+
+becomes:
+
+```text
+"105"
+```
+
+---
+
+Step 2:
+
+```javascript
+"105" - 2
+```
+
+Now subtraction can't join text.
+
+So JavaScript forces:
+
+```text
+"105"
+```
+
+back into:
+
+```text
+105
+```
+
+and performs:
+
+```text
+105 - 2
+```
+
+Result:
+
+```text
+103
+```
+
+---
+
+This is your first lesson about JavaScript:
+
+> JavaScript tries very hard to help you.
+
+Sometimes that help creates bugs.
+
+---
+
+### The Rule
+
+```javascript
++
+```
+
+can mean:
+
+* addition
+* text joining
+
+Always check the data types before trusting the result.
+
+---
+
+# 2. The Modulo Operator (`%`)
+
+Most beginners think `%` means:
+
+> percentage
+
+It doesn't.
+
+---
+
+The modulo operator answers one question:
+
+> "What is left over after division?"
+
+---
+
+Predict:
+
+```javascript
+10 % 3
+```
+
+---
+
+Think about division.
+
+```text
+10 ÷ 3 = 3 remainder 1
+```
+
+The modulo operator only cares about:
+
+```text
+1
+```
+
+---
+
+So:
+
+```javascript
+10 % 3
+```
+
+becomes:
+
+```text
+1
+```
+
+---
+
+Now predict:
+
+```javascript
+20 % 5
+```
+
+---
+
+Answer:
+
+```text
+0
+```
+
+Because 20 divides perfectly.
+
+Nothing is left over.
+
+---
+
+Now for the trap.
+
+Predict:
+
+```javascript
+3 % 10
+```
+
+---
+
+Many beginners answer:
+
+```text
+0
+```
+
+or
+
+```text
+error
+```
+
+---
+
+Actual answer:
+
+```text
+3
+```
+
+---
+
+Why?
+
+Because 10 cannot fit into 3 even once.
+
+Nothing gets divided.
+
+The entire 3 remains.
+
+---
+
+This operator powers:
+
+* even/odd checks
+* server routing
+* pagination
+* game turns
+* round-robin scheduling
+
+Much more important than it looks.
+
+---
+
+### The Rule
+
+Modulo doesn't return the answer.
+
+It returns what's left over.
+
+---
+
+# 3. Assignment Operators (`=`, `+=`, `-=`, `*=`, `/=`)
+
+Let's start with a common mistake.
+
+Predict this:
+
+```javascript
+let score = 100;
+
+score += 20;
+```
+
+What is score now?
+
+---
+
+Answer:
+
+```text
+120
+```
+
+---
+
+Because:
+
+```javascript
+score += 20;
+```
+
+is just shorthand for:
+
+```javascript
+score = score + 20;
+```
+
+---
+
+Now predict:
+
+```javascript
+let score = 100;
+
+score -= 20;
+```
+
+---
+
+Answer:
+
+```text
+80
+```
+
+---
+
+Easy.
+
+Now let's look at a real bug.
+
+---
+
+Predict:
+
+```javascript
+let health = 100;
+
+health =- 20;
+```
+
+Most beginners think:
+
+```text
+80
+```
+
+---
+
+Wrong.
+
+---
+
+The value becomes:
+
+```text
+-20
+```
+
+---
+
+Notice the difference.
+
+Correct:
+
+```javascript
+health -= 20;
+```
+
+---
+
+Bug:
+
+```javascript
+health =- 20;
+```
+
+---
+
+JavaScript reads it as:
+
+```javascript
+health = (-20);
+```
+
+It doesn't subtract.
+
+It replaces.
+
+---
+
+One tiny character.
+
+Completely different result.
+
+---
+
+### The Rule
+
+Shorthand operators modify an existing value.
+
+Watch the symbol order carefully.
+
+---
+
+# 4. Increment and Decrement Operators (`++`, `--`)
+
+This topic looks easy.
+
+Then it destroys people in interviews.
+
+---
+
+Predict:
+
+```javascript
+let count = 5;
+
+count++;
+```
+
+Value?
+
+---
+
+Answer:
+
+```text
+6
+```
+
+---
+
+Now predict:
+
+```javascript
+let count = 5;
+
+count--;
+```
+
+---
+
+Answer:
+
+```text
+4
+```
+
+---
+
+Simple.
+
+Now comes the famous trap.
+
+---
+
+Predict:
+
+```javascript
+let a = 5;
+
+let b = a++;
+```
+
+Final values?
+
+---
+
+Most learners answer:
+
+```text
+a = 6
+b = 6
+```
+
+---
+
+Wrong.
+
+---
+
+Actual result:
+
+```text
+a = 6
+b = 5
+```
+
+---
+
+Why?
+
+Because:
+
+```javascript
+a++
+```
+
+means:
+
+> "Use the current value first.
+> Increase later."
+
+---
+
+JavaScript does this:
+
+```javascript
+b = 5;
+a = 6;
+```
+
+---
+
+Now predict:
+
+```javascript
+let a = 5;
+
+let b = ++a;
+```
+
+---
+
+Result:
+
+```text
+a = 6
+b = 6
+```
+
+---
+
+Because prefix increment happens first.
+
+---
+
+This tiny distinction causes bugs in loops and counters all the time.
+
+---
+
+### The Rule
+
+Postfix:
+
+```javascript
+a++
+```
+
+Use first.
+
+Increase later.
+
+---
+
+Prefix:
+
+```javascript
+++a
+```
+
+Increase first.
+
+Use later.
+
+---
+
+# 5. Operator Precedence (BODMAS/PEMDAS in JavaScript)
+
+Let's play a game.
+
+Predict:
+
+```javascript
+10 - 2 * 3 + 4 / 2
+```
+
+Don't calculate left-to-right.
+
+Just predict.
+
+---
+
+Many beginners do:
+
+```text
+10 - 2 = 8
+8 * 3 = 24
+24 + 4 = 28
+28 / 2 = 14
+```
+
+---
+
+Wrong.
+
+Because JavaScript doesn't read math like a sentence.
+
+It follows rules.
+
+---
+
+First:
+
+```javascript
+2 * 3
+```
+
+becomes:
+
+```text
+6
+```
+
+---
+
+Then:
+
+```javascript
+4 / 2
+```
+
+becomes:
+
+```text
+2
+```
+
+---
+
+Now JavaScript sees:
+
+```javascript
+10 - 6 + 2
+```
+
+---
+
+Left to right:
+
+```text
+4 + 2
+```
+
+---
+
+Final answer:
+
+```text
+6
+```
+
+---
+
+Now predict:
+
+```javascript
+80 + 90 + 100 / 3
+```
+
+---
+
+Many learners expect:
+
+```text
+90
+```
+
+---
+
+Actual result:
+
+```text
+203.33...
+```
+
+because division happens first.
+
+---
+
+The correct version:
+
+```javascript
+(80 + 90 + 100) / 3
+```
+
+---
+
+Now JavaScript gets:
+
+```text
+90
+```
+
+---
+
+### The Rule
+
+When humans and JavaScript might disagree about order:
+
+Use parentheses.
+
+---
+
+# 6. The `Math` Object basics (`round`, `floor`, `ceil`, `random`)
+
+JavaScript comes with a built-in toolbox.
+
+That toolbox is called:
+
+```javascript
+Math
+```
+
+---
+
+Predict:
+
+```javascript
+Math.round(4.7)
+```
+
+---
+
+Answer:
+
+```text
+5
+```
+
+---
+
+Nearest whole number.
+
+---
+
+Predict:
+
+```javascript
+Math.floor(4.9)
+```
+
+---
+
+Answer:
+
+```text
+4
+```
+
+---
+
+Floor always goes down.
+
+---
+
+Predict:
+
+```javascript
+Math.ceil(4.1)
+```
+
+---
+
+Answer:
+
+```text
+5
+```
+
+---
+
+Ceiling always goes up.
+
+---
+
+Now for the trap.
+
+Predict:
+
+```javascript
+Math.floor(-2.5)
+```
+
+---
+
+Most beginners answer:
+
+```text
+-2
+```
+
+---
+
+Wrong.
+
+---
+
+Answer:
+
+```text
+-3
+```
+
+---
+
+Why?
+
+Because floor means:
+
+> Go to the lower integer.
+
+Not:
+
+> Remove the decimal.
+
+---
+
+On a number line:
+
+```text
+-3 < -2.5 < -2
+```
+
+The lower number is:
+
+```text
+-3
+```
+
+---
+
+Now one final tool:
+
+```javascript
+Math.random()
+```
+
+---
+
+Predict:
+
+Will it ever return:
+
+```text
+1
+```
+
+---
+
+No.
+
+---
+
+It generates a number between:
+
+```text
+0
+```
+
+inclusive
+
+and
+
+```text
+1
+```
+
+exclusive.
+
+---
+
+That's why:
+
+```javascript
+Math.floor(Math.random() * 10)
+```
+
+creates numbers:
+
+```text
+0 to 9
+```
+
+perfectly.
+
+---
+
+### The Rule
+
+Use:
+
+```javascript
+Math.round()
+```
+
+nearest integer
+
+```javascript
+Math.floor()
+```
+
+always down
+
+```javascript
+Math.ceil()
+```
+
+always up
+
+```javascript
+Math.random()
+```
+
+random decimal between 0 and 1
+
+---

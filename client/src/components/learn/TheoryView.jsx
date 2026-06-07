@@ -1,9 +1,13 @@
 import React from 'react';
-import { Tag, ArrowRight, Lightbulb, Terminal } from 'lucide-react';
+import { Tag, ArrowRight, Lightbulb } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 /**
  * TheoryView — Phase 2, Step 1
- * Displays: micro-tag chip, crisp theory text, a working code EXAMPLE,
+ * Displays: micro-tag chip, crisp theory text via Markdown,
  * then a CTA button to advance to the Misconception Trap.
  */
 const TheoryView = ({ topic, moduleColor, onNext }) => {
@@ -17,7 +21,7 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
                     Phase 2 · Theory
                 </div>
                 <div className="tag-group">
-                    {topic.microTags.map(tag => (
+                    {topic.microTags && topic.microTags.map(tag => (
                         <span key={tag} className="micro-tag">
                             <Tag size={10} />
                             {tag}
@@ -29,29 +33,37 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
             {/* ── Topic Title ── */}
             <h1 className="view-title">{topic.title}</h1>
 
-            {/* ── Theory Block ── */}
-            <div className="theory-card">
-                <p
-                    className="theory-text"
-                    dangerouslySetInnerHTML={{ __html: topic.theory }}
-                />
-            </div>
-
-            {/* ── Example Block (THE KEY ADDITION) ── */}
-            <div className="example-block">
-                <div className="example-header">
-                    <Terminal size={14} />
-                    <span>Live Example</span>
-                </div>
-                <pre className="example-code">{topic.example.code}</pre>
-                <div className="example-output">
-                    <span className="output-label">Output:</span>
-                    <pre className="output-text">{topic.example.output}</pre>
-                </div>
+            {/* ── Theory Block (Markdown Rendered) ── */}
+            <div className="theory-card markdown-body" style={{ '--theme-color': moduleColor }}>
+                <ReactMarkdown 
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                        code({node, inline, className, children, ...props}) {
+                            const match = /language-(\w+)/.exec(className || '')
+                            return !inline && match ? (
+                                <SyntaxHighlighter
+                                    style={vscDarkPlus}
+                                    language={match[1]}
+                                    PreTag="div"
+                                    className="md-code-block"
+                                    {...props}
+                                >
+                                    {String(children).replace(/\n$/, '')}
+                                </SyntaxHighlighter>
+                            ) : (
+                                <code className="md-inline-code" {...props}>
+                                    {children}
+                                </code>
+                            )
+                        }
+                    }}
+                >
+                    {topic.theory}
+                </ReactMarkdown>
             </div>
 
             {/* ── CTA ── */}
-            <div className="cta-row">
+            <div className="cta-row" style={{ marginTop: '30px' }}>
                 <div className="cta-hint">
                     <span className="cta-hint-dot" />
                     Got it? Now spot the trap →

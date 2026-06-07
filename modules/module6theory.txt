@@ -1,0 +1,1414 @@
+---
+
+# Module 6: Logic & Conditionals (Decision Making)
+
+---
+
+# 1. Comparison Operators (>, <, >=, <=)
+
+Imagine you're building a competitive coding platform.
+
+Two players finish a challenge.
+
+Player A:
+
+```javascript
+95
+```
+
+Player B:
+
+```javascript
+87
+```
+
+Easy.
+
+You instantly know who ranked higher.
+
+---
+
+Now let's make it weird.
+
+Predict:
+
+```javascript
+"10" > "2"
+```
+
+True or false?
+
+Don't run it.
+
+Actually guess.
+
+---
+
+Most beginners answer:
+
+```text
+true
+```
+
+Because:
+
+```text
+10 > 2
+```
+
+is obviously true.
+
+---
+
+JavaScript disagrees.
+
+The answer is:
+
+```text
+false
+```
+
+---
+
+Why?
+
+Because these aren't numbers.
+
+They're strings.
+
+---
+
+JavaScript starts comparing character by character.
+
+It looks at:
+
+```text
+"1"
+```
+
+and
+
+```text
+"2"
+```
+
+The very first comparison already decides the result.
+
+Since:
+
+```text
+"1" < "2"
+```
+
+JavaScript immediately stops.
+
+---
+
+It never even looks at the zero.
+
+---
+
+Now predict:
+
+```javascript
+"apple" > "banana"
+```
+
+---
+
+Answer:
+
+```text
+false
+```
+
+Because:
+
+```text
+a < b
+```
+
+alphabetically.
+
+---
+
+This is why leaderboards, rankings, and sorting systems break when numbers accidentally arrive as strings.
+
+---
+
+Now predict:
+
+```javascript
+let passingScore = 50;
+let studentScore = 50;
+
+studentScore >= passingScore
+```
+
+---
+
+Result:
+
+```text
+true
+```
+
+---
+
+Because:
+
+```text
+greater than OR equal
+```
+
+means both cases are allowed.
+
+---
+
+### The Rule
+
+Comparison operators always return:
+
+```javascript
+true
+```
+
+or
+
+```javascript
+false
+```
+
+And before trusting a comparison, ask:
+
+> "Am I comparing numbers or text?"
+
+Because JavaScript treats them very differently.
+
+---
+
+# 2. Loose Equality (== and !=)
+
+This is probably the most dangerous topic you've learned so far.
+
+Let's start with a prediction.
+
+---
+
+What does this return?
+
+```javascript
+0 == false
+```
+
+---
+
+Most beginners stare at it for a second.
+
+Then answer:
+
+```text
+false
+```
+
+Different values.
+
+Different types.
+
+Makes sense.
+
+---
+
+Actual answer:
+
+```text
+true
+```
+
+---
+
+Why?
+
+Because loose equality has one goal:
+
+> Make the comparison succeed if possible.
+
+---
+
+JavaScript secretly changes types behind the scenes.
+
+It converts:
+
+```javascript
+false
+```
+
+into:
+
+```javascript
+0
+```
+
+Then compares:
+
+```javascript
+0 == 0
+```
+
+---
+
+Now predict:
+
+```javascript
+"" == false
+```
+
+---
+
+Result:
+
+```text
+true
+```
+
+---
+
+Again.
+
+JavaScript starts converting things.
+
+---
+
+Now predict this monster:
+
+```javascript
+[] == 0
+```
+
+---
+
+Most people answer:
+
+```text
+false
+```
+
+---
+
+Actual result:
+
+```text
+true
+```
+
+---
+
+This is one of the most famous JavaScript traps.
+
+The empty array becomes:
+
+```javascript
+""
+```
+
+Then:
+
+```javascript
+0
+```
+
+Then JavaScript compares:
+
+```javascript
+0 == 0
+```
+
+---
+
+This is exactly why professionals avoid:
+
+```javascript
+==
+```
+
+whenever possible.
+
+---
+
+### The Rule
+
+Loose equality is not checking:
+
+> "Are these identical?"
+
+It's checking:
+
+> "Can I somehow make these match?"
+
+That difference causes real bugs.
+
+---
+
+# 3. Strict Equality (=== and !==)
+
+Now let's look at the operator professionals actually use.
+
+---
+
+Predict:
+
+```javascript
+0 === false
+```
+
+---
+
+Answer:
+
+```text
+false
+```
+
+---
+
+Why?
+
+Because strict equality asks two questions:
+
+---
+
+Question 1:
+
+```text
+Do the values match?
+```
+
+---
+
+Question 2:
+
+```text
+Do the types match?
+```
+
+---
+
+If either answer is no:
+
+```javascript
+false
+```
+
+---
+
+No coercion.
+
+No guessing.
+
+No hidden conversions.
+
+---
+
+Now predict:
+
+```javascript
+1234 === "1234"
+```
+
+---
+
+Result:
+
+```text
+false
+```
+
+---
+
+Same digits.
+
+Different types.
+
+---
+
+Now for one of JavaScript's most famous traps.
+
+Predict:
+
+```javascript
+NaN === NaN
+```
+
+---
+
+Most beginners answer:
+
+```text
+true
+```
+
+---
+
+Wrong.
+
+---
+
+The result is:
+
+```text
+false
+```
+
+---
+
+Even though both sides are literally:
+
+```javascript
+NaN
+```
+
+---
+
+This feels broken.
+
+But it's intentional.
+
+---
+
+When JavaScript produces:
+
+```javascript
+NaN
+```
+
+it's saying:
+
+> "The result of this calculation is invalid."
+
+And invalid mathematical results are never considered equal.
+
+---
+
+So if you need to check for NaN:
+
+Don't do this:
+
+```javascript
+value === NaN
+```
+
+---
+
+Use:
+
+```javascript
+Number.isNaN(value)
+```
+
+---
+
+### The Rule
+
+Use:
+
+```javascript
+===
+```
+
+and
+
+```javascript
+!==
+```
+
+by default.
+
+Treat:
+
+```javascript
+==
+```
+
+like a loaded weapon.
+
+---
+
+# 4. The if statement block
+
+Everything in this module leads here.
+
+Because comparisons alone don't make decisions.
+
+They only produce:
+
+```javascript
+true
+```
+
+or
+
+```javascript
+false
+```
+
+---
+
+The `if` statement is what acts on that result.
+
+---
+
+Imagine you're building Netflix.
+
+A user clicks Play.
+
+The system checks:
+
+```javascript
+isSubscribed
+```
+
+---
+
+If true:
+
+Play the movie.
+
+---
+
+If false:
+
+Show payment screen.
+
+---
+
+That's exactly what an `if` statement does.
+
+---
+
+Predict:
+
+```javascript
+let isSubscribed = true;
+
+if (isSubscribed) {
+    console.log("Playing Movie");
+}
+```
+
+---
+
+What happens?
+
+---
+
+The message prints.
+
+Easy.
+
+---
+
+Now predict:
+
+```javascript
+let isSubscribed = false;
+
+if (isSubscribed) {
+    console.log("Playing Movie");
+}
+```
+
+---
+
+Nothing happens.
+
+---
+
+Because the gate stayed closed.
+
+---
+
+Now for a bug that has destroyed countless hours.
+
+Predict:
+
+```javascript
+let isAdmin = false;
+
+if (isAdmin === true); {
+    console.log("Deleting Database");
+}
+```
+
+Will the message print?
+
+---
+
+Most beginners answer:
+
+```text
+No
+```
+
+Because:
+
+```javascript
+false === true
+```
+
+is false.
+
+---
+
+Logical answer.
+
+Still wrong.
+
+---
+
+The message prints.
+
+---
+
+Why?
+
+Because this:
+
+```javascript
+if (isAdmin === true);
+```
+
+already ended.
+
+The semicolon terminated the instruction.
+
+---
+
+JavaScript sees:
+
+```javascript
+{
+   console.log("Deleting Database");
+}
+```
+
+as completely separate code.
+
+---
+
+The condition was ignored.
+
+The block runs anyway.
+
+---
+
+This tiny semicolon has caused real production bugs.
+
+---
+
+### The Rule
+
+An `if` statement is a gate.
+
+If the condition is truthy, the gate opens.
+
+If the condition is falsy, the gate stays closed.
+
+And never place a semicolon directly after the condition.
+
+---
+
+# 5. The else block
+
+Let's start with a simple question.
+
+What should a system do when the main condition fails?
+
+Imagine you're building Spotify.
+
+A user clicks a premium-only song.
+
+The system checks:
+
+```javascript
+isPremium
+```
+
+If true:
+
+Play the song.
+
+But what if it's false?
+
+Should the application do nothing?
+
+Should it crash?
+
+Should it leave the user staring at the screen?
+
+---
+
+That's why `else` exists.
+
+It provides a fallback plan.
+
+---
+
+Predict:
+
+```javascript
+let isPremium = false;
+
+if (isPremium) {
+    console.log("Playing Song");
+} else {
+    console.log("Upgrade Required");
+}
+```
+
+What prints?
+
+---
+
+Answer:
+
+```text
+Upgrade Required
+```
+
+---
+
+Because the first condition failed.
+
+The fallback took over.
+
+---
+
+Now here's the important mental model.
+
+An `else` does not ask a question.
+
+It doesn't have a condition.
+
+It simply says:
+
+> "If everything above failed, do this."
+
+---
+
+Now let's look at a real bug.
+
+Predict:
+
+```javascript
+if (batteryLevel > 20) {
+    console.log("Device Running");
+}
+
+console.log("Checking Diagnostics");
+
+else {
+    console.log("Charge Device");
+}
+```
+
+Will this run?
+
+---
+
+Many beginners focus on the condition.
+
+The condition isn't the problem.
+
+---
+
+The problem is:
+
+```javascript
+else
+```
+
+must be attached directly to an `if`.
+
+---
+
+JavaScript reads:
+
+```javascript
+console.log("Checking Diagnostics");
+```
+
+and thinks:
+
+> The if statement is finished.
+
+Then it suddenly encounters:
+
+```javascript
+else
+```
+
+with nothing attached to it.
+
+---
+
+The program crashes before it even starts.
+
+---
+
+### The Rule
+
+`else` is not independent.
+
+It must be connected directly to an `if`.
+
+Think of them as two halves of the same decision.
+
+---
+
+# 6. The else if block for multiple conditions
+
+Imagine you're building a grading system.
+
+A student scores:
+
+```javascript
+95
+```
+
+What grade should they get?
+
+---
+
+One option is:
+
+```javascript
+if (score > 90) {
+}
+if (score > 75) {
+}
+if (score > 50) {
+}
+```
+
+But now multiple blocks can run.
+
+That's not what we want.
+
+---
+
+We want exactly one result.
+
+That's where `else if` comes in.
+
+---
+
+Think of an `else if` chain like security checkpoints.
+
+JavaScript checks them one by one.
+
+The moment one passes:
+
+> Stop searching.
+
+---
+
+Predict:
+
+```javascript
+let score = 95;
+
+if (score > 50) {
+    console.log("C");
+}
+else if (score > 75) {
+    console.log("B");
+}
+else if (score > 90) {
+    console.log("A");
+}
+```
+
+What prints?
+
+---
+
+Most beginners answer:
+
+```text
+A
+```
+
+Makes sense.
+
+95 deserves an A.
+
+---
+
+JavaScript disagrees.
+
+---
+
+The answer is:
+
+```text
+C
+```
+
+---
+
+Why?
+
+Because JavaScript doesn't search for the best answer.
+
+It searches for the first true answer.
+
+---
+
+It sees:
+
+```javascript
+95 > 50
+```
+
+True.
+
+---
+
+Mission complete.
+
+Stop searching.
+
+Ignore everything else.
+
+---
+
+This is one of the most common business-logic bugs in programming.
+
+---
+
+Now fix it mentally.
+
+Which condition should come first?
+
+---
+
+The most restrictive one:
+
+```javascript
+score > 90
+```
+
+Then:
+
+```javascript
+score > 75
+```
+
+Then:
+
+```javascript
+score > 50
+```
+
+---
+
+Now the system works correctly.
+
+---
+
+### The Rule
+
+In an `else if` chain:
+
+JavaScript stops at the first true condition.
+
+Always place the most specific conditions first.
+
+---
+
+# 7. Logical Operators (&& AND, || OR, ! NOT)
+
+This is where individual conditions become real decision systems.
+
+---
+
+Imagine you're organizing a concert.
+
+A person can enter only if:
+
+* they are an adult
+* they have a ticket
+
+Both conditions are required.
+
+---
+
+Predict:
+
+```javascript
+let isAdult = true;
+let hasTicket = true;
+
+isAdult && hasTicket
+```
+
+---
+
+Answer:
+
+```text
+true
+```
+
+---
+
+Now predict:
+
+```javascript
+true && false
+```
+
+---
+
+Answer:
+
+```text
+false
+```
+
+---
+
+Because AND is strict.
+
+One failure ruins everything.
+
+---
+
+Think of it like two locks on a door.
+
+Both must open.
+
+---
+
+Now let's look at OR.
+
+Predict:
+
+```javascript
+false || true
+```
+
+---
+
+Answer:
+
+```text
+true
+```
+
+---
+
+OR is much more relaxed.
+
+It only needs one success.
+
+---
+
+Think of it like having two keys.
+
+Either key can open the door.
+
+---
+
+Now for the most misunderstood operator.
+
+---
+
+Predict:
+
+```javascript
+!true
+```
+
+---
+
+Answer:
+
+```text
+false
+```
+
+---
+
+Predict:
+
+```javascript
+!false
+```
+
+---
+
+Answer:
+
+```text
+true
+```
+
+---
+
+Easy.
+
+Now let's combine everything.
+
+---
+
+Predict:
+
+```javascript
+let inputPassword = "";
+
+let overrideCode = "ADMIN_77";
+
+if (!inputPassword || overrideCode) {
+    console.log("Authorized");
+}
+```
+
+Will it run?
+
+---
+
+Most beginners start analyzing the password.
+
+That's not where the bug is.
+
+---
+
+Look carefully.
+
+First:
+
+```javascript
+!inputPassword
+```
+
+The password is:
+
+```javascript
+""
+```
+
+which is falsy.
+
+---
+
+NOT flips it:
+
+```javascript
+true
+```
+
+---
+
+Now JavaScript sees:
+
+```javascript
+true || overrideCode
+```
+
+---
+
+For OR, finding one true value is enough.
+
+JavaScript immediately stops.
+
+---
+
+The block executes.
+
+---
+
+A blank password just got access.
+
+---
+
+This is the exact kind of bug that creates real security vulnerabilities.
+
+---
+
+### The Rule
+
+```javascript
+&&
+```
+
+requires everything.
+
+---
+
+```javascript
+||
+```
+
+requires anything.
+
+---
+
+```javascript
+!
+```
+
+flips the result.
+
+---
+
+And always read complex conditions one piece at a time.
+
+---
+
+# 8. The Ternary Operator (condition ? true : false)
+
+Let's start with a question.
+
+What if all you need is a simple choice?
+
+---
+
+Example:
+
+```javascript
+if (age >= 18) {
+    status = "Adult";
+} else {
+    status = "Minor";
+}
+```
+
+Works perfectly.
+
+But sometimes it feels excessive.
+
+---
+
+That's why JavaScript provides the ternary operator.
+
+---
+
+Predict:
+
+```javascript
+let status =
+age >= 18
+? "Adult"
+: "Minor";
+```
+
+What does it do?
+
+---
+
+Exactly the same thing.
+
+---
+
+Think of a ternary as a mini if/else that returns a value.
+
+---
+
+This is the important part.
+
+A ternary does not execute blocks.
+
+A ternary produces a value.
+
+---
+
+Now let's look at the classic mistake.
+
+Predict:
+
+```javascript
+playerPoints > 100
+? let rank = "Pro"
+: let rank = "Amateur";
+```
+
+Valid or invalid?
+
+---
+
+Many beginners think:
+
+> Looks fine.
+
+---
+
+JavaScript crashes.
+
+---
+
+Why?
+
+Because a ternary expects:
+
+```javascript
+value
+```
+
+or
+
+```javascript
+value
+```
+
+---
+
+Instead it found:
+
+```javascript
+let rank = ...
+```
+
+which is a statement.
+
+---
+
+Remember Module 1?
+
+Statements perform actions.
+
+Expressions produce values.
+
+---
+
+A ternary requires values.
+
+---
+
+The correct version:
+
+```javascript
+let rank =
+playerPoints > 100
+? "Pro"
+: "Amateur";
+```
+
+---
+
+Now the ternary produces a value.
+
+Then that value gets assigned.
+
+---
+
+### The Rule
+
+Use a ternary when:
+
+* the decision is simple
+* you need a value
+
+Avoid ternaries when the logic becomes large or difficult to read.
+
+---

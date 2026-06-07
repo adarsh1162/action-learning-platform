@@ -1,0 +1,623 @@
+
+# Module 2: Variables & Memory
+
+---
+
+# 1. Variables
+
+Imagine you're building Uber.
+
+A customer opens the app and requests a ride.
+
+You now have information that must be remembered:
+
+* Customer name
+* Pickup location
+* Destination
+* Driver name
+* Fare amount
+
+Where should all that information go?
+
+JavaScript needs memory.
+
+Variables are how we reserve that memory.
+
+---
+
+Look at this:
+
+```javascript
+let driverName = "Sarah";
+```
+
+Read it like English:
+
+> Create a piece of memory called `driverName` and store `"Sarah"` inside it.
+
+---
+
+Now predict:
+
+```javascript
+let driverName = "Sarah";
+
+console.log(driverName);
+```
+
+What gets printed?
+
+Don't run it.
+
+Actually answer first.
+
+---
+
+You probably said:
+
+```text
+Sarah
+```
+
+Correct.
+
+Because variables don't store questions.
+
+They store values.
+
+When JavaScript sees `driverName`, it goes to memory and fetches whatever is currently stored there.
+
+---
+
+Now try this:
+
+```javascript
+let driverName = "Sarah";
+
+driverName = "Alex";
+
+console.log(driverName);
+```
+
+What prints?
+
+Most people say:
+
+```text
+Alex
+```
+
+Correct again.
+
+But here's the important part.
+
+JavaScript did not create a second variable.
+
+The old value was replaced.
+
+---
+
+That's the first mental model you need:
+
+> Variables are named locations in memory.
+>
+> The value inside them can change.
+
+---
+
+Quick prediction:
+
+```javascript
+let passengerCount = 2;
+
+passengerCount = 4;
+
+passengerCount = 6;
+
+console.log(passengerCount);
+```
+
+What prints?
+
+If your answer wasn't 6, read the section again.
+
+---
+
+# 2. Variable Naming Rules
+
+Most beginners think variable names are just labels.
+
+They aren't.
+
+They're part of JavaScript's grammar.
+
+Break the rules and the program won't even start.
+
+---
+
+Predict this:
+
+```javascript
+let userAge = 25;
+```
+
+Valid or invalid?
+
+Easy.
+
+Valid.
+
+---
+
+Now predict:
+
+```javascript
+let 1userAge = 25;
+```
+
+Valid or invalid?
+
+---
+
+Many beginners know it's wrong.
+
+Very few know why.
+
+---
+
+Imagine reading this:
+
+```javascript
+1userAge
+```
+
+JavaScript sees:
+
+```text
+1
+```
+
+and immediately thinks:
+
+> "I'm reading a number."
+
+Then suddenly:
+
+```text
+userAge
+```
+
+appears.
+
+Now the engine has no idea what it's looking at.
+
+Number?
+
+Variable?
+
+Math expression?
+
+Syntax error?
+
+---
+
+Instead of guessing, JavaScript stops.
+
+Immediately.
+
+---
+
+Variable names can contain:
+
+```text
+letters
+numbers
+$
+_
+```
+
+But they cannot start with a number.
+
+---
+
+Quick prediction:
+
+```javascript
+let player1Score = 500;
+```
+
+Valid or invalid?
+
+---
+
+What about:
+
+```javascript
+let 1playerScore = 500;
+```
+
+---
+
+This seems like a tiny rule.
+
+But one broken variable name can prevent an entire application from starting.
+
+---
+
+# 3. Naming Conventions (camelCase)
+
+Let's be honest.
+
+The computer doesn't care whether you write:
+
+```javascript
+let username;
+```
+
+or
+
+```javascript
+let user_name;
+```
+
+or
+
+```javascript
+let USER_NAME;
+```
+
+JavaScript can read all of them.
+
+Humans are the problem.
+
+---
+
+Imagine opening a codebase with:
+
+```javascript
+let x;
+let abc;
+let data;
+let thing;
+```
+
+Nobody knows what these mean.
+
+Not even the person who wrote them six months ago.
+
+---
+
+Now compare:
+
+```javascript
+let userName;
+let rideDestination;
+let accountBalance;
+```
+
+Much easier.
+
+---
+
+Most JavaScript developers follow a convention called camelCase.
+
+```javascript
+userName
+rideDestination
+accountBalance
+```
+
+The first word starts lowercase.
+
+Every new word starts with a capital letter.
+
+---
+
+Notice something:
+
+```javascript
+rideDestination
+```
+
+contains no spaces.
+
+Yet your brain can read it instantly.
+
+That's the whole point.
+
+---
+
+Quick prediction:
+
+Which version would most professional JavaScript teams prefer?
+
+```javascript
+drop_location
+```
+
+or
+
+```javascript
+dropLocation
+```
+
+---
+
+The second one.
+
+Not because JavaScript requires it.
+
+Because humans do.
+
+And humans are the ones fixing bugs at 2 AM.
+
+---
+
+# 4. let vs const
+
+This topic causes more confusion than it should.
+
+Let's start with a prediction.
+
+---
+
+What happens here?
+
+```javascript
+const appName = "RideFast";
+
+appName = "QuickRide";
+```
+
+A)
+
+Value changes
+
+B)
+
+Nothing happens
+
+C)
+
+Program crashes
+
+---
+
+Pick one before continuing.
+
+---
+
+The answer is:
+
+```text
+C
+```
+
+The program crashes.
+
+---
+
+Why?
+
+Because `const` means:
+
+> This variable may not be reassigned.
+
+The value is locked.
+
+The moment you try to replace it, JavaScript throws an error.
+
+---
+
+Now compare:
+
+```javascript
+let rideStatus = "Searching";
+
+rideStatus = "Driver Found";
+```
+
+Perfectly fine.
+
+---
+
+Because `let` was created for values that change.
+
+And many things change.
+
+---
+
+Examples:
+
+```javascript
+let score = 0;
+```
+
+Changes constantly.
+
+---
+
+```javascript
+let currentPage = 1;
+```
+
+Changes constantly.
+
+---
+
+```javascript
+let rideStatus = "Searching";
+```
+
+Changes constantly.
+
+---
+
+But this?
+
+```javascript
+const companyName = "Uber";
+```
+
+Probably shouldn't change while the application is running.
+
+---
+
+A useful question:
+
+Before creating any variable, ask:
+
+> Will I need to replace this value later?
+
+If yes:
+
+```javascript
+let
+```
+
+If no:
+
+```javascript
+const
+```
+
+---
+
+Now predict:
+
+```javascript
+const maxPassengers = 4;
+
+maxPassengers = 6;
+```
+
+What happens?
+
+And why?
+
+---
+
+Remember that question.
+
+You're going to see this exact bug later.
+
+---
+
+# 5. undefined
+
+Imagine opening a ride-sharing app and seeing:
+
+```text
+Driver Assigned:
+undefined
+```
+
+Looks broken, right?
+
+---
+
+Most beginners think `undefined` means:
+
+> Error.
+
+Not true.
+
+---
+
+Look at this:
+
+```javascript
+let assignedDriver;
+```
+
+What value is inside it?
+
+---
+
+Nothing was assigned.
+
+So JavaScript says:
+
+```text
+undefined
+```
+
+---
+
+The variable exists.
+
+The data doesn't.
+
+That's an important distinction.
+
+---
+
+Think of it like a hotel room.
+
+The room exists.
+
+Nobody has checked in yet.
+
+---
+
+Now predict:
+
+```javascript
+let assignedDriver;
+
+console.log(assignedDriver);
+```
+
+What prints?
+
+---
+
+Answer:
+
+```text
+undefined
+```
+
+---
+
+Now predict:
+
+```javascript
+let assignedDriver;
+
+assignedDriver = "Sarah";
+
+console.log(assignedDriver);
+```
+
+What prints?
+
+---
+
+Now the room is occupied.
+
+JavaScript prints:
+
+```text
+Sarah
+```
+
+---
+
+This tiny concept is responsible for an enormous number of real-world bugs.
+
+Usually when you see:
+
+```text
+undefined
+```
+
+the question is not:
+
+> "Why is JavaScript broken?"
+
+The question is:
+
+> "Why did I forget to put data here?"
+
+---

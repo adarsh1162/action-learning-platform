@@ -1,0 +1,559 @@
+---
+
+# Module 1: Getting Started & Output
+
+## 1. The Output: `console.log()`, `console.error()`, and `console.warn()`
+
+Imagine you're playing a game.
+
+You press a button.
+
+Nothing happens.
+
+No score changes.
+
+No animation.
+
+No message.
+
+Now answer this:
+
+Was the button broken?
+
+Did the game crash?
+
+Did your click even reach the game?
+
+You have no idea.
+
+---
+
+Programming has the same problem.
+
+When your code runs, JavaScript is constantly making decisions.
+
+The problem is:
+
+You can't see those decisions.
+
+That's why developers use the console.
+
+The console is not for users.
+
+It's for you.
+
+It's your window into what JavaScript is doing behind the scenes.
+
+---
+
+Look at this:
+
+```javascript
+console.log("Payment received");
+```
+
+You're basically telling JavaScript:
+
+> "Show me this information."
+
+---
+
+Now predict:
+
+```javascript
+console.log("Starting");
+console.error("Failed");
+console.warn("Retrying");
+```
+
+Without running it:
+
+Which message appears first?
+
+---
+
+If your answer was:
+
+```text
+Starting
+Failed
+Retrying
+```
+
+Good.
+
+Notice something important.
+
+JavaScript does not prioritize errors.
+
+It does not prioritize warnings.
+
+It follows the order of your code.
+
+Always.
+
+---
+
+The three console tools you'll use most often are:
+
+```javascript
+console.log()
+```
+
+Normal information.
+
+---
+
+```javascript
+console.warn()
+```
+
+Something looks suspicious.
+
+The program still works.
+
+---
+
+```javascript
+console.error()
+```
+
+Something has already gone wrong.
+
+---
+
+Now think about this code:
+
+```javascript
+console.log("Status: " + console.error("Offline"));
+```
+
+Predict the output before continuing.
+
+Most beginners expect:
+
+```text
+Status: Offline
+```
+
+That's wrong.
+
+The error prints:
+
+```text
+Offline
+```
+
+But `console.error()` itself returns:
+
+```text
+undefined
+```
+
+Which means the log becomes:
+
+```text
+Status: undefined
+```
+
+This feels weird.
+
+Good.
+
+Weird things are usually remembered.
+
+---
+
+### The Rule
+
+The console is a debugging tool.
+
+It shows you what JavaScript is doing.
+
+It does not change what JavaScript is doing.
+
+---
+
+## 2. Code Execution Order
+
+Let's kill a dangerous belief early.
+
+Many beginners think:
+
+> "The computer knows what I meant."
+
+It doesn't.
+
+Not even a little.
+
+The computer only knows what you wrote.
+
+---
+
+Look at this:
+
+```javascript
+let score = 10;
+
+console.log(score);
+
+score = score + 5;
+
+console.log(score);
+```
+
+Before reading further:
+
+What gets printed?
+
+---
+
+Most people answer:
+
+```text
+10
+15
+```
+
+Correct.
+
+Now here's the important question:
+
+Why?
+
+---
+
+Did JavaScript look ahead?
+
+Did it notice the future value?
+
+Did it plan the entire program?
+
+No.
+
+---
+
+It simply read one line.
+
+Finished it.
+
+Moved to the next.
+
+Finished it.
+
+Moved again.
+
+That's all.
+
+---
+
+Think about a recipe.
+
+Imagine the first instruction says:
+
+```text
+Add sugar
+```
+
+and the second says:
+
+```text
+Bake cake
+```
+
+You can't bake before adding sugar.
+
+The order matters.
+
+Code works the same way.
+
+---
+
+Now predict:
+
+```javascript
+let currentScore = 10;
+
+console.log(currentScore);
+
+currentScore = currentScore + 5;
+
+console.log(CurrentScore);
+```
+
+Will it print:
+
+```text
+15
+```
+
+or crash?
+
+---
+
+Many beginners focus on the math.
+
+The real bug is elsewhere.
+
+JavaScript is case-sensitive.
+
+`currentScore` and `CurrentScore` are different names.
+
+One exists.
+
+One doesn't.
+
+---
+
+This exact mistake causes thousands of real-world bugs.
+
+---
+
+### The Rule
+
+JavaScript generally executes code from top to bottom, one instruction at a time.
+
+When debugging, ask:
+
+> "What line is JavaScript reading right now?"
+
+Not:
+
+> "What was I trying to do?"
+
+---
+
+## 3. Understanding Code Comments
+
+A question.
+
+Who are comments written for?
+
+JavaScript?
+
+Or humans?
+
+---
+
+Most beginners say:
+
+> Humans.
+
+Correct.
+
+But the important part is what happens next.
+
+JavaScript completely ignores them.
+
+---
+
+Look at this:
+
+```javascript
+// Temporary fix
+```
+
+JavaScript skips it.
+
+---
+
+Look at this:
+
+```javascript
+/*
+Need to optimize later
+*/
+```
+
+JavaScript skips this too.
+
+---
+
+Now predict:
+
+```javascript
+// console.log("Hello");
+
+console.log("Welcome");
+```
+
+What gets printed?
+
+---
+
+Only:
+
+```text
+Welcome
+```
+
+The first line is no longer code.
+
+It's just a note.
+
+---
+
+Now here's a trap.
+
+Predict this:
+
+```javascript
+let message = "Hello // Welcome User";
+```
+
+Is that a comment?
+
+---
+
+No.
+
+Because it's inside a string.
+
+JavaScript treats it as normal text.
+
+---
+
+This distinction becomes important when debugging.
+
+Because JavaScript doesn't care what something looks like.
+
+It cares where it appears.
+
+---
+
+Bad comment:
+
+```javascript
+// Store age
+let age = 18;
+```
+
+The code already tells us that.
+
+---
+
+Good comment:
+
+```javascript
+// Required by legal regulations
+let minimumAge = 18;
+```
+
+Now we know why.
+
+---
+
+### The Rule
+
+Good comments explain decisions.
+
+Not obvious code.
+
+---
+
+## 4. Statements vs. Expressions
+
+This topic sounds boring.
+
+It's not.
+
+In fact, this idea quietly powers almost everything you'll learn later.
+
+Functions.
+
+Conditions.
+
+Loops.
+
+React.
+
+All of it.
+
+---
+
+Let's start simple.
+
+What does this produce?
+
+```javascript
+10 * 5
+```
+
+Answer:
+
+```text
+50
+```
+
+---
+
+That piece of code creates a value.
+
+Anything that creates a value is called an expression.
+
+---
+
+Now look at this:
+
+```javascript
+let result = 10 * 5;
+```
+
+The multiplication is still creating a value.
+
+But the entire line is doing something else too.
+
+It's storing that value.
+
+It's performing an action.
+
+That's a statement.
+
+---
+
+A quick mental shortcut:
+
+Expressions produce values.
+
+Statements perform actions.
+
+---
+
+Now predict:
+
+```javascript
+let accessGranted =
+if (userAge > 18) {
+    true;
+}
+```
+
+Valid or invalid?
+
+---
+
+Many beginners think:
+
+> "The if returns true."
+
+But that's not how JavaScript sees it.
+
+`if` is a statement.
+
+The `=` operator expects a value.
+
+Those two expectations collide.
+
+And the code breaks.
+
+---
+
+The goal isn't to memorize a definition.
+
+The goal is to ask:
+
+> "Does this piece of code create a value, or perform an action?"
+
+That single question will become surprisingly useful later.
+
+---

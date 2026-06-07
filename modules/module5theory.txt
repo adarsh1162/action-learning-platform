@@ -1,0 +1,662 @@
+---
+
+# Module 5: Type Conversion & Coercion
+
+---
+
+# 1. Explicit Type Conversion (Using `Number()`, `String()`, `Boolean()`)
+
+Imagine you're building a checkout system.
+
+A customer buys a laptop.
+
+The server sends:
+
+```javascript
+let price = "50000";
+```
+
+Looks like a number.
+
+Feels like a number.
+
+But is it actually a number?
+
+---
+
+Let's find out.
+
+Predict:
+
+```javascript
+typeof "50000"
+```
+
+What does JavaScript return?
+
+---
+
+Answer:
+
+```text
+string
+```
+
+Not number.
+
+String.
+
+---
+
+This is where many real bugs start.
+
+Humans see:
+
+```text
+50000
+```
+
+JavaScript sees:
+
+```text
+"50000"
+```
+
+Those are not the same thing.
+
+---
+
+Sometimes you don't want JavaScript guessing.
+
+You want to tell it exactly what to do.
+
+That's called explicit conversion.
+
+---
+
+Predict:
+
+```javascript
+Number("500")
+```
+
+---
+
+Result:
+
+```text
+500
+```
+
+Now it's a real number.
+
+---
+
+Predict:
+
+```javascript
+String(false)
+```
+
+---
+
+Result:
+
+```text
+"false"
+```
+
+Now it's text.
+
+---
+
+Predict:
+
+```javascript
+Boolean(0)
+```
+
+---
+
+Result:
+
+```text
+false
+```
+
+---
+
+Easy so far.
+
+Now let's meet the first trap.
+
+---
+
+Predict:
+
+```javascript
+Number("")
+```
+
+What should happen?
+
+---
+
+Many learners answer:
+
+```text
+NaN
+```
+
+Makes sense.
+
+The string is empty.
+
+There is no number.
+
+---
+
+Actual result:
+
+```text
+0
+```
+
+---
+
+JavaScript treats an empty string as zero.
+
+Weird?
+
+Maybe.
+
+Important?
+
+Absolutely.
+
+---
+
+Now another trap.
+
+Predict:
+
+```javascript
+Boolean("false")
+```
+
+---
+
+Many people answer:
+
+```text
+false
+```
+
+Because the word literally says:
+
+```text
+false
+```
+
+---
+
+JavaScript disagrees.
+
+Result:
+
+```text
+true
+```
+
+---
+
+Why?
+
+Because JavaScript isn't reading English.
+
+It sees:
+
+```text
+A string with characters inside.
+```
+
+And non-empty strings become:
+
+```text
+true
+```
+
+---
+
+This exact bug appears constantly in APIs.
+
+---
+
+### The Rule
+
+Use:
+
+```javascript
+Number()
+```
+
+when you need math.
+
+Use:
+
+```javascript
+String()
+```
+
+when you need text.
+
+Use:
+
+```javascript
+Boolean()
+```
+
+when you need true/false.
+
+And never assume JavaScript reads words the way humans do.
+
+---
+
+# 2. Implicit Type Coercion (Behind the Scenes)
+
+Let's start with a question.
+
+What should this be?
+
+```javascript
+"50" + 5
+```
+
+---
+
+Most beginners know the answer now:
+
+```text
+"505"
+```
+
+---
+
+Good.
+
+Now the real question:
+
+Why?
+
+---
+
+Because JavaScript wants the operation to succeed.
+
+When it sees a string involved in a `+` operation, it thinks:
+
+> "I'll convert everything into text."
+
+---
+
+So:
+
+```javascript
+"50" + 5
+```
+
+becomes:
+
+```javascript
+"50" + "5"
+```
+
+which becomes:
+
+```text
+"505"
+```
+
+---
+
+Now predict:
+
+```javascript
+"50" - 5
+```
+
+---
+
+Will JavaScript return:
+
+```text
+"505"
+```
+
+again?
+
+---
+
+No.
+
+---
+
+Result:
+
+```text
+45
+```
+
+---
+
+Why did JavaScript suddenly change behavior?
+
+---
+
+Because subtraction doesn't know how to join text.
+
+So JavaScript changes strategy.
+
+It converts both values into numbers.
+
+---
+
+```javascript
+"50" - 5
+```
+
+becomes:
+
+```javascript
+50 - 5
+```
+
+Result:
+
+```text
+45
+```
+
+---
+
+Now for the famous trap.
+
+Predict:
+
+```javascript
+let batchId = "007";
+
+let encryptedCode = batchId + 1;
+
+let decodedKey = encryptedCode - 1;
+```
+
+What is `decodedKey`?
+
+---
+
+Most beginners answer:
+
+```text
+7
+```
+
+Wrong.
+
+---
+
+Let's watch JavaScript think.
+
+Step 1:
+
+```javascript
+"007" + 1
+```
+
+becomes:
+
+```text
+"0071"
+```
+
+---
+
+Step 2:
+
+```javascript
+"0071" - 1
+```
+
+becomes:
+
+```javascript
+71 - 1
+```
+
+---
+
+Final answer:
+
+```text
+70
+```
+
+---
+
+JavaScript isn't random.
+
+It simply follows different rules depending on the operator.
+
+---
+
+### The Rule
+
+For:
+
+```javascript
++
+```
+
+a string pulls everything into text.
+
+For:
+
+```javascript
+-
+*
+/
+```
+
+JavaScript usually converts values into numbers.
+
+---
+
+# 3. Truthy and Falsy values
+
+This topic causes more bugs than entire frameworks.
+
+Let's start with a prediction.
+
+---
+
+What happens here?
+
+```javascript
+if ("hello") {
+    console.log("Executed");
+}
+```
+
+---
+
+Does it run?
+
+---
+
+Yes.
+
+---
+
+Now predict:
+
+```javascript
+if ("0") {
+    console.log("Executed");
+}
+```
+
+---
+
+Many beginners hesitate.
+
+After all:
+
+```text
+0
+```
+
+feels false.
+
+---
+
+But remember:
+
+```text
+"0"
+```
+
+is not zero.
+
+It's text.
+
+---
+
+Result:
+
+```text
+Executed
+```
+
+---
+
+Now predict:
+
+```javascript
+if (" ") {
+    console.log("Executed");
+}
+```
+
+---
+
+Most people think:
+
+> That's basically empty.
+
+---
+
+JavaScript disagrees.
+
+The string contains one character:
+
+```text
+space
+```
+
+So it's truthy.
+
+The code runs.
+
+---
+
+Now let's flip it.
+
+Predict:
+
+```javascript
+if ("") {
+    console.log("Executed");
+}
+```
+
+---
+
+This time nothing happens.
+
+---
+
+Because:
+
+```javascript
+""
+```
+
+is one of JavaScript's falsy values.
+
+---
+
+The biggest mistake beginners make is trying to memorize hundreds of truthy values.
+
+Don't.
+
+---
+
+Memorize the falsy values.
+
+Everything else becomes truthy.
+
+---
+
+The important falsy values are:
+
+```javascript
+false
+0
+""
+null
+undefined
+NaN
+```
+
+---
+
+Now predict:
+
+```javascript
+let errorCount = "0";
+
+if (errorCount) {
+    console.log("Shutdown");
+}
+```
+
+Will it run?
+
+---
+
+Yes.
+
+Because:
+
+```javascript
+"0"
+```
+
+is text.
+
+Not zero.
+
+---
+
+This exact misunderstanding appears in authentication systems, checkout pages, and production APIs.
+
+---
+
+### The Rule
+
+When debugging a condition, stop looking at the value.
+
+Start looking at the type.
+
+Most truthy/falsy bugs are actually type bugs.
+
+---

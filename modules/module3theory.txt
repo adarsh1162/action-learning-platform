@@ -1,0 +1,1278 @@
+---
+
+# Module 3: Primitive Data Types
+
+---
+
+# 1. Numbers (Integers, Floats, and the concept of NaN)
+
+Let's start with a simple question.
+
+How much money is in this bank account?
+
+```javascript
+85000
+```
+
+Easy.
+
+Now what about this?
+
+```javascript
+85000.75
+```
+
+Still easy.
+
+Most people think these are different kinds of numbers.
+
+In many programming languages, they are.
+
+In JavaScript, they aren't.
+
+---
+
+JavaScript has a surprisingly simple rule:
+
+```text
+10
+10.5
+100000
+0.99
+```
+
+are all just numbers.
+
+The engine doesn't care whether the value has a decimal point or not.
+
+As far as JavaScript is concerned:
+
+> "A number is a number."
+
+---
+
+Now let's look at something stranger.
+
+Predict this:
+
+```javascript
+console.log("Apple" * 5);
+```
+
+What do you expect?
+
+Take a guess before continuing.
+
+---
+
+Some beginners expect:
+
+```text
+AppleAppleAppleAppleApple
+```
+
+Others expect an error.
+
+Neither is correct.
+
+---
+
+JavaScript prints:
+
+```text
+NaN
+```
+
+---
+
+This is where many learners get confused.
+
+`NaN` stands for:
+
+```text
+Not-a-Number
+```
+
+But here's the weird part.
+
+Predict this:
+
+```javascript
+typeof NaN
+```
+
+What should it return?
+
+---
+
+Most people answer:
+
+```text
+"nan"
+```
+
+or
+
+```text
+"undefined"
+```
+
+or
+
+```text
+"error"
+```
+
+---
+
+The actual answer is:
+
+```text
+"number"
+```
+
+Yes.
+
+Seriously.
+
+`NaN` is still considered a number by JavaScript.
+
+One of the weirdest facts in the language.
+
+---
+
+Now another prediction:
+
+```javascript
+console.log(NaN === NaN);
+```
+
+True or false?
+
+---
+
+Most people say:
+
+```text
+true
+```
+
+Reasonable answer.
+
+Still wrong.
+
+---
+
+The result is:
+
+```text
+false
+```
+
+Even `NaN` is not equal to itself.
+
+That's why professional developers use:
+
+```javascript
+Number.isNaN(value)
+```
+
+instead of equality checks.
+
+---
+
+### The Rule
+
+Numbers can be whole numbers or decimals.
+
+JavaScript treats both as the same data type.
+
+`NaN` means a mathematical operation failed.
+
+And if you need to check for it:
+
+```javascript
+Number.isNaN(...)
+```
+
+not
+
+```javascript
+=== NaN
+```
+
+---
+
+# 2. Strings (Single quotes and double quotes)
+
+Imagine a banking app showing this:
+
+```text
+Welcome Sarah
+```
+
+That isn't a number.
+
+It isn't a boolean.
+
+It's text.
+
+In JavaScript, text is called a string.
+
+---
+
+A string can use single quotes:
+
+```javascript
+'Welcome Sarah'
+```
+
+or double quotes:
+
+```javascript
+"Welcome Sarah"
+```
+
+For most situations:
+
+JavaScript treats both exactly the same.
+
+---
+
+Now predict this:
+
+```javascript
+let message = 'Hello';
+```
+
+Valid or invalid?
+
+---
+
+Easy.
+
+Valid.
+
+---
+
+Now predict this:
+
+```javascript
+let message = "Hello";
+```
+
+Valid or invalid?
+
+---
+
+Also valid.
+
+---
+
+Now let's look at a bug that crashes real applications.
+
+Predict what happens here:
+
+```javascript
+let customerName = 'Don't Leave';
+```
+
+Will it work?
+
+---
+
+Most beginners think yes.
+
+After all, it's just text.
+
+---
+
+But JavaScript sees something different.
+
+It reads:
+
+```javascript
+'Don'
+```
+
+and thinks:
+
+> "The string ended."
+
+Then it suddenly finds:
+
+```javascript
+t Leave
+```
+
+sitting outside the string.
+
+Now the engine has no idea what it's looking at.
+
+And the program crashes.
+
+---
+
+The fix is simple:
+
+```javascript
+let customerName = "Don't Leave";
+```
+
+Now the apostrophe is safely inside the string.
+
+---
+
+This may feel like a tiny detail.
+
+But a single misplaced quote can stop an entire application from running.
+
+---
+
+### The Rule
+
+Strings are text.
+
+Single quotes and double quotes both work.
+
+But if your text contains an apostrophe:
+
+```text
+don't
+it's
+customer's
+```
+
+double quotes are often safer.
+
+---
+
+# 3. String Concatenation (Joining strings using +)
+
+Imagine you're building a profile page.
+
+You already have:
+
+```javascript
+let firstName = "Sarah";
+```
+
+and
+
+```javascript
+let lastName = "Johnson";
+```
+
+Now you need:
+
+```text
+Sarah Johnson
+```
+
+How do you combine them?
+
+---
+
+JavaScript allows strings to be joined using:
+
+```javascript
++
+```
+
+This process is called concatenation.
+
+---
+
+Predict this:
+
+```javascript
+let fullName = "Sarah" + "Johnson";
+
+console.log(fullName);
+```
+
+What gets printed?
+
+---
+
+Answer:
+
+```text
+SarahJohnson
+```
+
+Notice the problem?
+
+The names got glued together.
+
+---
+
+JavaScript did exactly what you asked.
+
+You never gave it a space.
+
+---
+
+The fix:
+
+```javascript
+let fullName = "Sarah" + " " + "Johnson";
+```
+
+Now the output becomes:
+
+```text
+Sarah Johnson
+```
+
+---
+
+Now for the trap that appears constantly in interviews.
+
+Predict this:
+
+```javascript
+console.log("Total: " + 5 + 5);
+```
+
+Take a real guess.
+
+---
+
+Most beginners answer:
+
+```text
+Total: 10
+```
+
+Seems logical.
+
+Still wrong.
+
+---
+
+JavaScript evaluates from left to right.
+
+First:
+
+```javascript
+"Total: " + 5
+```
+
+becomes:
+
+```text
+"Total: 5"
+```
+
+Now JavaScript sees:
+
+```javascript
+"Total: 5" + 5
+```
+
+and joins them again.
+
+Result:
+
+```text
+Total: 55
+```
+
+---
+
+No math happened.
+
+The moment a string enters the expression, JavaScript starts treating the result as text.
+
+---
+
+This exact misunderstanding causes bugs in invoices, shopping carts, and dashboards.
+
+---
+
+### The Rule
+
+The `+` operator can mean two completely different things:
+
+```javascript
+5 + 5
+```
+
+Math.
+
+---
+
+```javascript
+"5" + "5"
+```
+
+Text joining.
+
+---
+
+Whenever strings are involved, stop and ask:
+
+> "Am I adding numbers, or am I joining text?"
+
+That question will save you from a surprising number of bugs.
+
+# 4. Template Literals (Using backticks and `${}`)
+
+Let's start with a problem.
+
+Imagine you're building a banking app.
+
+You have:
+
+```javascript
+let userName = "Sarah";
+let balance = 5000;
+```
+
+Now you want to display:
+
+```text
+Welcome Sarah. Your balance is 5000.
+```
+
+A beginner might write:
+
+```javascript
+let message =
+"Welcome " +
+userName +
+". Your balance is " +
+balance +
+".";
+```
+
+Will it work?
+
+Yes.
+
+Is it pleasant to read?
+
+Not even slightly.
+
+---
+
+Now imagine the message becomes longer.
+
+Then longer.
+
+Then longer again.
+
+Soon the code starts looking like a puzzle instead of a sentence.
+
+That's why template literals exist.
+
+---
+
+Look at this:
+
+```javascript
+let message =
+`Welcome ${userName}. Your balance is ${balance}.`;
+```
+
+Read it slowly.
+
+Doesn't it feel more like normal English?
+
+---
+
+Now predict:
+
+```javascript
+let itemsInCart = 12;
+
+let message =
+`You have ${itemsInCart} items.`;
+
+console.log(message);
+```
+
+What prints?
+
+---
+
+Most people correctly answer:
+
+```text
+You have 12 items.
+```
+
+Good.
+
+Now here's the trap.
+
+Predict this:
+
+```javascript
+let itemsInCart = 12;
+
+let message =
+'You have ${itemsInCart} items.';
+
+console.log(message);
+```
+
+What prints?
+
+---
+
+Many beginners still expect:
+
+```text
+You have 12 items.
+```
+
+Wrong.
+
+---
+
+The output is:
+
+```text
+You have ${itemsInCart} items.
+```
+
+Literally.
+
+Character for character.
+
+---
+
+Why?
+
+Because `${}` only works inside:
+
+```javascript
+`
+`
+```
+
+backticks.
+
+Not single quotes.
+
+Not double quotes.
+
+---
+
+Now another benefit.
+
+Predict this:
+
+```javascript
+let invoice =
+`Item: Laptop
+Price: 50000
+Status: Paid`;
+```
+
+Valid or invalid?
+
+---
+
+Valid.
+
+Template literals allow multi-line text without ugly workarounds.
+
+---
+
+### The Rule
+
+Use template literals when:
+
+* You need variables inside text.
+* You need multi-line strings.
+* You want code that humans can actually read.
+
+And remember:
+
+```javascript
+${}
+```
+
+only works inside backticks.
+
+---
+
+# 5. Booleans (true and false)
+
+Imagine a login system.
+
+The user is either:
+
+```text
+Logged In
+```
+
+or
+
+```text
+Logged Out
+```
+
+Nothing in between.
+
+---
+
+Many real-world situations work like this.
+
+* Payment successful or failed.
+* User verified or not verified.
+* Account active or inactive.
+
+Whenever something has exactly two states, JavaScript uses a boolean.
+
+---
+
+A boolean can only be:
+
+```javascript
+true
+```
+
+or
+
+```javascript
+false
+```
+
+Nothing else.
+
+---
+
+Now predict:
+
+```javascript
+let isVerified = true;
+```
+
+What type is this?
+
+---
+
+Boolean.
+
+Easy.
+
+---
+
+Now predict:
+
+```javascript
+let isVerified = "true";
+```
+
+Same thing?
+
+---
+
+Most beginners say yes.
+
+This mistake causes countless bugs.
+
+---
+
+Look carefully:
+
+```javascript
+true
+```
+
+Boolean.
+
+---
+
+```javascript
+"true"
+```
+
+String.
+
+---
+
+Completely different.
+
+---
+
+Now let's look at a dangerous bug.
+
+Predict this:
+
+```javascript
+let isAdmin = "false";
+
+if (isAdmin) {
+    console.log("Access Granted");
+}
+```
+
+Will access be granted?
+
+---
+
+Most beginners answer:
+
+```text
+No
+```
+
+Because they see the word:
+
+```text
+false
+```
+
+Makes sense.
+
+Still wrong.
+
+---
+
+The output is:
+
+```text
+Access Granted
+```
+
+---
+
+Why?
+
+Because JavaScript isn't reading the word.
+
+It's reading the type.
+
+---
+
+This:
+
+```javascript
+"false"
+```
+
+is not a boolean.
+
+It's a string.
+
+And non-empty strings are considered truthy.
+
+---
+
+JavaScript basically sees:
+
+```text
+Some text exists.
+```
+
+and treats it as true.
+
+---
+
+This exact bug has caused real authentication and security problems.
+
+---
+
+### The Rule
+
+These are booleans:
+
+```javascript
+true
+false
+```
+
+These are strings:
+
+```javascript
+"true"
+"false"
+```
+
+Never confuse them.
+
+JavaScript certainly won't.
+
+---
+
+# 6. null vs. undefined (Intentional empty vs. unassigned)
+
+This topic confuses almost everyone at first.
+
+Let's make it simple.
+
+---
+
+Imagine a hotel.
+
+Room 101 exists.
+
+But nobody has checked in yet.
+
+That room is:
+
+```javascript
+undefined
+```
+
+---
+
+Now imagine Room 102 exists.
+
+The manager intentionally marks it as:
+
+```text
+No Guest Assigned
+```
+
+That room is:
+
+```javascript
+null
+```
+
+---
+
+They both look empty.
+
+But they mean different things.
+
+---
+
+Look at this:
+
+```javascript
+let driverName;
+```
+
+Predict the value.
+
+---
+
+Answer:
+
+```javascript
+undefined
+```
+
+---
+
+Because JavaScript created the variable.
+
+But nobody put anything inside it.
+
+---
+
+Now look at this:
+
+```javascript
+let driverName = null;
+```
+
+Different meaning.
+
+---
+
+Now the developer is saying:
+
+> This variable exists.
+>
+> I intentionally want it to contain nothing.
+
+---
+
+Now predict:
+
+```javascript
+let searchResult = null;
+
+let futureData;
+
+console.log(searchResult === futureData);
+```
+
+True or false?
+
+---
+
+Most beginners answer:
+
+```text
+true
+```
+
+Both look empty.
+
+---
+
+The actual answer is:
+
+```text
+false
+```
+
+---
+
+Because JavaScript sees:
+
+```javascript
+null
+```
+
+and
+
+```javascript
+undefined
+```
+
+as different values.
+
+---
+
+This distinction becomes important in APIs, databases, and forms.
+
+---
+
+Think about it this way:
+
+```javascript
+undefined
+```
+
+means:
+
+> Nobody assigned anything.
+
+---
+
+```javascript
+null
+```
+
+means:
+
+> Somebody intentionally assigned nothing.
+
+---
+
+### The Rule
+
+Use:
+
+```javascript
+undefined
+```
+
+for data that hasn't been assigned yet.
+
+Use:
+
+```javascript
+null
+```
+
+when you intentionally want "nothing" to be stored.
+
+---
+
+# 7. Using the typeof operator to check data types
+
+Imagine you're debugging a banking application.
+
+A value looks wrong.
+
+You don't know whether it's:
+
+* a number
+* a string
+* a boolean
+
+How do you check?
+
+---
+
+JavaScript gives you a tool:
+
+```javascript
+typeof
+```
+
+---
+
+Predict:
+
+```javascript
+typeof 10
+```
+
+---
+
+Answer:
+
+```text
+number
+```
+
+---
+
+Predict:
+
+```javascript
+typeof "10"
+```
+
+---
+
+Answer:
+
+```text
+string
+```
+
+---
+
+Now predict:
+
+```javascript
+typeof true
+```
+
+---
+
+Answer:
+
+```text
+boolean
+```
+
+---
+
+Simple so far.
+
+Now let's meet one of JavaScript's oldest bugs.
+
+Predict this:
+
+```javascript
+typeof null
+```
+
+---
+
+What should it return?
+
+Most people answer:
+
+```text
+null
+```
+
+Reasonable answer.
+
+Wrong answer.
+
+---
+
+The actual result is:
+
+```text
+object
+```
+
+---
+
+Yes.
+
+Really.
+
+---
+
+This isn't a typo.
+
+It's a historical bug that became part of the language.
+
+Millions of websites depend on it now.
+
+So it can never be removed.
+
+---
+
+This creates a common trap:
+
+```javascript
+let data = null;
+
+if (typeof data === "null") {
+    console.log("Empty");
+}
+```
+
+Will this run?
+
+---
+
+No.
+
+Because:
+
+```javascript
+typeof data
+```
+
+returns:
+
+```text
+object
+```
+
+not
+
+```text
+null
+```
+
+---
+
+Many developers encounter this bug years into their careers.
+
+You're seeing it now.
+
+---
+
+### The Rule
+
+`typeof` helps you discover data types.
+
+Common results:
+
+```javascript
+typeof 10
+// "number"
+
+typeof "hello"
+// "string"
+
+typeof true
+// "boolean"
+```
+
+But remember forever:
+
+```javascript
+typeof null
+```
+
+returns:
+
+```text
+"object"
+```
+
+even though it feels wrong.
+
+---
