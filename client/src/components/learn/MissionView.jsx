@@ -78,7 +78,7 @@ const MissionView = ({ mission, moduleColor, moduleId, onComplete }) => {
             if (token) {
                 const failedTags = !allPassed ? mission.microTags : [];
                 const passedTags = allPassed ? mission.microTags : [];
-                await fetch(`${import.meta.env.VITE_API_URL || ''}/api/challenges/submit`, {
+                const submitRes = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/challenges/submit`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -92,6 +92,8 @@ const MissionView = ({ mission, moduleColor, moduleId, onComplete }) => {
                         rewardCoins: mission.rewardCoins
                     })
                 });
+                
+                const submitData = await submitRes.json();
 
                 // Refresh skill graph
                 const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/progress/skill-graph`, {
@@ -103,15 +105,17 @@ const MissionView = ({ mission, moduleColor, moduleId, onComplete }) => {
                 } else {
                     alert('Backend error: ' + (data.message || 'Unknown error'));
                 }
+
+                if (allPassed) {
+                    if (submitData.isFirstTime) {
+                        useStore.getState().addCoins(mission.rewardCoins);
+                    }
+                    setTimeout(() => onComplete && onComplete(moduleId), 1500);
+                }
             }
         } catch (error) {
             console.error("Failed to submit mission", error);
             alert("Database Connection Error! Ensure your MongoDB IP whitelist is set to 0.0.0.0/0 on Atlas. The backend is currently unreachable.");
-        }
-
-        if (allPassed) {
-            setCoins(mission.rewardCoins);
-            setTimeout(() => onComplete && onComplete(moduleId), 1500);
         }
     };
 

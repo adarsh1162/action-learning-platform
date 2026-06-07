@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     coins: { type: Number, default: 0 },
     retentionScore: { type: Number, default: 100 },
     challengesDone: { type: Number, default: 0 },
+    completedChallenges: [{ type: String }],
     streak: { type: Number, default: 0 },
     mysteryBoxes: { type: Number, default: 0 },
     lastActiveDate: { type: Date }

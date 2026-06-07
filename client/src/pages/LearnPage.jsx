@@ -19,7 +19,7 @@ import './LearnPage.css';
  *   → 'mission' (Phase 3 Boss Battle)
  */
 const LearnPage = () => {
-    const { coins, setCoins, setSkillGraph } = useStore();
+    const { coins, setCoins, addCoins, setSkillGraph } = useStore();
 
     // Navigation state
     const [activeModuleId, setActiveModuleId] = useState(1);
@@ -70,6 +70,12 @@ const LearnPage = () => {
                 const data = await res.json();
                 if (data.success) {
                     setSkillGraph(data.skillGraph);
+                    if (data.coins !== undefined) {
+                        setCoins(data.coins);
+                    }
+                    if (data.completedChallenges) {
+                        setCompletedTopics(new Set(data.completedChallenges));
+                    }
                 }
             } catch (error) {
                 console.error("Failed to fetch skill graph", error);
@@ -130,8 +136,7 @@ const LearnPage = () => {
 
     // ── Topic completion ─────────────────────────────────────────────────────
     const markTopicDone = () => {
-        const key = `${activeModuleId}-${activeTopicId}`;
-        setCompletedTopics(prev => new Set([...prev, key]));
+        setCompletedTopics(prev => new Set([...prev, activeTopicId]));
     };
 
     // ── Code Execution ───────────────────────────────────────────────────────
@@ -158,12 +163,13 @@ const LearnPage = () => {
         setTestResults(result);
 
         // Submit to backend
+        let submitData = null;
         try {
             const token = localStorage.getItem('token');
             if (token) {
                 const failedTags = !result.allPassed ? activeTopic.microTags : [];
                 const passedTags = result.allPassed ? activeTopic.microTags : [];
-                await fetch(`${import.meta.env.VITE_API_URL || ''}/api/challenges/submit`, {
+                const submitRes = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/challenges/submit`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -177,6 +183,7 @@ const LearnPage = () => {
                         rewardCoins: activeTopic.challenge.rewardCoins
                     })
                 });
+                submitData = await submitRes.json();
 
                 const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/progress/skill-graph`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -194,7 +201,10 @@ const LearnPage = () => {
         }
 
         if (result.allPassed) {
-            setCoins(activeTopic.challenge.rewardCoins);
+            // Rely on the backend to tell us if it was the first time completion!
+            if (submitData && submitData.isFirstTime) {
+                addCoins(activeTopic.challenge.rewardCoins);
+            }
             setShowSuccess(true);
             markTopicDone();
             setTimeout(() => {

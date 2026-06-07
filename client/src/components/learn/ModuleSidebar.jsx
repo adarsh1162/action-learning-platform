@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle, Lock, ChevronRight, Zap, AlertTriangle } from 'lucide-react';
 import useStore from '../../store/useStore';
+import { curriculum } from '../../data/curriculum';
 
 /**
  * ModuleSidebar
@@ -10,15 +11,28 @@ import useStore from '../../store/useStore';
 const ModuleSidebar = ({ modules, activeModuleId, activeTopicId, completedTopics, onSelectTopic, onSelectMission, activeMissionId }) => {
 
     const getTopicStatus = (moduleId, topicId) => {
-        const key = `${moduleId}-${topicId}`;
-        if (completedTopics.has(key)) return 'done';
+        if (completedTopics.has(topicId)) return 'done';
         if (activeModuleId === moduleId && activeTopicId === topicId) return 'active';
         return 'idle';
     };
 
     const { skillGraph } = useStore();
     const hasCriticalWeakness = skillGraph?.tags?.some(t => t.weaknessScore >= 30);
-    const criticalTags = skillGraph?.tags?.filter(t => t.weaknessScore >= 30).map(t => t.tagName);
+    const criticalTags = skillGraph?.tags?.filter(t => t.weaknessScore >= 30).map(t => t.tagName) || [];
+
+    // Find the highest module ID where the critical weakness occurred
+    // This ensures we only lock modules *after* the weakness, 
+    // rather than locking the user out of the module they are currently practicing!
+    let maxCriticalModuleId = 0;
+    if (hasCriticalWeakness) {
+        for (const mod of curriculum.modules) {
+            for (const topic of mod.topics) {
+                if (topic.microTags && topic.microTags.some(tag => criticalTags.includes(tag))) {
+                    if (mod.id > maxCriticalModuleId) maxCriticalModuleId = mod.id;
+                }
+            }
+        }
+    }
 
     return (
         <aside className="sidebar-container">
@@ -48,11 +62,12 @@ const ModuleSidebar = ({ modules, activeModuleId, activeTopicId, completedTopics
                 {modules.map((mod) => {
                     const isActiveModule = mod.id === activeModuleId;
                     const completedCount = mod.topics.filter(t =>
-                        completedTopics.has(`${mod.id}-${t.id}`)
+                        completedTopics.has(t.id)
                     ).length;
                     const allDone = completedCount === mod.topics.length;
                     
-                    const isModuleLocked = hasCriticalWeakness && mod.id > activeModuleId;
+                    // Lock modules only if they come strictly *after* the highest module containing a weakness.
+                    const isModuleLocked = hasCriticalWeakness && mod.id > maxCriticalModuleId;
 
                     return (
                         <div key={mod.id} className="module-group">

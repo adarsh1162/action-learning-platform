@@ -22,7 +22,7 @@ const Dashboard = () => {
                     const data = await res.json();
                     if (data.success) {
                         setSkillGraph(data.skillGraph);
-                        setCoins(data.coins - coins); // To sync coins safely, or just write a specific store method. Actually useStore.setCoins adds. Let's just set state directly. Wait, we don't have setCoins absolute. 
+                        setCoins(data.coins);
                         // It's fine to just set Stats
                         setStats({
                             challengesDone: data.challengesDone,
@@ -68,15 +68,33 @@ const Dashboard = () => {
     // Get dynamic missions from curriculum
     const allMissions = curriculum.modules.map(m => m.mission).filter(Boolean);
 
+    // Helper to convert tag to a readable topic title
+    const getTopicTitleForTag = (tagName) => {
+        for (const mod of curriculum.modules) {
+            for (const topic of mod.topics) {
+                if (topic.microTags && topic.microTags.includes(tagName)) {
+                    let title = topic.title;
+                    // Shorten if it has a colon (like "The Output: console.log...")
+                    if (title.includes(':')) {
+                        title = title.split(':')[0];
+                    }
+                    // Truncate if too long for UI
+                    return title.length > 30 ? title.substring(0, 30) + '...' : title;
+                }
+            }
+        }
+        return tagName; // fallback
+    };
+
     // Prepare chart data
     const chartData = tags.map(tag => ({
-        subject: tag.tagName,
+        subject: getTopicTitleForTag(tag.tagName),
         A: Math.max(0, 100 - tag.weaknessScore),
         fullMark: 100
     }));
     if (chartData.length > 0 && chartData.length < 3) {
-        chartData.push({ subject: 'Logic', A: 0, fullMark: 100 });
-        chartData.push({ subject: 'Syntax', A: 0, fullMark: 100 });
+        chartData.push({ subject: 'Logic Basics', A: 0, fullMark: 100 });
+        chartData.push({ subject: 'Syntax Basics', A: 0, fullMark: 100 });
     }
 
     return (
@@ -174,7 +192,7 @@ const Dashboard = () => {
                                         <div className="space-y-3">
                                             {weakTags.slice(0,3).map((t, i) => (
                                                 <div key={i} className="flex flex-col gap-1">
-                                                    <span className="text-sm font-medium text-gray-200">{t.tagName}</span>
+                                                    <span className="text-sm font-medium text-gray-200">{getTopicTitleForTag(t.tagName)}</span>
                                                     <span className="text-[10px] text-red-400/80">{Math.max(0, 100 - t.weaknessScore)}% accuracy</span>
                                                 </div>
                                             ))}
@@ -201,7 +219,7 @@ const Dashboard = () => {
                                     <div className="space-y-3">
                                         {strongTags.slice(0,3).map((t, i) => (
                                             <div key={i} className="flex flex-col gap-1">
-                                                <span className="text-sm font-medium text-gray-200">{t.tagName}</span>
+                                                <span className="text-sm font-medium text-gray-200">{getTopicTitleForTag(t.tagName)}</span>
                                                 <span className="text-[10px] text-green-400/80">{Math.max(0, 100 - t.weaknessScore)}% accuracy</span>
                                             </div>
                                         ))}
@@ -224,7 +242,7 @@ const Dashboard = () => {
                                 </div>
                                 <div>
                                     <h3 className="text-sm font-bold text-white">Daily Warm-Up is ready!</h3>
-                                    <p className="text-xs text-[#A89CFF]/80 mt-1">Targeted challenges based on your weak tags.</p>
+                                    <p className="text-xs text-[#A89CFF]/80 mt-1">Targeted challenges based on your weak topics.</p>
                                 </div>
                             </div>
                             <Link to="/learn" className="bg-[#6C5CE7] hover:bg-[#5b4cdb] text-white text-xs font-semibold px-5 py-2.5 rounded-lg transition-colors flex items-center gap-1 justify-center shrink-0">

@@ -16,7 +16,8 @@ const useStore = create((set) => ({
         localStorage.setItem('user', JSON.stringify(user));
         set({ user });
     },
-    setCoins: (amount) => set((state) => ({ coins: state.coins + amount })),
+    setCoins: (coins) => set({ coins }),
+    addCoins: (amount) => set((state) => ({ coins: state.coins + amount })),
     setRetentionScore: (score) => set({ retentionScore: score }),
     setStats: (stats) => set((state) => ({ 
         challengesDone: stats.challengesDone !== undefined ? stats.challengesDone : state.challengesDone, 

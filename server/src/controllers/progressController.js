@@ -21,6 +21,7 @@ const getSkillGraph = async (req, res) => {
             skillGraph,
             coins: user ? user.coins : 0,
             challengesDone: user ? (user.challengesDone || 0) : 0,
+            completedChallenges: user ? (user.completedChallenges || []) : [],
             streak: user ? (user.streak || 0) : 0,
             retentionScore: user ? (user.retentionScore || 100) : 100,
             mysteryBoxes: user ? (user.mysteryBoxes || 0) : 0

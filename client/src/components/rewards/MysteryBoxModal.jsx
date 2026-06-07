@@ -3,7 +3,8 @@ import { Package, X, Coins } from 'lucide-react';
 import useStore from '../../store/useStore';
 
 const MysteryBoxModal = ({ onClose }) => {
-    const { mysteryBoxes, setStats, setCoins, coins } = useStore();
+    const { mysteryBoxes, setStats, addCoins, coins } = useStore();
+
     const [opening, setOpening] = useState(false);
     const [reward, setReward] = useState(null);
     const [error, setError] = useState('');
@@ -28,9 +29,7 @@ const MysteryBoxModal = ({ onClose }) => {
                 setTimeout(() => {
                     setReward(data.coinsAwarded);
                     setStats({ mysteryBoxes: data.mysteryBoxes });
-                    setCoins(data.coinsAwarded); // assuming setCoins increments, wait, in Dashboard we saw it.
-                    // Wait, our useStore.setCoins is simple. Let's see what useStore does.
-                    // We'll update useStore to handle absolute coins if needed.
+                    addCoins(data.coinsAwarded); 
                 }, 1500);
             } else {
                 setError(data.message);

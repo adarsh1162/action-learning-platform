@@ -50,12 +50,22 @@ const submitChallenge = async (req, res) => {
 
         // 1. If the user passed, reward them with coins, mystery boxes, and clear passedTags weakness
         if (passed) {
-            // 30% chance to drop a mystery box
-            const boxAwarded = Math.random() < 0.3 ? 1 : 0;
+            const user = await User.findById(userId);
+            const isFirstTime = !user.completedChallenges.includes(topicId);
 
-            await User.findByIdAndUpdate(userId, {
-                $inc: { coins: rewardCoins || 10, challengesDone: 1, mysteryBoxes: boxAwarded }
-            });
+            let coinsToAward = 0;
+            let boxAwarded = 0;
+
+            if (isFirstTime) {
+                // 30% chance to drop a mystery box
+                boxAwarded = Math.random() < 0.3 ? 1 : 0;
+                coinsToAward = rewardCoins || 10;
+
+                await User.findByIdAndUpdate(userId, {
+                    $inc: { coins: coinsToAward, challengesDone: 1, mysteryBoxes: boxAwarded },
+                    $addToSet: { completedChallenges: topicId }
+                });
+            }
 
             // Clear weakness scores for the tags they just mastered
             if (passedTags && passedTags.length > 0) {
@@ -76,9 +86,12 @@ const submitChallenge = async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: `Mission accomplished! +${rewardCoins || 10} coins awarded.${boxAwarded ? ' You found a Mystery Box!' : ''}`,
-                coinsAwarded: rewardCoins || 10,
-                boxAwarded: boxAwarded > 0
+                message: isFirstTime 
+                    ? `Mission accomplished! +${coinsToAward} coins awarded.${boxAwarded ? ' You found a Mystery Box!' : ''}`
+                    : `Mission accomplished! (Already completed previously)`,
+                coinsAwarded: coinsToAward,
+                boxAwarded: boxAwarded > 0,
+                isFirstTime
             });
         }
 

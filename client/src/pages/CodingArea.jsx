@@ -61,7 +61,7 @@ const CodingArea = () => {
     // Ref to hold the Web Worker instance
     const workerRef = useRef(null);
 
-    const { setCoins, user } = useStore();
+    const { addCoins, user } = useStore();
 
     // ── Fetch challenges on mount ──────────────────────────────────────────────
     const fetchChallenges = async () => {
@@ -108,7 +108,7 @@ const CodingArea = () => {
 
             if (passed) {
                 // Reward coins locally via Zustand
-                setCoins(currentChallenge.rewardCoins || 10);
+                addCoins(currentChallenge.rewardCoins || 10);
             }
 
             // Only submit to backend if user is logged in
@@ -141,7 +141,7 @@ const CodingArea = () => {
             workerRef.current?.terminate();
         };
     // Re-create worker when challenges load (so the onmessage closure has fresh data)
-    }, [challenges, currentIndex, setCoins, user]);
+    }, [challenges, currentIndex, addCoins, user]);
 
     // ── Handlers ──────────────────────────────────────────────────────────────
     const handleRunCode = (code) => {
