@@ -135,15 +135,17 @@ const Dashboard = () => {
                                         <span className="px-3 py-1 bg-[#6C5CE7]/20 text-[#A89CFF] text-[10px] font-bold uppercase tracking-widest rounded-full flex items-center gap-1.5">
                                             <Sparkles size={12} /> Active Mission
                                         </span>
-                                        <span className="text-xs text-gray-500 font-medium">Tier {heroMission.tier} Boss Level</span>
                                     </div>
-                                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 tracking-tight">
+                                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
                                         Start Learning Javascript
                                     </h2>
+                                    <p className="text-gray-400 max-w-lg mb-8 text-sm md:text-base leading-relaxed">
+                                        JavaScript is the language of the modern web. In this curriculum, you'll start from the absolute basics of variables and data types, and progress through functions and logic. Dive in to build a strong foundation and start writing your own interactive code.
+                                    </p>
                                 </div>
                                 <div className="z-10">
                                     <Link to="/learn" className="inline-flex items-center justify-center gap-2 bg-[#6C5CE7] hover:bg-[#5b4cdb] text-white text-sm font-semibold px-8 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#6C5CE7]/25 w-full sm:w-auto">
-                                        <Play size={18} className="fill-current" /> Continue Training
+                                        <Play size={18} className="fill-current" /> Continue Learning
                                     </Link>
                                 </div>
                             </div>
