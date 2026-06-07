@@ -137,12 +137,9 @@ const Dashboard = () => {
                                         </span>
                                         <span className="text-xs text-gray-500 font-medium">Tier {heroMission.tier} Boss Level</span>
                                     </div>
-                                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
-                                        {heroMission.title}
+                                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 tracking-tight">
+                                        Start Learning Javascript
                                     </h2>
-                                    <p className="text-gray-400 max-w-lg mb-8 text-sm md:text-base leading-relaxed">
-                                        You're halfway through this module. Continue your training to unlock the next tier of abilities and earn massive rewards.
-                                    </p>
                                 </div>
                                 <div className="z-10">
                                     <Link to="/learn" className="inline-flex items-center justify-center gap-2 bg-[#6C5CE7] hover:bg-[#5b4cdb] text-white text-sm font-semibold px-8 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#6C5CE7]/25 w-full sm:w-auto">
