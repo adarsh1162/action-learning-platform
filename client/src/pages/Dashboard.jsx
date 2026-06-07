@@ -136,7 +136,7 @@ const Dashboard = () => {
                                             <Sparkles size={12} /> Active Mission
                                         </span>
                                     </div>
-                                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
+                                    <h2 className="text-[35px] md:text-[42px] font-bold text-white mb-3 tracking-tight leading-tight">
                                         Start Learning Javascript
                                     </h2>
                                     <p className="text-gray-400 max-w-lg mb-8 text-sm md:text-base leading-relaxed">
