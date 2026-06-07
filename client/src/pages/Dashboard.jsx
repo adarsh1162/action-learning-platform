@@ -231,77 +231,89 @@ const Dashboard = () => {
 
                 {/* ── LEVEL 4: Analytics Grid ── */}
                 <div className="mt-8 pt-8 border-t border-white/5">
-                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6">Performance Analytics</h3>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                        {/* Challenges Done Stat */}
-                        <div className="lg:col-span-1 bg-[#1A1B25] border border-white/5 p-6 rounded-2xl flex flex-col justify-center items-center text-center">
-                            <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-4">
-                                <Code2 size={32} />
-                            </div>
-                            <div className="text-4xl font-black text-white mb-2">{challengesDone}</div>
-                            <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">Total Challenges Completed</div>
-                        </div>
-
-                        {/* Skill Radar */}
-                        <div className="lg:col-span-1 bg-[#1A1B25] border border-white/5 p-6 rounded-2xl">
-                            <h3 className="text-xs font-semibold text-gray-400 mb-4 flex items-center gap-2">
-                                <Activity size={14} className="text-[#5DCAA5]" /> Skill Radar
+                        {/* Skill Radar - Largest (lg:col-span-7) */}
+                        <div className="lg:col-span-7 bg-gradient-to-b from-[#1A1B25] to-[#13141C] border border-white/5 p-6 md:p-8 rounded-3xl relative overflow-hidden group hover:border-[#5DCAA5]/40 transition-all duration-700 hover:shadow-[0_10px_40px_-15px_rgba(93,202,165,0.2)]">
+                            <h3 className="text-sm font-bold text-gray-400 mb-6 flex items-center gap-2">
+                                <Activity size={16} className="text-[#5DCAA5] group-hover:scale-125 transition-transform duration-500" /> Skill Radar
                             </h3>
-                            <div className="h-[200px] w-full">
+                            <div className="h-[280px] w-full">
                                 {chartData.length === 0 ? (
                                     <div className="flex items-center justify-center h-full text-xs text-gray-500 italic">Complete challenges to build graph.</div>
                                 ) : (
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
+                                        <RadarChart cx="50%" cy="50%" outerRadius="75%" data={chartData}>
                                             <PolarGrid stroke="rgba(255,255,255,0.05)" />
-                                            <PolarAngleAxis dataKey="subject" tick={{ fill: '#6C5CE7', fontSize: 9 }} />
+                                            <PolarAngleAxis dataKey="subject" tick={{ fill: '#6C5CE7', fontSize: 10 }} />
                                             <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                            <Radar name="Accuracy" dataKey="A" stroke="#5DCAA5" fill="#5DCAA5" fillOpacity={0.2} />
-                                            <Tooltip contentStyle={{ backgroundColor: '#13141C', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '8px', fontSize: '12px' }} />
+                                            <Radar name="Accuracy" dataKey="A" stroke="#5DCAA5" fill="#5DCAA5" fillOpacity={0.25} />
+                                            <Tooltip contentStyle={{ backgroundColor: '#13141C', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '12px', padding: '12px' }} />
                                         </RadarChart>
                                     </ResponsiveContainer>
                                 )}
                             </div>
                         </div>
 
-                        {/* Strengths & Weaknesses */}
-                        <div className="lg:col-span-1 grid grid-rows-2 gap-4">
-                            <div className="bg-[#1A1B25] border border-white/5 p-4 rounded-xl flex flex-col justify-center">
-                                <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#E24B4A]"></div> Needs Work
+                        {/* Right side container - lg:col-span-5 */}
+                        <div className="lg:col-span-5 flex flex-col gap-6">
+                            
+                            {/* Needs Work - Second Largest */}
+                            <div className="flex-1 bg-gradient-to-br from-[#1A1B25] to-[#13141C] border border-white/5 p-6 rounded-3xl group hover:border-[#E24B4A]/40 transition-all duration-500 hover:shadow-[0_10px_30px_-10px_rgba(226,75,74,0.15)] flex flex-col justify-center relative overflow-hidden">
+                                <div className="absolute right-0 top-0 w-32 h-32 bg-[#E24B4A]/5 rounded-full blur-[40px] group-hover:bg-[#E24B4A]/10 transition-colors duration-700"></div>
+                                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5 flex items-center gap-2 relative z-10">
+                                    <div className="w-2 h-2 rounded-full bg-[#E24B4A] animate-pulse"></div> Needs Work
                                 </h4>
                                 {weakTags.length > 0 ? (
-                                    <div className="space-y-2">
-                                        {weakTags.slice(0, 2).map((t, i) => (
-                                            <div key={i} className="flex justify-between items-center">
-                                                <span className="text-xs font-medium text-gray-300">{getTopicTitleForTag(t.tagName)}</span>
-                                                <span className="text-[10px] text-[#E24B4A] font-medium">{Math.max(0, 100 - t.weaknessScore)}%</span>
+                                    <div className="space-y-4 relative z-10">
+                                        {weakTags.slice(0, 3).map((t, i) => (
+                                            <div key={i} className="flex flex-col gap-1.5 group/item">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-sm font-semibold text-gray-300 group-hover/item:text-white transition-colors">{getTopicTitleForTag(t.tagName)}</span>
+                                                    <span className="text-xs text-[#E24B4A] font-bold">{Math.max(0, 100 - t.weaknessScore)}%</span>
+                                                </div>
+                                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-[#E24B4A] rounded-full" style={{ width: `${Math.max(0, 100 - t.weaknessScore)}%` }}></div>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="text-xs text-gray-600 italic">No weak areas yet.</div>
+                                    <div className="text-sm text-gray-600 italic relative z-10">No weak areas yet. You're doing great!</div>
                                 )}
                             </div>
 
-                            <div className="bg-[#1A1B25] border border-white/5 p-4 rounded-xl flex flex-col justify-center">
-                                <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#5DCAA5]"></div> Strong Areas
-                                </h4>
-                                {strongTags.length > 0 ? (
-                                    <div className="space-y-2">
-                                        {strongTags.slice(0, 2).map((t, i) => (
-                                            <div key={i} className="flex justify-between items-center">
-                                                <span className="text-xs font-medium text-gray-300">{getTopicTitleForTag(t.tagName)}</span>
-                                                <span className="text-[10px] text-[#5DCAA5] font-medium">{Math.max(0, 100 - t.weaknessScore)}%</span>
-                                            </div>
-                                        ))}
+                            {/* Row for Strong Areas & Challenges (Third & Fourth sizes) */}
+                            <div className="grid grid-cols-2 gap-6 h-[140px]">
+                                
+                                {/* Strong Areas - Third Largest */}
+                                <div className="col-span-1 bg-[#1A1B25] border border-white/5 p-5 rounded-3xl group hover:border-[#5DCAA5]/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(93,202,165,0.1)] flex flex-col justify-center">
+                                    <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[#5DCAA5]"></div> Strong Areas
+                                    </h4>
+                                    {strongTags.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {strongTags.slice(0, 2).map((t, i) => (
+                                                <div key={i} className="flex justify-between items-center">
+                                                    <span className="text-xs font-medium text-gray-300 truncate pr-2">{getTopicTitleForTag(t.tagName)}</span>
+                                                    <span className="text-[10px] text-[#5DCAA5] font-bold">{Math.max(0, 100 - t.weaknessScore)}%</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-[10px] text-gray-600 italic">No strong areas yet.</div>
+                                    )}
+                                </div>
+
+                                {/* Total Challenges - Smallest */}
+                                <div className="col-span-1 bg-[#1A1B25] border border-white/5 p-4 rounded-3xl flex flex-col justify-center items-center text-center group hover:border-blue-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(59,130,246,0.1)] relative overflow-hidden">
+                                    <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                                        <Code2 size={70} className="text-blue-500 group-hover:rotate-12 transition-transform duration-700" />
                                     </div>
-                                ) : (
-                                    <div className="text-xs text-gray-600 italic">Keep practicing!</div>
-                                )}
+                                    <div className="text-3xl font-black text-white mb-1 relative z-10 group-hover:scale-110 transition-transform duration-300">{challengesDone}</div>
+                                    <div className="text-[9px] uppercase tracking-widest text-gray-500 font-bold relative z-10 leading-tight">Total<br/>Completed</div>
+                                </div>
+                                
                             </div>
                         </div>
 
