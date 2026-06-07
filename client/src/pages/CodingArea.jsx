@@ -106,8 +106,8 @@ const CodingArea = () => {
             // Determine which micro-tags to penalise (only on failure)
             const passed = result.success && result.allPassed;
 
-            if (passed) {
-                // Reward coins locally via Zustand
+            if (passed && !user?.token) {
+                // Reward coins locally via Zustand immediately if not logged in
                 addCoins(currentChallenge.rewardCoins || 10);
             }
 
@@ -123,6 +123,10 @@ const CodingArea = () => {
                         user.token
                     );
                     setSubmitMessage(serverResponse.message);
+
+                    if (passed && serverResponse.isFirstTime) {
+                        addCoins(currentChallenge.rewardCoins || 10);
+                    }
                 } catch (err) {
                     // Non-critical — UI still shows test results even if submit fails
                     console.warn('Submission to backend failed:', err.message);

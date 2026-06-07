@@ -201,8 +201,9 @@ const LearnPage = () => {
         }
 
         if (result.allPassed) {
-            // Rely on the backend to tell us if it was the first time completion!
-            if (submitData && submitData.isFirstTime) {
+            // If the user is logged out, we add coins locally. If logged in, skill-graph already fetched the absolute latest coins from DB.
+            const token = localStorage.getItem('token');
+            if (!token) {
                 addCoins(activeTopic.challenge.rewardCoins);
             }
             setShowSuccess(true);
