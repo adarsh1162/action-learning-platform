@@ -429,7 +429,7 @@ const LearnPage = () => {
                                             }}
                                             className="editor-reset-btn"
                                         >
-                                            <RotateCcw size={13} /> Reboot
+                                            <RotateCcw size={13} /> Refresh
                                         </button>
                                         <button
                                             onClick={handleRunCode}

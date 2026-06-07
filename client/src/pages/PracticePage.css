@@ -1,0 +1,200 @@
+.practice-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #050506;
+    animation: fadeSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.practice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background: #0E0F14;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.practice-title-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.practice-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #EDEDED;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px 0;
+}
+
+.practice-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin: 0;
+}
+
+.practice-workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 32px 32px;
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.05);
+    background: #0A0B10;
+}
+
+.practice-pane-top {
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+}
+
+.practice-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.practice-file-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #A89CFF;
+    background: rgba(108, 92, 231, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+.practice-monaco-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #1E1E1E;
+}
+
+/* The Draggable Resizer */
+.practice-resizer {
+    height: 6px;
+    background: #15161E;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: row-resize;
+    position: relative;
+    z-index: 10;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.practice-resizer:hover, .practice-resizer.active {
+    background: rgba(108, 92, 231, 0.3);
+}
+
+.practice-resizer::after {
+    content: '';
+    width: 30px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.practice-resizer:hover::after, .practice-resizer.active::after {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* Bottom Console Pane */
+.practice-pane-bottom {
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    background: #050506;
+}
+
+.practice-console-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: #0E0F14;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.practice-console-title {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.practice-console-output {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #CCC;
+}
+
+.practice-log-row {
+    margin-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    padding-bottom: 4px;
+}
+
+.practice-log-error {
+    color: #FF5F57;
+    background: rgba(255, 95, 87, 0.05);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border-left: 2px solid #FF5F57;
+}
+
+.practice-empty-console {
+    color: #475569;
+    font-style: italic;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-run {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: #6C5CE7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
+}
+
+.btn-run:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(108, 92, 231, 0.4);
+    background: #7B6FF0;
+}
+
+.btn-run:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}

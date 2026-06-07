@@ -45,7 +45,7 @@ const TrapView = ({ topic, moduleColor, onNext }) => {
                     className="reveal-btn"
                 >
                     <Eye size={16} />
-                    Execute Threat Analysis
+                    Bug Analysis
                 </button>
             ) : (
                 <div className="flaw-reveal">
@@ -72,7 +72,7 @@ const TrapView = ({ topic, moduleColor, onNext }) => {
                         className="cta-btn"
                         style={{ '--btn-color': moduleColor }}
                     >
-                        Deploy Fix in Field
+                        Real World Challenge
                         <ArrowRight size={16} />
                     </button>
                 </div>

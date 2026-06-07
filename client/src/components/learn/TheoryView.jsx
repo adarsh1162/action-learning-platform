@@ -101,7 +101,7 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
                     className="cta-btn"
                     style={{ '--btn-color': moduleColor }}
                 >
-                    Acknowledge · Scan for Threats
+                    Find the Bug
                     <ArrowRight size={16} />
                 </button>
             </div>
@@ -114,7 +114,7 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
                 <div className="hud-card hud-card--ai">
                     <div className="hud-card-header">
                         <BookOpen size={14} className="hud-icon pulse-anim" style={{ color: '#00f2fe' }} />
-                        <span>AI Mentor Tips</span>
+                        <span>Tips</span>
                     </div>
                     <p className="hud-card-text">
                         Read the briefing carefully. Predictive learning enhances retention by 40%.

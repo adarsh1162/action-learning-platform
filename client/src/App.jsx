@@ -5,6 +5,7 @@ import LearnPage from './pages/LearnPage';
 import LandingPage from './pages/LandingPage';
 import AuthModal from './components/auth/AuthModal';
 import DailyWarmUpModal from './components/warmup/DailyWarmUpModal';
+import PracticePage from './pages/PracticePage';
 import useStore from './store/useStore';
 import { useState, useEffect } from 'react';
 import './App.css';
@@ -30,6 +31,7 @@ function NavBar({ onOpenAuth }) {
         )}
         <Link to="/learn" className={`app-nav-link ${location.pathname === '/learn' ? 'app-nav-link--active' : ''}`}>Learn</Link>
         <Link to="/code"  className={`app-nav-link ${location.pathname === '/code'  ? 'app-nav-link--active' : ''}`}>Missions</Link>
+        <Link to="/practice" className={`app-nav-link ${location.pathname === '/practice' ? 'app-nav-link--active' : ''}`}>Practice</Link>
       </div>
 
       <div className="app-nav-right">
@@ -85,6 +87,7 @@ function AppShell({ isLanding, showAuth, setShowAuth, hasPendingWarmup, setPendi
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/learn" element={<LearnPage />} />
           <Route path="/code"  element={<CodingArea />} />
+          <Route path="/practice" element={<PracticePage />} />
         </Routes>
       </main>
     </div>
