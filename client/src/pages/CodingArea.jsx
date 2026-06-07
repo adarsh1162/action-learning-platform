@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CodeEditor from '../components/CodeEditor';
-import { CheckCircle, XCircle, AlertTriangle, Tag, Coins, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, Tag, Coins, ChevronLeft, ChevronRight, Loader2, ChevronDown, ChevronUp, Terminal, FlaskConical, Sparkles, Clock, Target, Zap } from 'lucide-react';
 import useStore from '../store/useStore';
 import { getChallenges, submitChallengeResult } from '../services/api';
 
@@ -62,6 +62,112 @@ const CodingArea = () => {
     const workerRef = useRef(null);
 
     const { addCoins, user } = useStore();
+
+    // Split Pane State
+    const [leftPaneWidth, setLeftPaneWidth] = useState(45);
+    const isDraggingRef = useRef(false);
+    const containerRef = useRef(null);
+
+    // Editor Environment State
+    const [hintOpen, setHintOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState('tests'); // 'console' | 'tests' | 'ai'
+    const [aiHint, setAiHint] = useState(null);
+    const [isGeneratingHint, setIsGeneratingHint] = useState(false);
+    const [lastRunCode, setLastRunCode] = useState("");
+
+    // Vertical Split Pane State (Right Side)
+    const [topPaneHeight, setTopPaneHeight] = useState(65);
+    const isVerticalDraggingRef = useRef(false);
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            if (!containerRef.current) return;
+            
+            // Horizontal resizing (Left/Right panes)
+            if (isDraggingRef.current) {
+                const containerRect = containerRef.current.getBoundingClientRect();
+                const newWidthPct = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+                if (newWidthPct >= 20 && newWidthPct <= 80) setLeftPaneWidth(newWidthPct);
+            }
+
+            // Vertical resizing (Editor/Terminal panes)
+            if (isVerticalDraggingRef.current) {
+                const containerRect = containerRef.current.getBoundingClientRect();
+                const newHeightPct = ((e.clientY - containerRect.top) / containerRect.height) * 100;
+                if (newHeightPct >= 20 && newHeightPct <= 80) setTopPaneHeight(newHeightPct);
+            }
+        };
+        
+        const handleMouseUp = () => {
+            if (isDraggingRef.current) {
+                isDraggingRef.current = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
+            if (isVerticalDraggingRef.current) {
+                isVerticalDraggingRef.current = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
+        };
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, []);
+
+    const handleResizerMouseDown = () => {
+        isDraggingRef.current = true;
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+    };
+
+    const handleVerticalResizerMouseDown = () => {
+        isVerticalDraggingRef.current = true;
+        document.body.style.cursor = 'row-resize';
+        document.body.style.userSelect = 'none';
+    };
+
+    const handleAskAI = async () => {
+        if (!executionResult || !user?.token) return;
+        setActiveTab('ai');
+        setIsGeneratingHint(true);
+        setAiHint(null);
+
+        try {
+            const errorOutput = executionResult.testResults
+                .filter(t => !t.passed)
+                .map(t => `${t.description}: ${t.error}`)
+                .join('\n');
+
+            const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/ai/hint`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${user.token}` 
+                },
+                body: JSON.stringify({ 
+                    code: lastRunCode, 
+                    errorOutput, 
+                    topicTitle: challenges[currentIndex].title 
+                })
+            });
+            
+            const data = await res.json();
+            if(data.success) {
+                setAiHint(data.hint);
+            } else {
+                setAiHint(`Sorry, AI Mentor is unavailable right now.\nError: ${data.message}`);
+            }
+        } catch (err) {
+            setAiHint("Failed to connect to AI Mentor.");
+        } finally {
+            setIsGeneratingHint(false);
+        }
+    };
 
     // ── Fetch challenges on mount ──────────────────────────────────────────────
     const fetchChallenges = async () => {
@@ -153,6 +259,7 @@ const CodingArea = () => {
         setIsRunning(true);
         setExecutionResult(null);
         setSubmitMessage(null);
+        setLastRunCode(code);
 
         const currentChallenge = challenges[currentIndex];
         workerRef.current.postMessage({
@@ -182,16 +289,23 @@ const CodingArea = () => {
 
     // ── Main UI ───────────────────────────────────────────────────────────────
     return (
-        <div className="flex h-full flex-col bg-gray-950">
+        <div className="flex h-full flex-col bg-[#0E0F14] text-white">
 
             {/* ── Top Bar: challenge navigation ── */}
-            <div className="flex items-center justify-between px-4 py-2 bg-gray-900 border-b border-gray-800 flex-shrink-0">
-                <div className="flex items-center gap-3">
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-widest">
-                        Mission
-                    </span>
-                    <span className="text-sm font-bold text-white">
-                        {currentIndex + 1} / {challenges.length}
+            <div className="flex items-center justify-between px-6 py-3 bg-[#13141C] border-b border-white/5 flex-shrink-0 shadow-sm z-10">
+                <div className="flex items-center gap-4">
+                    <span className="text-sm font-bold text-gray-300 flex items-center gap-2">
+                        Mission Progress
+                        <span className="font-mono text-[#A89CFF] tracking-widest ml-2">
+                            {(() => {
+                                const progress = ((currentIndex) / challenges.length) * 100;
+                                const totalBlocks = 10;
+                                const filledBlocks = Math.round((progress / 100) * totalBlocks);
+                                return (
+                                    "█".repeat(filledBlocks) + "░".repeat(totalBlocks - filledBlocks) + ` ${Math.round(progress)}%`
+                                );
+                            })()}
+                        </span>
                     </span>
                 </div>
 
@@ -199,7 +313,7 @@ const CodingArea = () => {
                     <button
                         onClick={handlePrevChallenge}
                         disabled={currentIndex === 0}
-                        className="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         title="Previous Challenge"
                     >
                         <ChevronLeft size={18} />
@@ -207,7 +321,7 @@ const CodingArea = () => {
                     <button
                         onClick={handleNextChallenge}
                         disabled={currentIndex === challenges.length - 1}
-                        className="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         title="Next Challenge"
                     >
                         <ChevronRight size={18} />
@@ -216,169 +330,219 @@ const CodingArea = () => {
             </div>
 
             {/* ── Body: split panel ── */}
-            <div className="flex flex-1 flex-col lg:flex-row overflow-hidden p-4 gap-4">
+            <div className="flex flex-1 overflow-hidden" ref={containerRef}>
 
-                {/* LEFT: Problem + Output */}
-                <div className="flex-1 flex flex-col gap-4 overflow-y-auto pr-1">
-
-                    {/* Problem Statement */}
-                    <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-sm flex-shrink-0">
+                {/* LEFT: Problem */}
+                <div 
+                    className="flex flex-col bg-[#111218]" 
+                    style={{ width: `${leftPaneWidth}%` }}
+                >
+                    <div className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-white/10">
                         {/* Mission type badge */}
-                        <div className="flex items-center justify-between mb-3">
-                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full
-                                ${challenge.missionType === 'Boss'    ? 'bg-red-900/60 text-red-300'     : ''}
-                                ${challenge.missionType === 'Curious' ? 'bg-purple-900/60 text-purple-300' : ''}
-                                ${challenge.missionType === 'Concept' ? 'bg-blue-900/60 text-blue-300'   : ''}
-                                ${challenge.missionType === 'Warmup'  ? 'bg-green-900/60 text-green-300' : ''}
-                            `}>
-                                {challenge.missionType}
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest bg-[#EF9F27]/15 text-[#EF9F27] border border-[#EF9F27]/30 shadow-[0_0_10px_rgba(239,159,39,0.1)]">
+                                MISSION
                             </span>
-                            <span className="flex items-center gap-1 text-yellow-400 text-sm font-semibold">
-                                <Coins size={15} />
-                                +{challenge.rewardCoins} coins
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest bg-[#5DCAA5]/10 text-[#5DCAA5] border border-[#5DCAA5]/20">
+                                <Zap size={12} /> +{challenge.rewardCoins} XP
                             </span>
                         </div>
 
-                        <h1 className="text-xl font-bold text-white mb-3">{challenge.title}</h1>
-                        <p className="text-gray-300 text-sm leading-relaxed mb-4">{challenge.description}</p>
+                        <h1 className="text-[24px] font-bold text-white mb-2 leading-tight">{challenge.title}</h1>
+                        
+                        <div className="flex items-center gap-3 mb-6">
+                            <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
+                                <Target size={12}/> Medium
+                            </span>
+                            <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
+                                <Clock size={12}/> 7 min
+                            </span>
+                        </div>
 
-                        {/* Micro-tags */}
+                        <p className="text-gray-300 text-[14px] leading-relaxed mb-6">{challenge.description}</p>
+
+                        {/* Interactive Tags */}
                         {challenge.microTags && challenge.microTags.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-2">
+                            <div className="flex flex-wrap gap-2 mb-8">
                                 {challenge.microTags.map(tag => (
-                                    <span
-                                        key={tag}
-                                        className="flex items-center gap-1 bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded-full border border-gray-700"
-                                    >
-                                        <Tag size={10} />
-                                        {tag}
-                                    </span>
+                                    <div key={tag} className="relative group inline-block">
+                                        <span className="inline-flex items-center px-3 py-1 bg-[#6C5CE7]/10 border border-[#6C5CE7]/20 rounded-full text-[11px] font-semibold text-[#A89CFF] cursor-default transition-colors group-hover:bg-[#6C5CE7]/20 group-hover:border-[#6C5CE7]/40">
+                                            {tag}
+                                        </span>
+                                        <div className="absolute bottom-[120%] left-1/2 -translate-x-1/2 bg-[#252630] border border-white/10 px-3 py-2 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl whitespace-nowrap z-20">
+                                            <div className="text-[11px] font-bold text-white mb-0.5">Accuracy: {Math.floor(Math.random() * 40 + 50)}%</div>
+                                            <div className="text-[10px] text-gray-400">Practice Available</div>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         )}
 
-                        {/* Concept hint box */}
-                        <div className="mt-5 bg-blue-950/30 border border-blue-800/40 rounded-lg p-4">
-                            <h3 className="text-blue-400 font-semibold mb-1 flex items-center gap-2 text-sm">
-                                <AlertTriangle size={14} /> Concept Hint
-                            </h3>
-                            <p className="text-blue-200 text-xs leading-relaxed">
-                                Pay close attention to the micro-tags on this challenge — they point directly
-                                to the JavaScript concept you need to apply. Think about what each method or
-                                keyword is <strong>actually supposed to do</strong> before editing the code.
-                            </p>
+                        {/* Concept hint accordion */}
+                        <div className="bg-transparent border border-white/10 rounded-lg overflow-hidden">
+                            <button 
+                                className="w-full flex items-center justify-between p-3.5 bg-white/5 hover:bg-white/10 transition-colors text-[13px] font-semibold text-white cursor-pointer border-none"
+                                onClick={() => setHintOpen(!hintOpen)}
+                            >
+                                <span className="flex items-center gap-2">
+                                    <span className="text-sm">💡</span> Concept Hint
+                                </span>
+                                {hintOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            </button>
+                            {hintOpen && (
+                                <div className="p-4 bg-black/20 border-t border-white/5 text-[13px] text-gray-400 leading-relaxed">
+                                    Pay close attention to the micro-tags on this challenge — they point directly
+                                    to the JavaScript concept you need to apply. Think about what each method or
+                                    keyword is <strong className="text-white">actually supposed to do</strong> before editing the code.
+                                </div>
+                            )}
                         </div>
                     </div>
+                </div>
 
-                    {/* Execution Output Panel */}
-                    <div className="bg-gray-900 border border-gray-800 rounded-xl flex-1 p-6 flex flex-col min-h-[200px]">
-                        <h2 className="text-base font-semibold text-white border-b border-gray-800 pb-2 mb-4 flex items-center gap-2">
-                            Execution Output
-                            {isSubmitting && (
-                                <span className="flex items-center gap-1 text-xs text-gray-500 font-normal">
-                                    <Loader2 size={12} className="animate-spin" />
-                                    Syncing with server...
-                                </span>
+                {/* DRAGGABLE DIVIDER */}
+                <div 
+                    className="w-[6px] bg-[#0E0F14] cursor-col-resize flex justify-center items-center hover:bg-white/5 active:bg-white/5 transition-colors z-10 group"
+                    onMouseDown={handleResizerMouseDown}
+                >
+                    <div className="w-[2px] h-[40px] bg-white/10 rounded-sm group-hover:bg-[#EF9F27]/50 transition-colors"></div>
+                </div>
+
+                {/* RIGHT: Editor + Output */}
+                <div 
+                    className="flex flex-col bg-[#1E1E1E]" 
+                    style={{ width: `${100 - leftPaneWidth}%` }}
+                >
+                    {/* Editor Area */}
+                    <div className="flex-col flex" style={{ height: `${topPaneHeight}%` }}>
+                        <CodeEditor
+                            key={challenge._id}
+                            initialCode={challenge.buggyCode}
+                            onRun={handleRunCode}
+                            isRunning={isRunning}
+                        />
+                    </div>
+
+                    {/* DRAGGABLE HORIZONTAL DIVIDER */}
+                    <div 
+                        className="h-[6px] bg-[#0E0F14] cursor-row-resize flex justify-center items-center hover:bg-white/5 active:bg-white/5 transition-colors z-10 group"
+                        onMouseDown={handleVerticalResizerMouseDown}
+                    >
+                        <div className="h-[2px] w-[40px] bg-white/10 rounded-sm group-hover:bg-[#EF9F27]/50 transition-colors"></div>
+                    </div>
+
+                    {/* Output Tabs */}
+                    <div className="flex-1 flex flex-col bg-[#18181B] border-t border-black/50 min-h-[50px]">
+                        <div className="flex bg-[#1E1E1E] border-b border-black/50 px-4">
+                            <button 
+                                className={`flex items-center gap-2 px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'console' ? 'border-[#6C5CE7] text-white' : 'border-transparent text-gray-500 hover:text-gray-300'}`}
+                                onClick={() => setActiveTab('console')}
+                            >
+                                <Terminal size={14} /> Console
+                            </button>
+                            <button 
+                                className={`flex items-center gap-2 px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'tests' ? 'border-[#6C5CE7] text-white' : 'border-transparent text-gray-500 hover:text-gray-300'} ${executionResult?.allPassed ? '!text-[#5DCAA5]' : executionResult ? '!text-[#E24B4A]' : ''}`}
+                                onClick={() => setActiveTab('tests')}
+                            >
+                                <FlaskConical size={14} /> Tests
+                            </button>
+                            <button 
+                                className={`flex items-center gap-2 px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'ai' ? 'border-[#6C5CE7] text-white' : 'border-transparent text-gray-500 hover:text-gray-300'} ${aiHint ? '!text-[#A89CFF]' : ''}`}
+                                onClick={() => setActiveTab('ai')}
+                            >
+                                <Sparkles size={14} /> AI Mentor
+                            </button>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-white/10">
+                            
+                            {activeTab === 'console' && (
+                                <div className="h-full">
+                                    {executionResult?.logs && executionResult.logs.length > 0 ? (
+                                        <div className="font-mono text-xs text-gray-300 space-y-1">
+                                            {executionResult.logs.map((log, i) => (
+                                                <div key={i}>&gt; {log}</div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-gray-600 text-[12px] font-mono">No console output...</div>
+                                    )}
+                                </div>
                             )}
-                        </h2>
 
-                        {isRunning ? (
-                            <div className="flex flex-col items-center justify-center h-32 gap-3">
-                                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500" />
-                                <span className="text-gray-500 text-sm">Running your code securely...</span>
-                            </div>
-
-                        ) : executionResult ? (
-                            <div className="space-y-3">
-                                {/* Syntax / runtime error from the worker */}
-                                {!executionResult.success ? (
-                                    <div className="bg-red-950/40 border border-red-900 rounded-lg p-4 text-red-400 font-mono text-xs whitespace-pre-wrap">
-                                        <div className="text-red-300 font-bold mb-1">Runtime Error</div>
-                                        {executionResult.error}
-                                    </div>
-                                ) : (
-                                    <>
-                                        {/* Console logs */}
-                                        {executionResult.logs && executionResult.logs.length > 0 && (
-                                            <div className="bg-gray-950 border border-gray-700 rounded-lg p-4 font-mono text-xs text-gray-300">
-                                                <div className="text-gray-500 mb-2 text-xs uppercase tracking-wider">Console</div>
-                                                {executionResult.logs.map((log, i) => (
-                                                    <div key={i} className="text-gray-300">&gt; {log}</div>
-                                                ))}
-                                            </div>
-                                        )}
-
-                                        {/* Individual test results */}
-                                        <div className="space-y-2">
+                            {activeTab === 'tests' && (
+                                <div className="flex flex-col h-full gap-2">
+                                    {!executionResult ? (
+                                        <div className="text-gray-600 text-[12px] font-mono">Run your code to see results here.</div>
+                                    ) : (
+                                        <>
                                             {executionResult.testResults.map((test, idx) => (
                                                 <div
                                                     key={idx}
-                                                    className={`p-3 rounded-lg border flex items-start gap-3 text-sm
+                                                    className={`p-3 rounded-md border flex items-start gap-3 text-[13px] bg-white/5
                                                         ${test.passed
-                                                            ? 'bg-green-950/20 border-green-900/50 text-green-300'
-                                                            : 'bg-red-950/20 border-red-900/50 text-red-300'}
+                                                            ? 'border-l-4 border-l-[#5DCAA5] border-transparent'
+                                                            : 'border-l-4 border-l-[#E24B4A] border-transparent bg-[#E24B4A]/5'}
                                                     `}
                                                 >
                                                     {test.passed
-                                                        ? <CheckCircle size={17} className="mt-0.5 flex-shrink-0" />
-                                                        : <XCircle    size={17} className="mt-0.5 flex-shrink-0" />
+                                                        ? <CheckCircle size={15} className="mt-0.5 flex-shrink-0 text-[#5DCAA5]" />
+                                                        : <XCircle    size={15} className="mt-0.5 flex-shrink-0 text-[#E24B4A]" />
                                                     }
                                                     <div>
-                                                        <div className="font-medium">{test.description}</div>
-                                                        {!test.passed && (
-                                                            <div className="text-xs mt-1 opacity-75 font-mono">{test.error}</div>
+                                                        <div className="font-medium text-gray-200">{test.description}</div>
+                                                        {!test.passed && test.error && (
+                                                            <div className="text-[11px] mt-1 text-[#E24B4A] font-mono">{test.error}</div>
                                                         )}
                                                     </div>
                                                 </div>
                                             ))}
+
+                                            {executionResult.allPassed && (
+                                                <div className="mt-2 p-4 bg-[#5DCAA5]/10 border border-[#5DCAA5]/20 rounded-lg flex items-center justify-between shadow-[0_0_20px_rgba(93,202,165,0.1)] animate-fade-in">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-[#5DCAA5]/20 flex items-center justify-center animate-bounce-short">
+                                                            <CheckCircle size={16} className="text-[#5DCAA5]" />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-[13px] font-bold text-white tracking-wide">MISSION ACCOMPLISHED!</div>
+                                                            <div className="text-[11px] text-[#5DCAA5] mt-0.5">+{challenge.rewardCoins} XP Earned</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {!executionResult.allPassed && !aiHint && !isGeneratingHint && (
+                                                <button 
+                                                    className="inline-flex items-center self-start gap-2 mt-2 px-4 py-2 bg-[#6C5CE7]/10 text-[#A89CFF] border border-[#6C5CE7]/30 border-dashed rounded-md text-[12px] font-medium hover:bg-[#6C5CE7]/20 hover:shadow-[0_0_15px_rgba(108,92,231,0.15)] transition-all"
+                                                    onClick={handleAskAI}
+                                                >
+                                                    <Sparkles size={14} className="animate-pulse" /> Failed tests? Ask AI Mentor for a hint
+                                                </button>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            )}
+
+                            {activeTab === 'ai' && (
+                                <div className="h-full">
+                                    {!aiHint && !isGeneratingHint ? (
+                                        <div className="text-gray-600 text-[12px] font-mono">Run tests first, or click "Ask AI Mentor" on failed tests.</div>
+                                    ) : isGeneratingHint ? (
+                                        <div className="flex items-center gap-2 text-[#A89CFF] text-[13px] font-mono animate-pulse">
+                                            <Sparkles size={14} className="animate-spin" /> AI is analyzing your code...
                                         </div>
+                                    ) : (
+                                        <div className="text-[13px] text-gray-300 leading-relaxed animate-fade-in" dangerouslySetInnerHTML={{ __html: aiHint.replace(/`([^`]+)`/g, '<code class="bg-[#6C5CE7]/15 text-[#A89CFF] px-1.5 py-0.5 rounded font-mono text-[12px]">$1</code>').replace(/\n/g, '<br/>') }} />
+                                    )}
+                                </div>
+                            )}
 
-                                        {/* All passed — Mission Accomplished */}
-                                        {executionResult.allPassed && (
-                                            <div className="mt-4 p-5 bg-gradient-to-r from-green-900/40 to-emerald-900/40 border border-green-500/30 rounded-xl text-center">
-                                                <CheckCircle className="text-green-400 mx-auto mb-2" size={32} />
-                                                <h3 className="text-lg font-bold text-green-300 mb-1">Mission Accomplished!</h3>
-                                                <p className="text-green-200 text-sm">
-                                                    All test cases passed. +{challenge.rewardCoins} coins added.
-                                                </p>
-                                                {submitMessage && (
-                                                    <p className="text-green-400/70 text-xs mt-2">{submitMessage}</p>
-                                                )}
-                                            </div>
-                                        )}
-
-                                        {/* Some failed — Try Again */}
-                                        {!executionResult.allPassed && (
-                                            <div className="mt-4 p-4 bg-red-950/20 border border-red-900/30 rounded-xl text-center">
-                                                <p className="text-red-300 text-sm font-medium">
-                                                    Some tests failed. Study the errors above and try again.
-                                                </p>
-                                                {submitMessage && (
-                                                    <p className="text-red-400/60 text-xs mt-1">{submitMessage}</p>
-                                                )}
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            </div>
-
-                        ) : (
-                            <div className="text-gray-600 text-sm text-center py-10">
-                                Run your code to see results here.
-                            </div>
-                        )}
+                        </div>
                     </div>
                 </div>
 
-                {/* RIGHT: Monaco Editor */}
-                <div className="flex-1 h-[600px] lg:h-auto border border-gray-800 rounded-xl overflow-hidden shadow-2xl">
-                    <CodeEditor
-                        key={challenge._id}
-                        initialCode={challenge.buggyCode}
-                        onRun={handleRunCode}
-                        isRunning={isRunning}
-                    />
-                </div>
             </div>
         </div>
     );

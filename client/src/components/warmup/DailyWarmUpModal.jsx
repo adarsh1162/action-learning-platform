@@ -16,7 +16,7 @@ const DailyWarmUpModal = ({ onClose }) => {
         const fetchWarmup = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/warmup/daily`, {
+                const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/warmup/daily?force=true`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await res.json();

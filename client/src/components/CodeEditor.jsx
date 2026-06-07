@@ -24,9 +24,33 @@ const CodeEditor = ({ initialCode, onRun, isRunning = false }) => {
         setLineCount((value || '').split('\n').length);
     };
 
-    const handleEditorMount = (editor) => {
+    const handleEditorMount = (editor, monaco) => {
         // Count lines on initial mount
         setLineCount(editor.getModel()?.getLineCount() || 0);
+
+        // Define Antigravity custom theme
+        monaco.editor.defineTheme('antigravity', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [
+                { token: 'keyword', foreground: 'C678DD' },
+                { token: 'identifier', foreground: 'E06C75' },
+                { token: 'string', foreground: '98C379' },
+                { token: 'comment', foreground: '5C6370', fontStyle: 'italic' },
+                { token: 'number', foreground: 'D19A66' },
+                { token: 'type', foreground: '56B6C2' },
+                { token: 'delimiter', foreground: 'ABB2BF' }
+            ],
+            colors: {
+                'editor.background': '#0E0F14', // Matches the new dark background
+                'editor.foreground': '#ABB2BF',
+                'editorCursor.foreground': '#528BFF',
+                'editor.lineHighlightBackground': '#2C313A',
+                'editorLineNumber.foreground': '#495162',
+                'editorIndentGuide.background': '#3B4048',
+            }
+        });
+        monaco.editor.setTheme('antigravity');
     };
 
     const handleReset = () => {
@@ -78,7 +102,7 @@ const CodeEditor = ({ initialCode, onRun, isRunning = false }) => {
                 <Editor
                     height="100%"
                     defaultLanguage="javascript"
-                    theme="vs-dark"
+                    theme="antigravity"
                     value={code}
                     onChange={handleEditorChange}
                     onMount={handleEditorMount}

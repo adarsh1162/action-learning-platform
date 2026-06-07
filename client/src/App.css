@@ -35,6 +35,16 @@ body {
   overflow: hidden;
 }
 
+/* ── Landing Page Overrides ─── */
+.app-root--landing {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+.app-main--landing {
+  overflow: visible;
+}
+
 /* ── Navigation Bar ─────────────────────────────────────────── */
 .app-nav {
   height: 48px;
@@ -46,6 +56,15 @@ body {
   gap: 0;
   flex-shrink: 0;
   z-index: 50;
+}
+
+.app-root--landing .app-nav {
+  position: sticky;
+  top: 0;
+  background: rgba(5, 5, 6, 0.6);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 /* Logo */

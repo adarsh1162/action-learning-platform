@@ -164,7 +164,7 @@ const LearnPage = () => {
                 selectTopic(warmupSequence[nextIndex].moduleId, warmupSequence[nextIndex].topicId);
             } else {
                 setWarmupSequence(null);
-                navigate('/');
+                navigate('/dashboard');
             }
             return;
         }

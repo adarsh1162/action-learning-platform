@@ -29,16 +29,22 @@ const login = async (req, res) => {
         let newStreak = user.streak || 0;
 
         if (lastActive) {
+            const todayDate = new Date(now);
+            todayDate.setHours(0,0,0,0);
+            const lastDate = new Date(lastActive);
+            lastDate.setHours(0,0,0,0);
+            
             const msInDay = 24 * 60 * 60 * 1000;
-            const diffDays = Math.floor((now.getTime() - lastActive.getTime()) / msInDay);
+            const diffDays = Math.round((todayDate - lastDate) / msInDay);
 
             if (diffDays === 1) {
-                // Logged in the next day
+                // Logged in the next calendar day
                 newStreak += 1;
             } else if (diffDays > 1) {
                 // Streak broken
                 newStreak = 1;
             }
+            // if diffDays === 0, they logged in on the same day, do nothing (keep current streak)
         } else {
             newStreak = 1; // First time logging in
         }

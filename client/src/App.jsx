@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import Dashboard from './pages/Dashboard';
 import CodingArea from './pages/CodingArea';
 import LearnPage from './pages/LearnPage';
+import LandingPage from './pages/LandingPage';
 import AuthModal from './components/auth/AuthModal';
 import DailyWarmUpModal from './components/warmup/DailyWarmUpModal';
 import useStore from './store/useStore';
@@ -22,7 +23,11 @@ function NavBar({ onOpenAuth }) {
       </div>
 
       <div className="app-nav-links">
-        <Link to="/"      className={`app-nav-link ${location.pathname === '/'      ? 'app-nav-link--active' : ''}`}>Dashboard</Link>
+        {user ? (
+          <Link to="/dashboard" className={`app-nav-link ${location.pathname === '/dashboard' ? 'app-nav-link--active' : ''}`}>Dashboard</Link>
+        ) : (
+          <Link to="/" className={`app-nav-link ${location.pathname === '/' ? 'app-nav-link--active' : ''}`}>Home</Link>
+        )}
         <Link to="/learn" className={`app-nav-link ${location.pathname === '/learn' ? 'app-nav-link--active' : ''}`}>Learn</Link>
         <Link to="/code"  className={`app-nav-link ${location.pathname === '/code'  ? 'app-nav-link--active' : ''}`}>Missions</Link>
       </div>
@@ -43,6 +48,46 @@ function NavBar({ onOpenAuth }) {
         </div>
       </div>
     </nav>
+  );
+}
+
+function AppShell({ isLanding, showAuth, setShowAuth, hasPendingWarmup, setPendingWarmup, user }) {
+  const location = useLocation();
+  const onLandingPage = isLanding && location.pathname === '/';
+
+  // Toggle body scrolling for landing page
+  useEffect(() => {
+    if (onLandingPage) {
+      document.body.style.overflow = 'auto';
+      document.body.style.height = 'auto';
+    } else {
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+    }
+    return () => {
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+    };
+  }, [onLandingPage]);
+
+  return (
+    <div className={onLandingPage ? 'app-root app-root--landing' : 'app-root'}>
+      <NavBar onOpenAuth={() => setShowAuth(true)} />
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      
+      {hasPendingWarmup && (
+        <DailyWarmUpModal onClose={() => setPendingWarmup(false)} />
+      )}
+
+      <main className={onLandingPage ? 'app-main app-main--landing' : 'app-main'}>
+        <Routes>
+          <Route path="/" element={user ? <Dashboard /> : <LandingPage onOpenAuth={() => setShowAuth(true)} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/learn" element={<LearnPage />} />
+          <Route path="/code"  element={<CodingArea />} />
+        </Routes>
+      </main>
+    </div>
   );
 }
 
@@ -69,25 +114,11 @@ function App() {
     checkWarmup();
   }, [user, setPendingWarmup]);
 
+  const isLanding = !user;
+
   return (
     <Router>
-      <div className="app-root">
-        <NavBar onOpenAuth={() => setShowAuth(true)} />
-        {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
-        
-        {/* The Mandatory Daily Warm-Up blocks the main application */}
-        {hasPendingWarmup && (
-          <DailyWarmUpModal onClose={() => setPendingWarmup(false)} />
-        )}
-
-        <main className="app-main">
-          <Routes>
-            <Route path="/"      element={<Dashboard />} />
-            <Route path="/learn" element={<LearnPage />} />
-            <Route path="/code"  element={<CodingArea />} />
-          </Routes>
-        </main>
-      </div>
+      <AppShell isLanding={isLanding} showAuth={showAuth} setShowAuth={setShowAuth} hasPendingWarmup={hasPendingWarmup} setPendingWarmup={setPendingWarmup} user={user} />
     </Router>
   );
 }

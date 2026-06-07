@@ -15,12 +15,22 @@ const getDailyWarmup = async (req, res) => {
             return res.json({ success: true, needsWarmup: false });
         }
 
-        const tagsToRevise = skillGraph.tags
+        const force = req.query.force === 'true';
+
+        let tagsToRevise = skillGraph.tags
             .filter(tag => tag.needsRevision)
             .map(tag => tag.tagName);
 
         if (tagsToRevise.length === 0) {
-            return res.json({ success: true, needsWarmup: false });
+            if (force) {
+                tagsToRevise = skillGraph.tags
+                    .sort((a,b) => b.weaknessScore - a.weaknessScore)
+                    .slice(0, 3)
+                    .map(tag => tag.tagName);
+            }
+            if (tagsToRevise.length === 0) {
+                return res.json({ success: true, needsWarmup: false });
+            }
         }
 
         // Find a challenge that matches one of these tags
