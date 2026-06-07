@@ -1,0 +1,633 @@
+For a learning platform, the solution should not be shown immediately to the student. Store it in the backend and reveal it only after they submit or click "Show Explanation".
+
+Here's the format I'd recommend.
+
+---
+
+# 🟢 EASY 1 — The Missing Property
+
+### Mission Brief
+
+A developer wrote the following code:
+
+```js
+function getSecret(user) {
+    return user.secretKey.toUpperCase();
+}
+```
+
+Find an input that crashes the function.
+
+### Solution
+
+```js
+{}
+```
+
+### Why It Breaks
+
+The code assumes every object has a `secretKey` property.
+
+```js
+{}.secretKey
+```
+
+returns:
+
+```js
+undefined
+```
+
+and:
+
+```js
+undefined.toUpperCase()
+```
+
+throws a TypeError.
+
+### Secure Fix
+
+```js
+function getSecret(user) {
+    return user.secretKey?.toUpperCase() ?? "No Key";
+}
+```
+
+---
+
+# 🟢 EASY 2 — Empty Cart
+
+### Mission Brief
+
+```js
+function checkout(cart) {
+    return cart[0].price * cart.length;
+}
+```
+
+Find an input that crashes it.
+
+### Solution
+
+```js
+[]
+```
+
+### Why It Breaks
+
+`cart[0]` becomes:
+
+```js
+undefined
+```
+
+and:
+
+```js
+undefined.price
+```
+
+causes a crash.
+
+### Secure Fix
+
+```js
+if(cart.length === 0)
+    return 0;
+```
+
+---
+
+# 🟢 EASY 3 — The Number Pretender
+
+### Mission Brief
+
+```js
+function double(num) {
+    return num.toFixed(2);
+}
+```
+
+Break the function.
+
+### Solution
+
+```js
+"hello"
+```
+
+### Why It Breaks
+
+Strings don't have `toFixed()`.
+
+```js
+"hello".toFixed()
+```
+
+throws TypeError.
+
+---
+
+# 🟢 EASY 4 — Divide By Trouble
+
+### Mission Brief
+
+```js
+function average(sum, count) {
+    return sum / count;
+}
+```
+
+Produce an impossible result.
+
+### Solution
+
+```js
+average(100, 0)
+```
+
+### Result
+
+```js
+Infinity
+```
+
+### Learning
+
+Division by zero doesn't crash JavaScript but creates invalid results.
+
+---
+
+# 🟢 EASY 5 — First Letter
+
+### Mission Brief
+
+```js
+function getInitial(name) {
+    return name[0].toUpperCase();
+}
+```
+
+Crash it.
+
+### Solution
+
+```js
+null
+```
+
+### Why It Breaks
+
+The code tries to access:
+
+```js
+null[0]
+```
+
+which throws an error.
+
+---
+
+# 🟢 EASY 6 — Username Length
+
+### Mission Brief
+
+```js
+function isValid(username) {
+    return username.length >= 5;
+}
+```
+
+Find an input that crashes it.
+
+### Solution
+
+```js
+undefined
+```
+
+### Why It Breaks
+
+```js
+undefined.length
+```
+
+throws TypeError.
+
+---
+
+# 🟢 EASY 7 — Last Item Finder
+
+### Mission Brief
+
+```js
+function getLast(arr) {
+    return arr[arr.length - 1].name;
+}
+```
+
+Crash it.
+
+### Solution
+
+```js
+[]
+```
+
+### Why It Breaks
+
+The last element becomes:
+
+```js
+undefined
+```
+
+and `.name` access crashes.
+
+---
+
+# 🟢 EASY 8 — Profile Viewer
+
+### Mission Brief
+
+```js
+function viewProfile(user) {
+    return user.address.city;
+}
+```
+
+Break it.
+
+### Solution
+
+```js
+{}
+```
+
+### Why It Breaks
+
+`address` doesn't exist.
+
+```js
+undefined.city
+```
+
+causes TypeError.
+
+---
+
+# 🟢 EASY 9 — Password Checker
+
+### Mission Brief
+
+```js
+function check(password) {
+    return password.includes("123");
+}
+```
+
+Crash it.
+
+### Solution
+
+```js
+null
+```
+
+### Why It Breaks
+
+`includes()` cannot run on `null`.
+
+---
+
+# 🟢 EASY 10 — Total Score
+
+### Mission Brief
+
+```js
+function calculate(scores) {
+    return scores.reduce((a,b)=>a+b);
+}
+```
+
+Break it.
+
+### Solution
+
+```js
+[]
+```
+
+### Why It Breaks
+
+Calling `reduce()` on an empty array without an initial value throws an error.
+
+---
+
+# 🟢 EASY 11 — Shopping Discount
+
+### Mission Brief
+
+```js
+function applyDiscount(price, discount) {
+    return price - discount;
+}
+```
+
+Produce an unexpected result.
+
+### Solution
+
+```js
+applyDiscount("apple", 10)
+```
+
+### Result
+
+```js
+NaN
+```
+
+### Learning
+
+Invalid arithmetic creates `NaN`.
+
+---
+
+# 🟢 EASY 12 — Capitalize Word
+
+### Mission Brief
+
+```js
+function capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
+```
+
+Break it.
+
+### Solution
+
+```js
+42
+```
+
+### Why It Breaks
+
+Numbers don't have `charAt()`.
+
+---
+
+# 🟡 INTERMEDIATE 13 — Infinite Coupon
+
+```js
+function applyCoupons(price, coupons) {
+    let i = 0;
+
+    while(i < coupons.length) {
+
+        price -= coupons[i].value;
+
+        if(coupons[i].expired)
+            continue;
+
+        i++;
+    }
+
+    return price;
+}
+```
+
+### Solution
+
+```js
+[
+    {
+        value: 10,
+        expired: true
+    }
+]
+```
+
+### Why It Breaks
+
+`continue` skips `i++`.
+
+The loop stays forever at index 0.
+
+---
+
+# 🟡 INTERMEDIATE 14 — Transaction Processor
+
+```js
+function process(transactions) {
+    let i = 0;
+
+    while(i < transactions.length) {
+
+        if(transactions[i].skip)
+            continue;
+
+        i++;
+    }
+}
+```
+
+### Solution
+
+```js
+[
+    {
+        skip: true
+    }
+]
+```
+
+### Why It Breaks
+
+Infinite loop.
+
+---
+
+# 🟡 INTERMEDIATE 15 — Recursive Nightmare
+
+```js
+function countdown(n) {
+
+    if(n === 0)
+        return;
+
+    countdown(n - 1);
+}
+```
+
+### Solution
+
+```js
+Infinity
+```
+
+### Why It Breaks
+
+```js
+Infinity - 1 === Infinity
+```
+
+The recursion never reaches zero.
+
+Eventually:
+
+```js
+Maximum call stack size exceeded
+```
+
+---
+
+# 🟡 INTERMEDIATE 16 — Sort Scores
+
+```js
+function topScore(scores) {
+    return scores.sort()[scores.length - 1];
+}
+```
+
+### Solution
+
+```js
+[1, 2, 10]
+```
+
+### Result
+
+```js
+2
+```
+
+### Why It Breaks
+
+Default sorting is lexicographical.
+
+```js
+["1","10","2"]
+```
+
+---
+
+# 🟡 INTERMEDIATE 17 — Trusting Admin
+
+```js
+function isAdmin(user) {
+    return user.role.toLowerCase() === "admin";
+}
+```
+
+### Solution
+
+```js
+{}
+```
+
+### Why It Breaks
+
+`role` is undefined.
+
+---
+
+# 🟡 INTERMEDIATE 18 — Deep Object Explorer
+
+```js
+function getCountry(user) {
+    return user.profile.location.country.name;
+}
+```
+
+### Solution
+
+```js
+{
+    profile: {}
+}
+```
+
+### Why It Breaks
+
+The chain eventually becomes:
+
+```js
+undefined.name
+```
+
+---
+
+# 🔴 HARD 19 — Self Referencing Loop
+
+### Mission Brief
+
+```js
+function stringify(data) {
+    return JSON.stringify(data);
+}
+```
+
+### Solution
+
+```js
+const obj = {};
+obj.self = obj;
+```
+
+### Why It Breaks
+
+The object contains a circular reference.
+
+`JSON.stringify()` cannot serialize circular structures.
+
+---
+
+# 🔴 HARD 20 — Clone Disaster
+
+### Mission Brief
+
+```js
+function clone(data) {
+    return JSON.parse(
+        JSON.stringify(data)
+    );
+}
+```
+
+### Solution
+
+```js
+{
+    id: 10n
+}
+```
+
+### Why It Breaks
+
+`JSON.stringify()` cannot serialize BigInt values.
+
+### Error
+
+```js
+TypeError: Do not know how to serialize a BigInt
+```
+
+---
+
+These 20 missions progressively teach:
+
+* Null & Undefined bugs
+* TypeErrors
+* Empty arrays
+* NaN & Infinity
+* Recursion traps
+* Infinite loops
+* Sorting pitfalls
+* Circular references
+* Serialization bugs
+* Real-world defensive programming
+
+which are exactly the kinds of edge cases junior JavaScript developers struggle with in production.

@@ -1,0 +1,403 @@
+.crash-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #050506;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Background glow effects */
+.crash-root::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(226, 75, 74, 0.08) 0%, rgba(5, 5, 6, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.crash-root::after {
+  content: '';
+  position: absolute;
+  bottom: -200px;
+  left: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(82, 139, 255, 0.05) 0%, rgba(5, 5, 6, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.crash-header {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 10, 12, 0.8);
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.crash-title-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.crash-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, #FF6B6B 0%, #E24B4A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(226, 75, 74, 0.4);
+}
+
+.crash-subtitle {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.crash-subtitle span.heart {
+  color: #E24B4A;
+  animation: pulse 2s infinite;
+  display: inline-block;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); text-shadow: 0 0 10px rgba(226,75,74,0.8); }
+  100% { transform: scale(1); }
+}
+
+.btn-exploit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #E24B4A 0%, #C0392B 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(226, 75, 74, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-exploit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(226, 75, 74, 0.5);
+}
+
+.btn-exploit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: #334155;
+  box-shadow: none;
+}
+
+/* Workspace Flexible Layout */
+.crash-workspace-flex {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  z-index: 5;
+  padding: 1rem;
+}
+
+.crash-editors-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.crash-pane {
+  background: rgba(15, 15, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.crash-pane-blue {
+  border-top: 3px solid #528BFF;
+}
+
+.crash-pane-red {
+  border-top: 3px solid #E24B4A;
+}
+
+.crash-pane-console {
+  border-top: 3px solid #38bdf8;
+}
+
+/* Resizers */
+.crash-resizer-horizontal {
+  height: 10px;
+  cursor: row-resize;
+  background: transparent;
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.crash-resizer-horizontal:hover, .crash-resizer-horizontal.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.crash-resizer-vertical {
+  width: 10px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.crash-resizer-vertical:hover, .crash-resizer-vertical.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Headers & Editor Wrappers */
+.pane-header {
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pane-header.blue-team { color: #528BFF; }
+.pane-header.red-team { color: #FF6B6B; }
+.pane-header.console-header { color: #38bdf8; }
+
+.pane-editor-wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Console Output */
+.crash-console-output {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: #020202;
+}
+
+.crash-empty-console {
+  color: #475569;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.crash-log-row {
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.crash-log-success {
+  color: #4ade80;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(74, 222, 128, 0.1);
+  border-radius: 4px;
+}
+
+.crash-log-error {
+  color: #f87171;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(248, 113, 113, 0.1);
+  border-radius: 4px;
+}
+
+/* Back button */
+.btn-back {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+/* Debrief Modal Overlay */
+.crash-debrief-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 5, 6, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.crash-debrief-modal {
+  background: #0A0A0C;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(74, 222, 128, 0.1);
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.debrief-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(74, 222, 128, 0.03);
+}
+
+.debrief-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.debrief-title h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4ade80;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.debrief-close-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.debrief-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.debrief-content {
+  padding: 2rem;
+}
+
+.debrief-success-msg {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.debrief-section {
+  margin-bottom: 2rem;
+}
+
+.debrief-section:last-child {
+  margin-bottom: 0;
+}
+
+.debrief-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.debrief-code-block {
+  background: #000;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 0.9rem;
+  color: #A3E635; /* Hacker green */
+  white-space: pre-wrap;
+}
+
+.debrief-code-block.secure {
+  color: #528BFF; /* Blue team color for fix */
+  border-color: rgba(82, 139, 255, 0.2);
+}
+
+.debrief-text-block {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid #E24B4A;
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.debrief-text-block p {
+  margin: 0;
+}
