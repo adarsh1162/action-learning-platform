@@ -112,7 +112,7 @@ const Dashboard = () => {
                         <h1 className="text-2xl md:text-3xl font-semibold text-[#EDEDED] flex items-center gap-2">
                             Good morning, <span className="text-[#6C5CE7]">{user.name}</span> 👋
                         </h1>
-                        <p className="text-gray-400 text-sm mt-1">Your command center is ready for today's mission.</p>
+                        <p className="text-gray-400 text-sm mt-1">we will make you fall in ❤️ with coding.</p>
                     </div>
                     <div className="flex items-center gap-3 z-10">
                         <div className="flex items-center gap-2 bg-[#EF9F27]/10 border border-[#EF9F27]/20 px-4 py-2 rounded-full text-[#EF9F27] text-sm font-medium">
