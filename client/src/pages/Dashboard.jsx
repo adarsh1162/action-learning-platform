@@ -59,7 +59,7 @@ const Dashboard = () => {
     }
 
     const tags = skillGraph?.tags || [];
-    
+
     // Sort tags by weakness (descending for weak areas, ascending for strong)
     const sortedTags = [...tags].sort((a, b) => b.weaknessScore - a.weaknessScore);
     const weakTags = sortedTags.filter(t => t.weaknessScore > 30);
@@ -104,7 +104,7 @@ const Dashboard = () => {
     return (
         <div className="h-full overflow-y-auto bg-[#0E0F14] text-white p-4 md:p-8 font-sans">
             <div className="max-w-6xl mx-auto space-y-6">
-                
+
                 {/* ── Header Section ── */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#13141C] border border-white/5 p-6 rounded-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#6C5CE7]/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
@@ -124,7 +124,7 @@ const Dashboard = () => {
 
                 {/* ── LEVEL 1 & 2: Asymmetric Hero Grid ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    
+
                     {/* LEVEL 1 (50% Visual Weight): The Mission Center */}
                     <div className="lg:col-span-8 flex flex-col">
                         {heroMission ? (
@@ -140,7 +140,8 @@ const Dashboard = () => {
                                         Start Learning Javascript
                                     </h2>
                                     <p className="text-gray-400 max-w-lg mb-8 text-sm md:text-base leading-relaxed">
-                                        JavaScript is the language of the modern web. In this curriculum, you'll start from the absolute basics of variables and data types, and progress through functions and logic. Dive in to build a strong foundation and start writing your own interactive code.
+                                        Start learning JavaScript in the most unique way that no one has taught you.
+                                        Continue learning, continue growing.
                                     </p>
                                 </div>
                                 <div className="z-10">
@@ -162,7 +163,7 @@ const Dashboard = () => {
 
                     {/* LEVEL 2 & 3: Warmup & Stats */}
                     <div className="lg:col-span-4 flex flex-col gap-6">
-                        
+
                         {/* LEVEL 2 (25% Visual Weight): Warmup */}
                         <div className="bg-gradient-to-br from-[#1A1B25] to-[#13141C] border border-white/5 p-6 rounded-2xl hover:border-white/10 transition-colors flex-1 flex flex-col justify-center">
                             <div className="flex items-start gap-4 mb-5">
@@ -174,7 +175,7 @@ const Dashboard = () => {
                                     <p className="text-xs text-gray-500 mt-1">Targeted challenges based on your weak topics.</p>
                                 </div>
                             </div>
-                            <button 
+                            <button
                                 onClick={() => useStore.getState().setPendingWarmup(true)}
                                 className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 text-sm font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                             >
@@ -219,7 +220,7 @@ const Dashboard = () => {
                                 <p className="text-[10px] text-[#FAC775]/80">You have {mysteryBoxes} unopened box(es).</p>
                             </div>
                         </div>
-                        <button 
+                        <button
                             onClick={() => setShowMysteryBox(true)}
                             className="bg-[#FAC775] hover:bg-[#eab365] text-gray-900 text-xs font-bold px-4 py-2 rounded-lg transition-colors"
                         >
@@ -231,9 +232,9 @@ const Dashboard = () => {
                 {/* ── LEVEL 4: Analytics Grid ── */}
                 <div className="mt-8 pt-8 border-t border-white/5">
                     <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6">Performance Analytics</h3>
-                    
+
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        
+
                         {/* Challenges Done Stat */}
                         <div className="lg:col-span-1 bg-[#1A1B25] border border-white/5 p-6 rounded-2xl flex flex-col justify-center items-center text-center">
                             <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-4">
@@ -273,7 +274,7 @@ const Dashboard = () => {
                                 </h4>
                                 {weakTags.length > 0 ? (
                                     <div className="space-y-2">
-                                        {weakTags.slice(0,2).map((t, i) => (
+                                        {weakTags.slice(0, 2).map((t, i) => (
                                             <div key={i} className="flex justify-between items-center">
                                                 <span className="text-xs font-medium text-gray-300">{getTopicTitleForTag(t.tagName)}</span>
                                                 <span className="text-[10px] text-[#E24B4A] font-medium">{Math.max(0, 100 - t.weaknessScore)}%</span>
@@ -291,7 +292,7 @@ const Dashboard = () => {
                                 </h4>
                                 {strongTags.length > 0 ? (
                                     <div className="space-y-2">
-                                        {strongTags.slice(0,2).map((t, i) => (
+                                        {strongTags.slice(0, 2).map((t, i) => (
                                             <div key={i} className="flex justify-between items-center">
                                                 <span className="text-xs font-medium text-gray-300">{getTopicTitleForTag(t.tagName)}</span>
                                                 <span className="text-[10px] text-[#5DCAA5] font-medium">{Math.max(0, 100 - t.weaknessScore)}%</span>
