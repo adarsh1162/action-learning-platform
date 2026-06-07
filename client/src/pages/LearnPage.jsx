@@ -314,16 +314,30 @@ const LearnPage = () => {
         : viewPhase === 'trap' ? ((topicIndex + 0.33) / totalTopics) * 100
         : ((topicIndex + 0.66) / totalTopics) * 100;
 
+    // ── Derive Phase Colors ──────────────────────────────────────────────────
+    let phaseColor = '#00f2fe'; // Theory (Neon Cyan)
+    let phaseBg = 'rgba(0, 242, 254, 0.1)';
+    if (viewPhase === 'trap') {
+        phaseColor = '#ff0844'; // Threat (Crimson)
+        phaseBg = 'rgba(255, 8, 68, 0.1)';
+    } else if (viewPhase === 'editor') {
+        phaseColor = '#b122e5'; // Challenge (Electric Purple)
+        phaseBg = 'rgba(177, 34, 229, 0.1)';
+    } else if (viewPhase === 'mission') {
+        phaseColor = '#f6d365'; // Mission (Golden Amber)
+        phaseBg = 'rgba(246, 211, 101, 0.1)';
+    }
+
     // ── Render ───────────────────────────────────────────────────────────────
     return (
-        <div className="learn-page">
+        <div className="learn-page" style={{ '--phase-color': phaseColor, '--phase-bg': phaseBg }}>
             {/* Top Progress Bar */}
             <div className="learn-progress-bar">
                 <div
                     className="learn-progress-fill"
                     style={{
                         width: `${progressPct}%`,
-                        background: activeModule?.color || '#6C5CE7'
+                        background: 'var(--phase-color)'
                     }}
                 />
             </div>
@@ -348,14 +362,14 @@ const LearnPage = () => {
                     {/* Top Sticky Progress Header */}
                     <div className="learn-sticky-header">
                         <div className="learn-module-info">
-                            <span className="learn-module-badge" style={{ background: `${activeModule?.color || '#6C5CE7'}20`, color: activeModule?.color || '#6C5CE7' }}>
+                            <span className="learn-module-badge" style={{ background: 'var(--phase-bg)', color: 'var(--phase-color)', boxShadow: '0 0 10px var(--phase-bg)' }}>
                                 {activeModule?.icon} Module {activeModuleId}
                             </span>
                             <span className="learn-module-title">{activeModule?.title}</span>
                         </div>
                         <div className="learn-progress-stats">
                             <div className="learn-progress-track">
-                                <div className="learn-progress-indicator" style={{ width: `${progressPct}%`, background: activeModule?.color || '#6C5CE7' }} />
+                                <div className="learn-progress-indicator" style={{ width: `${progressPct}%`, background: 'var(--phase-color)', boxShadow: '0 0 8px var(--phase-color)' }} />
                             </div>
                             <span className="learn-progress-text">{Math.round(progressPct)}%</span>
                         </div>
@@ -398,16 +412,15 @@ const LearnPage = () => {
                                 <p className="challenge-desc">{activeTopic.challenge.description}</p>
                             </div>
 
-                            {/* Editor Container */}
-                            <div className="editor-container">
-                                {/* Monaco Topbar */}
-                                <div className="editor-topbar">
-                                    <div className="editor-dots">
-                                        <span className="dot-r" />
-                                        <span className="dot-y" />
-                                        <span className="dot-g" />
+                            {/* Command Center Container */}
+                            <div className="editor-container command-center">
+                                {/* Top Bar (Mission Status) */}
+                                <div className="editor-topbar command-center-header">
+                                    <div className="command-status">
+                                        <div className="status-indicator pulsing-dot-purple"></div>
+                                        <span>System Active</span>
                                     </div>
-                                    <span className="editor-filename">solution.js</span>
+                                    <span className="editor-filename">/core/solution.js</span>
                                     <div className="editor-actions">
                                         <button
                                             onClick={() => {
@@ -416,7 +429,7 @@ const LearnPage = () => {
                                             }}
                                             className="editor-reset-btn"
                                         >
-                                            <RotateCcw size={13} /> Reset
+                                            <RotateCcw size={13} /> Reboot
                                         </button>
                                         <button
                                             onClick={handleRunCode}
@@ -424,8 +437,8 @@ const LearnPage = () => {
                                             className="editor-run-btn"
                                         >
                                             {isRunning
-                                                ? <><Loader2 size={14} className="spin" /> Running</>
-                                                : <><Play size={14} /> Run Code</>
+                                                ? <><Loader2 size={14} className="spin" /> Executing</>
+                                                : <><Play size={14} /> Execute Scan</>
                                             }
                                         </button>
                                     </div>
@@ -480,73 +493,73 @@ const LearnPage = () => {
 
                                 {/* Status bar */}
                                 <div className="editor-statusbar">
-                                    <span>JavaScript</span>
-                                    <span>Topic {topicIndex + 1}/{totalTopics}</span>
+                                    <span>Engine: V8 JavaScript</span>
+                                    <span>Sector {topicIndex + 1}/{totalTopics}</span>
                                 </div>
-                            </div>
 
-                            {/* Test Results Panel */}
-                            {testResults && (
-                                <div className="results-panel">
-                                    <div className="results-title">Execution Output</div>
-                                    <div className="results-list">
-                                        {testResults.testResults?.map((t, i) => (
-                                            <div
-                                                key={i}
-                                                className={`result-row ${t.passed ? 'result-row--pass' : 'result-row--fail'}`}
-                                            >
-                                                {t.passed
-                                                    ? <CheckCircle size={15} className="result-icon--pass" />
-                                                    : <XCircle size={15} className="result-icon--fail" />
-                                                }
-                                                <div>
-                                                    <div className="result-desc">{t.description}</div>
-                                                    {!t.passed && t.error && (
-                                                        <div className="result-error">{t.error}</div>
+                                {/* Console Output Panel */}
+                                {testResults && (
+                                    <div className="results-panel command-console">
+                                        <div className="results-title">Terminal Output</div>
+                                        <div className="results-list">
+                                            {testResults.testResults?.map((t, i) => (
+                                                <div
+                                                    key={i}
+                                                    className={`result-row ${t.passed ? 'result-row--pass' : 'result-row--fail'}`}
+                                                >
+                                                    {t.passed
+                                                        ? <CheckCircle size={15} className="result-icon--pass" />
+                                                        : <XCircle size={15} className="result-icon--fail" />
+                                                    }
+                                                    <div>
+                                                        <div className="result-desc">{t.description}</div>
+                                                        {!t.passed && t.error && (
+                                                            <div className="result-error">{t.error}</div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        
+                                        {/* AI Mentor Trigger */}
+                                        {!testResults.allPassed && !aiHint && !isGeneratingHint && (
+                                            <button className="ai-trigger-btn" onClick={handleAskAI}>
+                                                <Sparkles size={16} /> Request AI Intel
+                                            </button>
+                                        )}
+
+                                        {/* AI Mentor Box */}
+                                        {(isGeneratingHint || aiHint) && (
+                                            <div className="ai-mentor-box">
+                                                <div className="ai-mentor-header">
+                                                    <Sparkles size={16} className="ai-icon" />
+                                                    AI Mentor
+                                                    {isGeneratingHint && <span className="ai-status">Analyzing codebase...</span>}
+                                                </div>
+                                                <div className="ai-mentor-body">
+                                                    {isGeneratingHint ? (
+                                                        <div className="ai-loader">
+                                                            <div className="ai-loader-bar"></div>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="ai-hint-text" dangerouslySetInnerHTML={{ __html: aiHint.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>').replace(/\n/g, '<br/>') }} />
                                                     )}
                                                 </div>
                                             </div>
-                                        ))}
+                                        )}
                                     </div>
-                                    
-                                    {/* AI Mentor Trigger */}
-                                    {!testResults.allPassed && !aiHint && !isGeneratingHint && (
-                                        <button className="ai-trigger-btn" onClick={handleAskAI}>
-                                            <Sparkles size={16} /> Ask AI Mentor
-                                        </button>
-                                    )}
-
-                                    {/* AI Mentor Box */}
-                                    {(isGeneratingHint || aiHint) && (
-                                        <div className="ai-mentor-box">
-                                            <div className="ai-mentor-header">
-                                                <Sparkles size={16} className="ai-icon" />
-                                                AI Mentor
-                                                {isGeneratingHint && <span className="ai-status">Analyzing code...</span>}
-                                            </div>
-                                            <div className="ai-mentor-body">
-                                                {isGeneratingHint ? (
-                                                    <div className="ai-loader">
-                                                        <div className="ai-loader-bar"></div>
-                                                    </div>
-                                                ) : (
-                                                    <div className="ai-hint-text" dangerouslySetInnerHTML={{ __html: aiHint.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>').replace(/\n/g, '<br/>') }} />
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                )}
+                            </div>
 
                             {/* Success Banner */}
                             {showSuccess && (
-                                <div className="success-banner">
+                                <div className="success-banner shimmer-border">
                                     <div className="success-banner-inner">
-                                        <span className="success-icon">🎉</span>
+                                        <span className="success-icon bounce-pop">🎉</span>
                                         <div>
-                                            <div className="success-title">Mission Accomplished!</div>
+                                            <div className="success-title">Threat Neutralized</div>
                                             <div className="success-sub">
-                                                All test cases passed {isFirstTimeReward ? `· +${activeTopic.challenge.rewardCoins} coins added` : '· (Already completed)'}
+                                                All execution paths cleared {isFirstTimeReward ? `· +${activeTopic.challenge.rewardCoins} XP` : '· (Already secured)'}
                                             </div>
                                         </div>
                                     </div>

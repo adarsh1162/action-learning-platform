@@ -1,0 +1,208 @@
+.visual-flow-container {
+    background: rgba(10, 11, 14, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin: 32px 0;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    font-family: 'Inter', sans-serif;
+}
+
+.visual-flow-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.visual-flow-badge {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #A89CFF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.visual-flow-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.visual-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94A3B8;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.visual-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    color: #E2E8F0;
+}
+.visual-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.visual-btn-primary {
+    background: rgba(108, 92, 231, 0.15);
+    border-color: rgba(108, 92, 231, 0.3);
+    color: #A89CFF;
+}
+.visual-btn-primary:hover:not(:disabled) {
+    background: rgba(108, 92, 231, 0.25);
+    color: #FFF;
+    border-color: rgba(108, 92, 231, 0.5);
+}
+
+.pulsing-dot {
+    width: 8px;
+    height: 8px;
+    background: #5DCAA5;
+    border-radius: 50%;
+    animation: pulseDot 1s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+.visual-flow-body {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    min-height: 200px;
+}
+
+.visual-code-panel {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.visual-step {
+    display: flex;
+    gap: 16px;
+    opacity: 0.3;
+    transition: all 0.3s ease;
+    transform: translateX(-10px);
+}
+.visual-step.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+.visual-step.completed {
+    opacity: 0.7;
+    transform: translateX(0);
+}
+
+.visual-step-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6C5CE7;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+.visual-step.active .visual-step-indicator {
+    background: rgba(108, 92, 231, 0.2);
+    box-shadow: 0 0 10px rgba(108, 92, 231, 0.4);
+}
+.visual-step.completed .visual-step-indicator {
+    background: rgba(93, 202, 165, 0.1);
+    color: #5DCAA5;
+}
+
+.visual-step-content {
+    flex: 1;
+}
+
+.visual-step-code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #E2E8F0;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.visual-step.active .visual-step-code {
+    border-color: rgba(108, 92, 231, 0.5);
+    background: rgba(108, 92, 231, 0.05);
+}
+
+.visual-step-label {
+    font-size: 12px;
+    color: #94A3B8;
+    margin-top: 6px;
+}
+
+.visual-state-panel {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px;
+}
+
+.state-header {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748B;
+    margin-bottom: 16px;
+}
+
+.state-variables {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.state-variable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+}
+.state-variable.changed {
+    background: rgba(93, 202, 165, 0.1);
+    border-color: rgba(93, 202, 165, 0.3);
+    transform: scale(1.02);
+}
+
+.state-key {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #A89CFF;
+}
+
+.state-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: #E2E8F0;
+}
+.state-variable.changed .state-value {
+    color: #5DCAA5;
+}

@@ -60,10 +60,14 @@ It's your window into what JavaScript is doing behind the scenes.
 
 ---
 
-Look at this:
+Watch how the code executes line by line:
 
-\`\`\`javascript
-console.log("Payment received");
+\`\`\`visual-flow
+[
+  { "label": "Initialize System", "code": "let health = 100;", "state": { "health": 100 }, "duration": 1500 },
+  { "label": "Take Damage", "code": "health = health - 50;", "state": { "health": 50, "Status": "Critical" }, "changed": "health", "duration": 1500 },
+  { "label": "Output to Terminal", "code": "console.log(health);", "state": { "health": 50, "Status": "Critical", "Console": "50" }, "changed": "Console", "duration": 2000 }
+]
 \`\`\`
 
 You're basically telling JavaScript:

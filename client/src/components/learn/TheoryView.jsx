@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import VisualFlow from './VisualFlow';
 
 /**
  * TheoryView — Phase 2, Step 1
@@ -13,8 +14,8 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 const TheoryView = ({ topic, moduleColor, onNext }) => {
     return (
         <div className="view-container theory-view">
-
-            {/* ── Header ── */}
+            <div className="theory-main-content">
+                {/* ── Header ── */}
             <div className="view-header">
                 <div className="phase-chip">
                     <BookOpen size={12} />
@@ -42,6 +43,10 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
                             const match = /language-(\w+)/.exec(className || '');
                             const codeString = String(children).replace(/\n$/, '');
                             const [copied, setCopied] = useState(false);
+
+                            if (!inline && match && match[1] === 'visual-flow') {
+                                return <VisualFlow stepsData={codeString} />;
+                            }
 
                             const handleCopy = () => {
                                 navigator.clipboard.writeText(codeString);
@@ -101,6 +106,23 @@ const TheoryView = ({ topic, moduleColor, onNext }) => {
                 </button>
             </div>
         </div>
+
+        {/* ── Right Gutter HUD ── */}
+        <aside className="theory-hud">
+            <div className="theory-hud-sticky">
+                {/* Placeholder for AI tips or extracted anchors */}
+                <div className="hud-card hud-card--ai">
+                    <div className="hud-card-header">
+                        <BookOpen size={14} className="hud-icon pulse-anim" style={{ color: '#00f2fe' }} />
+                        <span>AI Mentor Tips</span>
+                    </div>
+                    <p className="hud-card-text">
+                        Read the briefing carefully. Predictive learning enhances retention by 40%.
+                    </p>
+                </div>
+            </div>
+        </aside>
+    </div>
     );
 };
 
