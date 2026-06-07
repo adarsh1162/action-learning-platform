@@ -39,6 +39,7 @@ const LearnPage = () => {
     // AI Mentor State
     const [aiHint, setAiHint] = useState(null);
     const [isGeneratingHint, setIsGeneratingHint] = useState(false);
+    const [isFirstTimeReward, setIsFirstTimeReward] = useState(false);
     
     const workerRef = useRef(null);
     const pendingResolveRef = useRef(null);
@@ -161,6 +162,7 @@ const LearnPage = () => {
 
         setIsRunning(false);
         setTestResults(result);
+        setIsFirstTimeReward(false);
 
         // Submit to backend
         let submitData = null;
@@ -184,6 +186,7 @@ const LearnPage = () => {
                     })
                 });
                 submitData = await submitRes.json();
+                setIsFirstTimeReward(submitData.isFirstTime);
 
                 const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/progress/skill-graph`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -449,7 +452,7 @@ const LearnPage = () => {
                                         <div>
                                             <div className="success-title">Mission Accomplished!</div>
                                             <div className="success-sub">
-                                                All test cases passed {submitData && submitData.isFirstTime ? `· +${activeTopic.challenge.rewardCoins} coins added` : '· (Already completed)'}
+                                                All test cases passed {isFirstTimeReward ? `· +${activeTopic.challenge.rewardCoins} coins added` : '· (Already completed)'}
                                             </div>
                                         </div>
                                     </div>
