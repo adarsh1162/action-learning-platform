@@ -366,3 +366,44 @@
   color: #64748b;
   font-size: 1rem;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .crash-dashboard-container {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .crash-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 40vh;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 1rem;
+  }
+
+  .crash-main-content {
+    overflow: visible;
+  }
+
+  .crash-dashboard-title {
+    font-size: 1.8rem;
+  }
+
+  .crash-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .crash-table th, .crash-table td {
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+  }
+
+  .crash-row-desc {
+    max-width: 250px;
+  }
+}

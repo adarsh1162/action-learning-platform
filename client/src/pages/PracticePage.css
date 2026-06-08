@@ -198,3 +198,31 @@
     cursor: not-allowed;
     transform: none;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .practice-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+    
+    .practice-workspace {
+        margin: 12px 16px;
+        height: auto;
+        min-height: 70vh;
+    }
+    
+    .practice-pane-top {
+        min-height: 250px;
+    }
+    
+    .practice-pane-bottom {
+        min-height: 150px;
+    }
+    
+    .practice-resizer {
+        display: none; /* Often buggy on touch, rely on fixed heights or flex */
+    }
+}

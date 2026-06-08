@@ -1475,3 +1475,43 @@
     from { filter: drop-shadow(0 0 2px currentColor); transform: scale(1); }
     to { filter: drop-shadow(0 0 8px currentColor); transform: scale(1.1); }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS
+   ══════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .learn-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar-container {
+        width: 100% !important;
+        height: auto;
+        max-height: 35vh;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        flex-shrink: 0;
+    }
+    
+    .view-container {
+        padding: 20px 16px 40px;
+    }
+
+    .theory-view {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .view-title {
+        font-size: 22px;
+    }
+
+    .theory-hud-sticky {
+        position: relative;
+        top: 0;
+    }
+
+    .hud-card {
+        padding: 16px;
+    }
+}
