@@ -10,6 +10,8 @@ import CrashDashboard from './pages/CrashDashboard';
 import CrashCodePage from './pages/CrashCodePage';
 import BountyBoard from './pages/BountyBoard';
 import BountyArena from './pages/BountyArena';
+import QuizDashboard from './pages/QuizDashboard';
+import QuizArena from './pages/QuizArena';
 import useStore from './store/useStore';
 import { useState, useEffect } from 'react';
 import './App.css';
@@ -35,6 +37,7 @@ function NavBar({ onOpenAuth }) {
         )}
         <Link to="/learn" className={`app-nav-link ${location.pathname === '/learn' ? 'app-nav-link--active' : ''}`}>Learn</Link>
         <Link to="/code"  className={`app-nav-link ${location.pathname === '/code'  ? 'app-nav-link--active' : ''}`}>Missions</Link>
+        <Link to="/quiz" className={`app-nav-link ${location.pathname === '/quiz' ? 'app-nav-link--active' : ''}`}>Quiz</Link>
         <Link to="/practice" className={`app-nav-link ${location.pathname === '/practice' ? 'app-nav-link--active' : ''}`}>Practice</Link>
         <Link to="/bounties" className={`app-nav-link ${location.pathname === '/bounties' ? 'app-nav-link--active' : ''}`} style={{ color: '#FAC775', textShadow: '0 0 10px rgba(250,199,117,0.4)', fontWeight: 'bold' }}>Bounties</Link>
         <Link to="/crash" className={`app-nav-link ${location.pathname === '/crash' ? 'app-nav-link--active' : ''}`} style={{ color: '#FF6B6B', textShadow: '0 0 10px rgba(255,107,107,0.4)' }}>Crash Test</Link>
@@ -98,6 +101,8 @@ function AppShell({ isLanding, showAuth, setShowAuth, hasPendingWarmup, setPendi
           <Route path="/crash/:id" element={<CrashCodePage />} />
           <Route path="/bounties" element={<BountyBoard />} />
           <Route path="/bounties/:id" element={<BountyArena />} />
+          <Route path="/quiz" element={<QuizDashboard />} />
+          <Route path="/quiz/:moduleId" element={<QuizArena />} />
         </Routes>
       </main>
     </div>

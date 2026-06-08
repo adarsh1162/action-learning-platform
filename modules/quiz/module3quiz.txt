@@ -1,0 +1,265 @@
+# Module 3 Quiz
+
+### Q1
+
+Analyze the code:
+
+```javascript
+let price = 100;
+let taxRate = 0.18;
+```
+
+Which statements are true?
+
+* A. `price` is a number.
+* B. `taxRate` is a number.
+* C. JavaScript stores integers and decimals using different primitive types.
+* D. `typeof price` returns `"number"`.
+* E. `typeof taxRate` returns `"number"`.
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q2
+
+Analyze the code:
+
+```javascript
+let result = "Apple" * 5;
+```
+
+Which statements are true?
+
+* A. `result` becomes `NaN`.
+* B. `typeof result` returns `"number"`.
+* C. `result === NaN` evaluates to true.
+* D. `Number.isNaN(result)` evaluates to true.
+* E. The code throws a syntax error.
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q3
+
+Analyze the code:
+
+```javascript
+let errorValue = NaN;
+
+console.log(errorValue === NaN);
+```
+
+Which statements are true?
+
+* A. Output is `true`.
+* B. Output is `false`.
+* C. `NaN` is equal to itself.
+* D. `Number.isNaN(errorValue)` is the correct way to test it.
+* E. `NaN` is a special numeric value.
+
+**Correct Answers:** B, D, E
+
+---
+
+### Q4
+
+Which string declarations are valid?
+
+* A.
+
+```javascript
+let msg = 'Hello World';
+```
+
+* B.
+
+```javascript
+let msg = "Hello World";
+```
+
+* C.
+
+```javascript
+let msg = 'It's ready';
+```
+
+* D.
+
+```javascript
+let msg = "It's ready";
+```
+
+* E.
+
+```javascript
+let msg = "The CEO said, 'Launch now!'";
+```
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q5
+
+Analyze the code:
+
+```javascript
+let total = "Total: " + 5 + 5;
+```
+
+Which statements are true?
+
+* A. Final value is `"Total: 55"`.
+* B. Final value is `"Total: 10"`.
+* C. JavaScript evaluates the expression from left to right.
+* D. The second `5` is converted into text.
+* E. Mathematical addition occurs before concatenation.
+
+**Correct Answers:** A, C, D
+
+---
+
+### Q6
+
+Analyze the code:
+
+```javascript
+let userName = "Alex";
+
+let message =
+    'Welcome ${userName}';
+
+console.log(message);
+```
+
+Which statements are true?
+
+* A. Output becomes `"Welcome Alex"`.
+* B. Output becomes `"Welcome ${userName}"`.
+* C. `${}` only works inside template literals.
+* D. Backticks are required for interpolation.
+* E. Single quotes support interpolation.
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q7
+
+Analyze the code:
+
+```javascript
+let isAdmin = "false";
+
+if (isAdmin) {
+    console.log("Access Granted");
+}
+```
+
+Which statements are true?
+
+* A. The string `"false"` is a boolean.
+* B. `"Access Granted"` is printed.
+* C. Non-empty strings are truthy.
+* D. The code behaves as if the condition is true.
+* E. `isAdmin` stores a boolean value.
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q8
+
+Analyze the code:
+
+```javascript
+let searchResult = null;
+let databaseResult;
+
+console.log(searchResult === databaseResult);
+```
+
+Which statements are true?
+
+* A. Output is `true`.
+* B. Output is `false`.
+* C. `databaseResult` is `undefined`.
+* D. `null` and `undefined` are identical values.
+* E. Strict equality checks both value and type.
+
+**Correct Answers:** B, C, E
+
+---
+
+### Q9
+
+Analyze the code:
+
+```javascript
+let userProfile = null;
+let futureData;
+
+console.log(typeof userProfile);
+console.log(typeof futureData);
+```
+
+Which statements are true?
+
+* A. First output is `"null"`.
+* B. First output is `"object"`.
+* C. Second output is `"undefined"`.
+* D. Both outputs are identical.
+* E. `typeof null` is a well-known JavaScript quirk.
+
+**Correct Answers:** B, C, E
+
+---
+
+### Q10
+
+A banking system contains the following code:
+
+```javascript
+let applicantName = "Sarah O'Connor";
+let annualIncome = 85000;
+let taxMultiplier = 5;
+
+let calculatedTax =
+    annualIncome / taxMultiplier;
+
+let isIdentityVerified = true;
+
+let uploadedDocuments = null;
+
+let taxTypeCheck =
+    typeof calculatedTax;
+
+let finalLog =
+`Applicant: ${applicantName}
+Tax: ${calculatedTax}
+Verified: ${isIdentityVerified}`;
+```
+
+Which statements are true?
+
+* A. `calculatedTax` evaluates to `17000`.
+* B. `Number.isNaN(calculatedTax)` returns `false`.
+* C. `isIdentityVerified` stores a boolean.
+* D. `taxTypeCheck` equals `"number"`.
+* E. The final log correctly uses a template literal.
+
+**Correct Answers:** A, B, C, D, E
+
+These questions target:
+
+* NaN misconceptions
+* Numbers vs strings
+* String quoting traps
+* Concatenation evaluation order
+* Template literals and interpolation
+* Truthy/Falsy thinking
+* `null` vs `undefined`
+* `typeof` quirks
+* Real-world debugging of primitive data types

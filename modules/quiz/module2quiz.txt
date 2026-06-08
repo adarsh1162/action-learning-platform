@@ -1,0 +1,239 @@
+# Module 2 Quiz
+
+### Q1
+
+Analyze the variable declarations:
+
+```javascript
+let firstName = "John";
+let _score = 100;
+let $price = 50;
+let 2ndPlace = "Alex";
+```
+
+Which statements are true?
+
+* A. `firstName` is a valid variable name.
+* B. `_score` is a valid variable name.
+* C. `$price` is a valid variable name.
+* D. `2ndPlace` is a valid variable name.
+* E. Variable names cannot start with a number.
+
+**Correct Answers:** A, B, C, E
+
+---
+
+### Q2
+
+Analyze the code:
+
+```javascript
+let userName = "Sarah";
+let username = "Mike";
+
+console.log(userName);
+console.log(username);
+```
+
+Which statements are true?
+
+* A. Both variables can exist simultaneously.
+* B. JavaScript treats `userName` and `username` as different variables.
+* C. Both logs print `"Sarah"`.
+* D. Variable names are case-sensitive.
+* E. The code throws an error.
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q3
+
+Which variable names follow camelCase convention?
+
+* A. `userAge`
+* B. `user_age`
+* C. `totalPrice`
+* D. `TotalPrice`
+* E. `shoppingCartItems`
+
+**Correct Answers:** A, C, E
+
+---
+
+### Q4
+
+Analyze the code:
+
+```javascript
+const maxPlayers = 10;
+
+maxPlayers = 20;
+```
+
+Which statements are true?
+
+* A. The code throws an error.
+* B. `const` variables cannot be reassigned.
+* C. The value successfully changes to `20`.
+* D. The declaration itself is valid.
+* E. Replacing `const` with `let` would allow reassignment.
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q5
+
+Analyze the code:
+
+```javascript
+let playerLevel = 5;
+
+playerLevel = 8;
+```
+
+Which statements are true?
+
+* A. `let` allows reassignment.
+* B. Final value becomes `8`.
+* C. The code throws an error.
+* D. The original value is overwritten.
+* E. `const` would behave the same way.
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q6
+
+Consider the following declarations:
+
+```javascript
+let class = "JavaScript";
+let default = "Basic";
+let package = "Starter";
+```
+
+Which statements are true?
+
+* A. `class` is a reserved keyword.
+* B. `default` is a reserved keyword.
+* C. Reserved keywords should not be used as variable names.
+* D. All three declarations are safe and recommended.
+* E. Using reserved keywords can break compilation.
+
+**Correct Answers:** A, B, C, E
+
+---
+
+### Q7
+
+Analyze the code:
+
+```javascript
+let assignedDriver;
+
+console.log(assignedDriver);
+```
+
+Which statements are true?
+
+* A. The variable exists.
+* B. The variable's value is `undefined`.
+* C. The code throws an error.
+* D. Declaring a variable does not automatically assign meaningful data.
+* E. Assigning a string before logging would remove the `undefined` output.
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q8
+
+Analyze the code:
+
+```javascript
+const rideType = "Standard";
+
+if (true) {
+    const rideType = "Premium";
+}
+
+console.log(rideType);
+```
+
+Which statements are true?
+
+* A. The final output is `"Standard"`.
+* B. The inner variable is different from the outer variable.
+* C. The outer variable is overwritten.
+* D. The code executes successfully.
+* E. Both declarations are allowed because they exist in different blocks.
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q9
+
+A developer wants a variable that:
+
+* Can be updated later.
+* Must follow camelCase.
+* Must not use reserved keywords.
+* Must store the driver's current status.
+
+Which declarations satisfy all requirements?
+
+* A. `let driverStatus = "Searching";`
+* B. `const driverStatus = "Searching";`
+* C. `let driver_status = "Searching";`
+* D. `let default = "Searching";`
+* E. `let currentDriverStatus = "Searching";`
+
+**Correct Answers:** A, E
+
+---
+
+### Q10
+
+A ride-sharing system contains the following code:
+
+```javascript
+let pickupLocation = "Central Station";
+const maxPassengers = 4;
+let dropLocation = "Airport";
+let rideTier = "Standard";
+
+let rideStatus = "Searching";
+rideStatus = "Driver Arriving";
+
+let assignedDriver = "David";
+
+console.log("Your driver is:", assignedDriver);
+```
+
+Which statements are true?
+
+* A. All variable names are valid.
+* B. The code executes without syntax errors.
+* C. `rideStatus` updates successfully.
+* D. The console prints a valid driver name instead of `undefined`.
+* E. The code satisfies all major fixes required in the Ride-Share Ghost Driver mission.
+
+**Correct Answers:** A, B, C, D, E
+
+These questions are designed to test:
+
+* Variable naming rules
+* Case sensitivity
+* camelCase conventions
+* `let` vs `const`
+* Reserved keywords
+* Reassignment
+* `undefined`
+* Block scope
+* Real-world debugging and code review
+
+instead of simple definition memorization.

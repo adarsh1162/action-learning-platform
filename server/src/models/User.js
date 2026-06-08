@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     completedChallenges: [{ type: String }],
     streak: { type: Number, default: 0 },
     mysteryBoxes: { type: Number, default: 0 },
+    completedQuizzes: [{ type: Number }], // Array of module IDs e.g. [1, 2]
     lastActiveDate: { type: Date }
 }, { timestamps: true });
 

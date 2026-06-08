@@ -1,0 +1,250 @@
+These are documentation-quality MSQs. They focus on execution flow, debugging, misconceptions, and reasoning rather than definitions. Multiple answers may be correct.
+
+# Module 1 Quiz
+
+### Q1
+
+Analyze the code:
+
+```javascript
+console.log("System Start");
+console.warn("High CPU");
+console.error("System Crash");
+```
+
+Which statements are true?
+
+* A. The warning executes after the normal log.
+* B. The error executes before the warning.
+* C. Three messages are printed.
+* D. JavaScript executes the statements from top to bottom.
+* E. `console.error()` stops the program automatically.
+
+**Correct Answers:** A, C, D
+
+---
+
+### Q2
+
+What will be printed?
+
+```javascript
+let health = 100;
+
+console.log(health);
+
+health = 50;
+
+console.log(health);
+```
+
+* A. First output is `100`
+* B. Second output is `50`
+* C. Both outputs are `100`
+* D. Reassignment changes the value stored in memory
+* E. The second log runs before the reassignment
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q3
+
+Analyze the code:
+
+```javascript
+let score = 10;
+
+console.log(score);
+
+score = score + 5;
+
+console.log(Score);
+```
+
+Which statements are true?
+
+* A. First output is `10`
+* B. `score` becomes `15`
+* C. The last line throws an error
+* D. `score` and `Score` are treated as different variables
+* E. Final output is `15`
+
+**Correct Answers:** A, B, C, D
+
+---
+
+### Q4
+
+Consider the following code:
+
+```javascript
+let server = "Online";
+
+// console.log(server);
+
+console.log("Running");
+```
+
+Which statements are true?
+
+* A. `"Online"` is printed
+* B. `"Running"` is printed
+* C. The commented line is ignored by JavaScript
+* D. Removing `//` would execute the first log
+* E. The code contains a syntax error
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q5
+
+Which of the following are expressions?
+
+* A. `"Hello World"`
+* B. `10 * 5`
+* C. `let result = 50;`
+* D. `health + 20`
+* E. `true`
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q6
+
+Analyze the code:
+
+```javascript
+let status = "Offline";
+
+console.log(
+    "Status: " +
+    console.error(status)
+);
+```
+
+Which statements are true?
+
+* A. `"Offline"` is printed by `console.error()`
+* B. `console.error()` returns `undefined`
+* C. The final log becomes `"Status: undefined"`
+* D. The final log becomes `"Status: Offline"`
+* E. Two console operations occur
+
+**Correct Answers:** A, B, C, E
+
+---
+
+### Q7
+
+Analyze the code:
+
+```javascript
+let greeting = `Hello // Welcome User`;
+
+console.log(greeting);
+```
+
+Which statements are true?
+
+* A. `//` starts a comment
+* B. The entire text is stored inside the string
+* C. Output is `Hello`
+* D. Output is `Hello // Welcome User`
+* E. No comment exists in this code
+
+**Correct Answers:** B, D, E
+
+---
+
+### Q8
+
+Which statements correctly describe comments in JavaScript?
+
+* A. Comments are ignored during execution.
+* B. Single-line comments begin with `//`.
+* C. Multi-line comments use `/* */`.
+* D. Comments can be used to temporarily disable code.
+* E. Comments create variables in memory.
+
+**Correct Answers:** A, B, C, D
+
+---
+
+### Q9
+
+Analyze the code:
+
+```javascript
+let result = if (10 > 5) {
+    true;
+} else {
+    false;
+};
+```
+
+Why is this invalid?
+
+* A. `if/else` is a statement, not an expression.
+* B. The assignment operator expects a value on the right side.
+* C. JavaScript allows statements to be assigned directly.
+* D. The code causes a syntax error.
+* E. `if/else` automatically returns a value.
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q10
+
+A developer must satisfy these requirements:
+
+1. Check power supply first.
+2. Connect to database second.
+3. Report database failure third.
+4. Report diagnostics last.
+5. Power issue must be a warning.
+6. Database failure must be an error.
+
+Which implementation satisfies all requirements?
+
+```javascript
+Option A
+
+console.log("Server reboot initiated.");
+console.warn("Power supply unstable.");
+console.log("Connecting to main database...");
+console.error("Database connection failed.");
+console.log("System diagnostic complete");
+```
+
+```javascript
+Option B
+
+console.log("Server reboot initiated.");
+console.error("Power supply unstable.");
+console.log("Connecting to main database...");
+console.warn("Database connection failed.");
+console.log("System diagnostic complete");
+```
+
+```javascript
+Option C
+
+console.log("Server reboot initiated.");
+console.log("Connecting to main database...");
+console.warn("Power supply unstable.");
+console.error("Database connection failed.");
+console.log("System diagnostic complete");
+```
+
+* A. Option A satisfies all requirements.
+* B. Option B satisfies all requirements.
+* C. Option C satisfies all requirements.
+* D. Correct console types matter as much as correct order.
+* E. Changing warning/error methods can break the requirements.
+
+**Correct Answers:** A, D, E
+

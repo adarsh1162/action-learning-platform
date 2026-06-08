@@ -1,0 +1,256 @@
+# Module 5 Quiz
+
+### Q1
+
+Analyze the code:
+
+```javascript
+let score = "100";
+
+let converted =
+    Number(score);
+```
+
+Which statements are true?
+
+* A. `converted` becomes the number `100`.
+* B. `typeof converted` is `"number"`.
+* C. `converted` remains a string.
+* D. `Number()` performs explicit conversion.
+* E. `typeof converted` is `"string"`.
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q2
+
+Analyze the code:
+
+```javascript
+let text = "false";
+
+let result =
+    Boolean(text);
+```
+
+Which statements are true?
+
+* A. `result` becomes `false`.
+* B. `result` becomes `true`.
+* C. Any non-empty string is truthy.
+* D. The word `"false"` has special meaning to `Boolean()`.
+* E. `typeof result` is `"boolean"`.
+
+**Correct Answers:** B, C, E
+
+---
+
+### Q3
+
+Analyze the code:
+
+```javascript
+let input = "";
+
+let converted =
+    Number(input);
+```
+
+Which statements are true?
+
+* A. `converted` becomes `0`.
+* B. `converted` becomes `NaN`.
+* C. `typeof converted` is `"number"`.
+* D. Empty strings always become `NaN`.
+* E. JavaScript performs a valid numeric conversion.
+
+**Correct Answers:** A, C, E
+
+---
+
+### Q4
+
+Analyze the code:
+
+```javascript
+let batchId = "007";
+
+let encryptedCode =
+    batchId + 1;
+
+let decodedKey =
+    encryptedCode - 1;
+```
+
+Which statements are true?
+
+* A. `encryptedCode` becomes `"0071"`.
+* B. `decodedKey` becomes `70`.
+* C. `decodedKey` becomes `7`.
+* D. `+` triggered string concatenation.
+* E. `-` triggered numeric coercion.
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q5
+
+Analyze the code:
+
+```javascript
+let value1 = "50";
+let value2 = 5;
+
+let result =
+    value1 + value2;
+```
+
+Which statements are true?
+
+* A. Result becomes `"505"`.
+* B. Result becomes `55`.
+* C. Result is a string.
+* D. Implicit coercion occurs.
+* E. The number is converted into text.
+
+**Correct Answers:** A, C, D, E
+
+---
+
+### Q6
+
+Analyze the code:
+
+```javascript
+let value1 = "50";
+let value2 = 5;
+
+let result =
+    value1 / value2;
+```
+
+Which statements are true?
+
+* A. Result becomes `10`.
+* B. Result becomes `"10"`.
+* C. `/` forces numeric conversion.
+* D. Result is a number.
+* E. No explicit conversion was written.
+
+**Correct Answers:** A, C, D, E
+
+---
+
+### Q7
+
+Which of the following values are Falsy in JavaScript?
+
+* A. `0`
+* B. `""`
+* C. `"0"`
+* D. `null`
+* E. `undefined`
+
+**Correct Answers:** A, B, D, E
+
+---
+
+### Q8
+
+Analyze the code:
+
+```javascript
+let errorCount = "0";
+
+if (errorCount) {
+    console.log("Shutdown");
+}
+```
+
+Which statements are true?
+
+* A. The condition executes.
+* B. `"0"` is a string.
+* C. `"0"` is truthy.
+* D. The condition is skipped.
+* E. JavaScript treats `"0"` exactly like numeric `0`.
+
+**Correct Answers:** A, B, C
+
+---
+
+### Q9
+
+Analyze the code:
+
+```javascript
+let value = " ";
+
+if (value) {
+    console.log("Found");
+}
+```
+
+Which statements are true?
+
+* A. `" "` is an empty string.
+* B. `" "` contains a character.
+* C. The condition executes.
+* D. `" "` is truthy.
+* E. The condition is skipped.
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q10
+
+An e-commerce checkout system contains the following code:
+
+```javascript
+let productPrice = "120";
+let shippingTax = "15";
+let userPoints = "0";
+let hasVoucher = false;
+let couponInput = "";
+
+userPoints =
+    Number(userPoints);
+
+let cartTotal =
+    Number(productPrice) +
+    Number(shippingTax);
+
+if (couponInput) {
+    console.log("Coupon Applied");
+}
+
+if (userPoints) {
+    console.log("Using Points");
+}
+```
+
+Which statements are true?
+
+* A. `cartTotal` evaluates to `135`.
+* B. `cartTotal` is a number.
+* C. `"Coupon Applied"` is never logged.
+* D. `"Using Points"` is never logged.
+* E. The code avoids the major coercion bugs from the original checkout system.
+
+**Correct Answers:** A, B, C, D, E
+
+---
+
+These questions test:
+
+* Explicit conversion (`Number()`, `String()`, `Boolean()`)
+* Implicit coercion
+* String vs number operations
+* `+` vs `-`, `*`, `/` behavior
+* Truthy/Falsy reasoning
+* Non-empty string traps (`"false"`, `"0"`, `" "`)
+* Real-world checkout and validation bugs
+* Mental execution of JavaScript's type system

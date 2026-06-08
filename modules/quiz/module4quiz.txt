@@ -1,0 +1,242 @@
+# Module 4 Quiz
+
+### Q1
+
+Analyze the code:
+
+```javascript
+let finalValue = "10" + 5 - 2;
+```
+
+Which statements are true?
+
+* A. `"10" + 5` produces `"105"`.
+* B. Final value becomes `103`.
+* C. Final value becomes `"103"`.
+* D. JavaScript performs concatenation before subtraction here.
+* E. The code throws an error.
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q2
+
+Analyze the code:
+
+```javascript
+let result = 20 / 4 * 2;
+```
+
+Which statements are true?
+
+* A. Division executes before multiplication because `/` has higher precedence.
+* B. Multiplication and division have equal precedence.
+* C. Expression is evaluated left to right.
+* D. Final value is `10`.
+* E. Final value is `2.5`.
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q3
+
+Analyze the code:
+
+```javascript
+let totalItems = 3;
+let containerCapacity = 10;
+
+let remainder =
+    totalItems % containerCapacity;
+```
+
+Which statements are true?
+
+* A. `remainder` becomes `0`.
+* B. `remainder` becomes `3`.
+* C. `%` returns the remainder.
+* D. The first number can be smaller than the second.
+* E. The code throws an error.
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q4
+
+Which statements are true about the modulo operator `%`?
+
+* A. `15 % 4` evaluates to `3`.
+* B. `20 % 5` evaluates to `0`.
+* C. `%` always returns a decimal.
+* D. `%` is commonly used to check even and odd numbers.
+* E. `%` performs standard division.
+
+**Correct Answers:** A, B, D
+
+---
+
+### Q5
+
+Analyze the code:
+
+```javascript
+let playerHealth = 100;
+
+playerHealth =- 20;
+```
+
+Which statements are true?
+
+* A. The developer accidentally wrote `=-` instead of `-=`.
+* B. Final value becomes `80`.
+* C. Final value becomes `-20`.
+* D. The value is reassigned rather than decreased.
+* E. The code throws an error.
+
+**Correct Answers:** A, C, D
+
+---
+
+### Q6
+
+Analyze the code:
+
+```javascript
+let bankBalance = 1000;
+
+bankBalance += 500;
+bankBalance -= 200;
+bankBalance *= 2;
+```
+
+Which statements are true?
+
+* A. Final value is `2600`.
+* B. `+=` updates the existing value.
+* C. `*=` multiplies and stores the result.
+* D. Shorthand operators modify the same variable.
+* E. Final value is `1300`.
+
+**Correct Answers:** A, B, C, D
+
+---
+
+### Q7
+
+Analyze the code:
+
+```javascript
+let a = 5;
+let b = a++;
+```
+
+Which statements are true?
+
+* A. `a` becomes `6`.
+* B. `b` becomes `6`.
+* C. `b` receives the original value first.
+* D. Final values are `a = 6` and `b = 5`.
+* E. This is postfix increment behavior.
+
+**Correct Answers:** A, C, D, E
+
+---
+
+### Q8
+
+Analyze the code:
+
+```javascript
+let counter = 5;
+
+let result = ++counter;
+```
+
+Which statements are true?
+
+* A. `counter` becomes `6`.
+* B. `result` becomes `6`.
+* C. This is prefix increment behavior.
+* D. `result` becomes `5`.
+* E. Increment happens before assignment.
+
+**Correct Answers:** A, B, C, E
+
+---
+
+### Q9
+
+Analyze the code:
+
+```javascript
+let value =
+    10 - 2 * 3 + 4 / 2;
+```
+
+Which statements are true?
+
+* A. Multiplication executes before subtraction.
+* B. Division executes before addition.
+* C. Final value is `6`.
+* D. Reading left-to-right gives the correct answer.
+* E. Operator precedence affects the result.
+
+**Correct Answers:** A, B, C, E
+
+---
+
+### Q10
+
+An AI leaderboard system contains the following fixed code:
+
+```javascript
+let baseScore = 500;
+let streakBonus = 20;
+let multiplier = 1.5;
+
+let finalScore =
+    (baseScore + streakBonus) *
+    multiplier;
+
+let userTokens = 1000;
+let apiCost = 45.9;
+
+userTokens -= Math.floor(apiCost);
+
+let loginDays = 14;
+loginDays++;
+
+let serverShard =
+    finalScore % 3;
+
+let challengeId =
+    Math.floor(Math.random() * 10);
+```
+
+Which statements are true?
+
+* A. `finalScore` evaluates to `780`.
+* B. `userTokens` evaluates to `955`.
+* C. `loginDays` becomes `15`.
+* D. `serverShard` evaluates to `0`.
+* E. `challengeId` is guaranteed to be a whole number between `0` and `9`.
+
+**Correct Answers:** A, B, C, D, E
+
+---
+
+These questions test:
+
+* Arithmetic operators
+* String + number coercion
+* Modulo reasoning
+* Assignment operators
+* Increment vs decrement
+* Prefix vs postfix traps
+* Operator precedence (PEMDAS)
+* `Math.round()`, `Math.floor()`, `Math.ceil()`
+* Random number generation
+* Real-world debugging scenarios

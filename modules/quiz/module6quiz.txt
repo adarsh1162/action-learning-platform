@@ -1,0 +1,290 @@
+# Module 6 Quiz
+
+### Q1
+
+Analyze the code:
+
+```javascript
+let currentLevel = "10";
+let nextLevel = "2";
+
+console.log(
+    currentLevel > nextLevel
+);
+```
+
+Which statements are true?
+
+* A. The expression evaluates to `true`.
+* B. The expression evaluates to `false`.
+* C. JavaScript compares the strings character by character.
+* D. `"1"` is considered smaller than `"2"`.
+* E. The values are automatically converted to numbers before comparison.
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q2
+
+Analyze the code:
+
+```javascript
+let passingScore = 50;
+let studentScore = 50;
+
+let hasPassed =
+    studentScore >= passingScore;
+```
+
+Which statements are true?
+
+* A. `hasPassed` becomes `true`.
+* B. `hasPassed` becomes `false`.
+* C. `>=` allows equality.
+* D. Replacing `studentScore` with `49` would make `hasPassed` false.
+* E. The result is a boolean.
+
+**Correct Answers:** A, C, D, E
+
+---
+
+### Q3
+
+Analyze the code:
+
+```javascript
+let cachedData = [];
+let targetState = 0;
+
+console.log(
+    cachedData == targetState
+);
+```
+
+Which statements are true?
+
+* A. Output is `true`.
+* B. Output is `false`.
+* C. Loose equality performs coercion.
+* D. An empty array can eventually be coerced to `0`.
+* E. `==` compares both value and type.
+
+**Correct Answers:** A, C, D
+
+---
+
+### Q4
+
+Analyze the code:
+
+```javascript
+let pinCode = 1234;
+let userInput = "1234";
+
+console.log(
+    pinCode === userInput
+);
+```
+
+Which statements are true?
+
+* A. Output is `true`.
+* B. Output is `false`.
+* C. Strict equality compares value and type.
+* D. The values look identical but have different types.
+* E. Replacing `"1234"` with `1234` would make the expression true.
+
+**Correct Answers:** B, C, D, E
+
+---
+
+### Q5
+
+Analyze the code:
+
+```javascript
+let systemError = NaN;
+
+console.log(
+    systemError === NaN
+);
+```
+
+Which statements are true?
+
+* A. Output is `true`.
+* B. Output is `false`.
+* C. `NaN` is not equal to itself.
+* D. `Number.isNaN()` is the proper way to detect NaN.
+* E. `NaN` behaves like every other number during equality checks.
+
+**Correct Answers:** B, C, D
+
+---
+
+### Q6
+
+Analyze the code:
+
+```javascript
+let isAdmin = false;
+
+if (isAdmin === true); {
+    console.log("Delete Database");
+}
+```
+
+Which statements are true?
+
+* A. The message is printed.
+* B. The semicolon ends the `if` statement.
+* C. The block becomes standalone code.
+* D. Removing the semicolon fixes the logic.
+* E. The condition evaluates to true.
+
+**Correct Answers:** A, B, C, D
+
+---
+
+### Q7
+
+Analyze the code:
+
+```javascript
+let examScore = 95;
+
+if (examScore > 50) {
+    console.log("C");
+}
+else if (examScore > 75) {
+    console.log("B");
+}
+else if (examScore > 90) {
+    console.log("A");
+}
+```
+
+Which statements are true?
+
+* A. Output is `"A"`.
+* B. Output is `"B"`.
+* C. Output is `"C"`.
+* D. JavaScript stops at the first true condition.
+* E. The conditions should be ordered from most restrictive to least restrictive.
+
+**Correct Answers:** C, D, E
+
+---
+
+### Q8
+
+Analyze the code:
+
+```javascript
+let isAdult = true;
+let hasTicket = false;
+
+if (isAdult && hasTicket) {
+    console.log("Entry Allowed");
+}
+```
+
+Which statements are true?
+
+* A. The message is printed.
+* B. The message is not printed.
+* C. `&&` requires both conditions to be true.
+* D. One false condition makes the whole expression false.
+* E. Replacing `&&` with `||` would print the message.
+
+**Correct Answers:** B, C, D, E
+
+---
+
+### Q9
+
+Analyze the code:
+
+```javascript
+let password = "";
+
+let overrideCode = "ADMIN";
+
+if (!password || overrideCode) {
+    console.log("Authorized");
+}
+```
+
+Which statements are true?
+
+* A. The message is printed.
+* B. `!password` evaluates to `true`.
+* C. Empty strings are falsy.
+* D. `||` stops once it finds a truthy result.
+* E. The entire condition evaluates to false.
+
+**Correct Answers:** A, B, C, D
+
+---
+
+### Q10
+
+An anti-cheat system contains the following corrected logic:
+
+```javascript
+let userScore = 98;
+
+let cheatFlags =
+    Number("0");
+
+let isProctorActive = false;
+
+if (
+    userScore > 90 &&
+    !isProctorActive
+) {
+    console.log("Locked");
+}
+
+if (userScore >= 95) {
+    console.log("Grandmaster");
+}
+else if (userScore >= 75) {
+    console.log("Silver");
+}
+else if (userScore >= 50) {
+    console.log("Bronze");
+}
+
+let fastTrack =
+    25 < 30
+    ? "Approved"
+    : "Denied";
+```
+
+Which statements are true?
+
+* A. The account is locked.
+* B. The tier becomes `"Grandmaster"`.
+* C. `&&` ensures both conditions must be true.
+* D. `fastTrack` becomes `"Approved"`.
+* E. The code fixes the major logic flaws from the original anti-cheat engine.
+
+**Correct Answers:** A, B, C, D, E
+
+---
+
+These questions test:
+
+* Comparison operators (`>`, `<`, `>=`, `<=`)
+* String comparison traps
+* Loose vs strict equality
+* NaN equality misconceptions
+* `if`, `else`, `else if`
+* Execution order in conditional chains
+* Logical operators (`&&`, `||`, `!`)
+* Truthy/Falsy reasoning
+* Short-circuit evaluation
+* Ternary operators
+* Real-world decision-making and debugging logic
