@@ -8,6 +8,8 @@ import DailyWarmUpModal from './components/warmup/DailyWarmUpModal';
 import PracticePage from './pages/PracticePage';
 import CrashDashboard from './pages/CrashDashboard';
 import CrashCodePage from './pages/CrashCodePage';
+import BountyBoard from './pages/BountyBoard';
+import BountyArena from './pages/BountyArena';
 import useStore from './store/useStore';
 import { useState, useEffect } from 'react';
 import './App.css';
@@ -34,6 +36,7 @@ function NavBar({ onOpenAuth }) {
         <Link to="/learn" className={`app-nav-link ${location.pathname === '/learn' ? 'app-nav-link--active' : ''}`}>Learn</Link>
         <Link to="/code"  className={`app-nav-link ${location.pathname === '/code'  ? 'app-nav-link--active' : ''}`}>Missions</Link>
         <Link to="/practice" className={`app-nav-link ${location.pathname === '/practice' ? 'app-nav-link--active' : ''}`}>Practice</Link>
+        <Link to="/bounties" className={`app-nav-link ${location.pathname === '/bounties' ? 'app-nav-link--active' : ''}`} style={{ color: '#FAC775', textShadow: '0 0 10px rgba(250,199,117,0.4)', fontWeight: 'bold' }}>Bounties</Link>
         <Link to="/crash" className={`app-nav-link ${location.pathname === '/crash' ? 'app-nav-link--active' : ''}`} style={{ color: '#FF6B6B', textShadow: '0 0 10px rgba(255,107,107,0.4)' }}>Crash Test</Link>
       </div>
 
@@ -93,6 +96,8 @@ function AppShell({ isLanding, showAuth, setShowAuth, hasPendingWarmup, setPendi
           <Route path="/practice" element={<PracticePage />} />
           <Route path="/crash" element={<CrashDashboard />} />
           <Route path="/crash/:id" element={<CrashCodePage />} />
+          <Route path="/bounties" element={<BountyBoard />} />
+          <Route path="/bounties/:id" element={<BountyArena />} />
         </Routes>
       </main>
     </div>
@@ -101,9 +106,33 @@ function AppShell({ isLanding, showAuth, setShowAuth, hasPendingWarmup, setPendi
 
 function App() {
   const [showAuth, setShowAuth] = useState(false);
-  const { user, hasPendingWarmup, setPendingWarmup } = useStore();
+  const { user, hasPendingWarmup, setPendingWarmup, setCoins, setCashBalance, setStats, setSkillGraph } = useStore();
 
   useEffect(() => {
+    const fetchProgress = async () => {
+      if (!user) return;
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/progress/skill-graph`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          setSkillGraph(data.skillGraph);
+          setCoins(data.coins);
+          setCashBalance(data.cashBalance);
+          setStats({
+            challengesDone: data.challengesDone,
+            streak: data.streak,
+            retentionScore: data.retentionScore,
+            mysteryBoxes: data.mysteryBoxes
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching progress globally", err);
+      }
+    };
+
     const checkWarmup = async () => {
       if (!user) return;
       try {
@@ -119,8 +148,10 @@ function App() {
         console.error("Error checking warmup", err);
       }
     };
+    
+    fetchProgress();
     checkWarmup();
-  }, [user, setPendingWarmup]);
+  }, [user, setPendingWarmup, setCoins, setCashBalance, setStats, setSkillGraph]);
 
   const isLanding = !user;
 

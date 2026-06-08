@@ -8,6 +8,7 @@ const progressRoutes  = require('./routes/progressRoutes');
 const aiRoutes        = require('./routes/aiRoutes');
 const warmupRoutes    = require('./routes/warmupRoutes');
 const rewardRoutes    = require('./routes/rewardRoutes');
+const bountyRoutes    = require('./routes/bountyRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -34,6 +35,7 @@ app.use('/api/progress',   progressRoutes);
 app.use('/api/ai',         aiRoutes);
 app.use('/api/warmup',     warmupRoutes);
 app.use('/api/rewards',    rewardRoutes);
+app.use('/api/bounties',   bountyRoutes);
 
 // Base Route
 app.get('/', (req, res) => {

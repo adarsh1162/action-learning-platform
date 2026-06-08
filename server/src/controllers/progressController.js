@@ -10,7 +10,7 @@ const getSkillGraph = async (req, res) => {
         const userId = req.user.id;
         
         let skillGraph = await SkillGraph.findOne({ user: userId });
-        const user = await User.findById(userId).select('coins challengesDone streak retentionScore');
+        const user = await User.findById(userId).select('coins cashBalance challengesDone streak retentionScore');
 
         if (!skillGraph) {
             skillGraph = { tags: [] };
@@ -20,6 +20,7 @@ const getSkillGraph = async (req, res) => {
             success: true,
             skillGraph,
             coins: user ? user.coins : 0,
+            cashBalance: user ? (user.cashBalance || 0) : 0,
             challengesDone: user ? (user.challengesDone || 0) : 0,
             completedChallenges: user ? (user.completedChallenges || []) : [],
             streak: user ? (user.streak || 0) : 0,

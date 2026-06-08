@@ -4,6 +4,7 @@ const useStore = create((set) => ({
     // State Variables
     user: JSON.parse(localStorage.getItem('user')) || null,
     coins: 0,
+    cashBalance: 0,
     retentionScore: 100,
     challengesDone: 0,
     streak: 0,
@@ -18,6 +19,8 @@ const useStore = create((set) => ({
     },
     setCoins: (coins) => set({ coins }),
     addCoins: (amount) => set((state) => ({ coins: state.coins + amount })),
+    setCashBalance: (cashBalance) => set({ cashBalance }),
+    addCashBalance: (amount) => set((state) => ({ cashBalance: state.cashBalance + amount })),
     setRetentionScore: (score) => set({ retentionScore: score }),
     setStats: (stats) => set((state) => ({ 
         challengesDone: stats.challengesDone !== undefined ? stats.challengesDone : state.challengesDone, 
@@ -33,7 +36,7 @@ const useStore = create((set) => ({
     logout: () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        set({ user: null, coins: 0, retentionScore: 100, mysteryBoxes: 0, skillGraph: { tags: [] }, hasPendingWarmup: false });
+        set({ user: null, coins: 0, cashBalance: 0, retentionScore: 100, mysteryBoxes: 0, skillGraph: { tags: [] }, hasPendingWarmup: false });
     },
 }));
 

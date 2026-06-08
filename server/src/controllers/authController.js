@@ -54,7 +54,7 @@ const login = async (req, res) => {
         await user.save();
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-        res.json({ token, user: { name: user.name, email: user.email, streak: newStreak, challengesDone: user.challengesDone } });
+        res.json({ token, user: { name: user.name, email: user.email, streak: newStreak, challengesDone: user.challengesDone, coins: user.coins, cashBalance: user.cashBalance } });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

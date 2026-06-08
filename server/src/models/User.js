@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     coins: { type: Number, default: 0 },
+    cashBalance: { type: Number, default: 0 },
     retentionScore: { type: Number, default: 100 },
     challengesDone: { type: Number, default: 0 },
     completedChallenges: [{ type: String }],

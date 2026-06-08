@@ -7,7 +7,7 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import MysteryBoxModal from '../components/rewards/MysteryBoxModal';
 
 const Dashboard = () => {
-    const { user, coins, retentionScore, challengesDone, streak, mysteryBoxes, skillGraph, setSkillGraph, setCoins, setStats } = useStore();
+    const { user, coins, retentionScore, challengesDone, streak, mysteryBoxes, skillGraph, setSkillGraph, setCoins, setCashBalance, setStats } = useStore();
     const [isLoading, setIsLoading] = useState(true);
     const [showMysteryBox, setShowMysteryBox] = useState(false);
     const navigate = useNavigate();
@@ -46,33 +46,9 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        const fetchGraph = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/progress/skill-graph`, {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        setSkillGraph(data.skillGraph);
-                        setCoins(data.coins);
-                        // It's fine to just set Stats
-                        setStats({
-                            challengesDone: data.challengesDone,
-                            streak: data.streak,
-                            retentionScore: data.retentionScore,
-                            mysteryBoxes: data.mysteryBoxes
-                        });
-                    }
-                } catch (e) {
-                    console.error("Failed to fetch graph", e);
-                }
-            }
-            setIsLoading(false);
-        };
-        fetchGraph();
-    }, [setSkillGraph, setStats]);
+        // App.jsx now handles fetching the skill graph and global progress stats
+        setIsLoading(false);
+    }, []);
 
     if (isLoading) {
         return (
