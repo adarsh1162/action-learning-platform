@@ -157,7 +157,7 @@ const BountyArena = () => {
                 <div className="arena-header-right">
                     <div className="arena-balance">
                         <span className="balance-label">Cash Balance:</span>
-                        <span className="balance-val">₹ {cashBalance.toLocaleString()}</span>
+                        <span className="balance-val">₹ {(cashBalance || 0).toLocaleString()}</span>
                     </div>
                     {success ? (
                         <div className="btn-deploy btn-success">

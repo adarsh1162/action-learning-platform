@@ -119,8 +119,8 @@ function App() {
         const data = await res.json();
         if (data.success) {
           setSkillGraph(data.skillGraph);
-          setCoins(data.coins);
-          setCashBalance(data.cashBalance);
+          setCoins(data.coins || 0);
+          setCashBalance(data.cashBalance || 0);
           setStats({
             challengesDone: data.challengesDone,
             streak: data.streak,

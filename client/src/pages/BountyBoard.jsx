@@ -69,7 +69,7 @@ const BountyBoard = () => {
                     <div className="bounty-balance-badge">
                         <div className="balance-label">Cash Balance</div>
                         <div className="balance-amount">
-                            <span>₹</span> {cashBalance.toLocaleString()}
+                            <span>₹</span> {(cashBalance || 0).toLocaleString()}
                         </div>
                     </div>
 
